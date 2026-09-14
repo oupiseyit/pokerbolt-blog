@@ -1,0 +1,236 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PokerBolt — The Index</title>
+<meta name="description" content="Every game on the PokerBolt floor, listed.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Barlow:wght@400;500;600&family=Bodoni+Moda:ital,opsz,wght@0,6..96,700;1,6..96,700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/site.css">
+<link rel="stylesheet" href="css/rail.css">
+<script>
+/* restore the pinned theme before first paint; no pin = follow the OS */
+try { var t = localStorage.getItem("pb-theme");
+      if (t) document.documentElement.dataset.theme = t; } catch (e) {}
+</script>
+</head>
+<body>
+
+<header class="site-head">
+  <div class="shell">
+    <a class="wordmark" href="index.html">Poker<span>Bolt</span></a>
+    <nav class="site-nav" aria-label="Primary">
+      <a href="index.html">Lobby</a>
+      <a href="index-rail.html" aria-current="page">Index</a>
+      <a href="index-mosaic.html">Wall</a>
+      <a href="index-beach.html">Beach</a>
+      <a href="index-studio.html">Portfolio</a>
+      <a href="texas-holdem.html">Guides</a>
+    </nav>
+    <div class="themes" role="group" aria-label="Colour theme">
+      <button class="chip chip--night" type="button" data-set-theme="night" aria-label="Night theme"></button>
+      <button class="chip chip--day"   type="button" data-set-theme="day"   aria-label="Day theme"></button>
+      <button class="chip chip--felt"  type="button" data-set-theme="felt"  aria-label="Felt theme"></button>
+      <button class="chip chip--neon"  type="button" data-set-theme="neon"  aria-label="Neon theme"></button>
+    </div>
+  </div>
+</header>
+
+<main>
+
+  <section class="masthead shell">
+    <div class="masthead__top">
+      <div>
+        <p class="eyebrow">The card room &middot; Volume I</p>
+        <h1>The <em>Index</em></h1>
+      </div>
+      <p class="dateline">Fifteen titles<br>7 categories<br>Updated nightly</p>
+    </div>
+    <p class="lede">The whole floor set down in order — every table, what it is, how many
+      seats it takes and whether the guide is written yet. Read down the column, pick your
+      game, sit down knowing the rules.</p>
+  </section>
+
+  <section class="shell">
+
+    <article class="lead">
+      <a class="lead__art" href="texas-holdem.html" tabindex="-1" aria-hidden="true">
+        <img src="assets/games/texas-holdem.jpg" alt="" width="900" height="900">
+      </a>
+      <div>
+        <p class="lead__kicker">Start here</p>
+        <h2>Texas Hold&rsquo;em</h2>
+        <p>The game the whole room is built around. Two cards of your own, five in the
+          middle, four rounds of betting to decide who believes what. Five minutes to
+          learn, and the only one on the floor with a full guide written.</p>
+        <div class="lead__foot">
+          <a class="btn" href="texas-holdem.html">Read the guide</a>
+          <span class="lead__spec">Poker &middot; 2&ndash;9 seats &middot; Guide ready</span>
+        </div>
+      </div>
+    </article>
+
+    <div class="ledger-head">
+      <span>№</span><span></span><span>Title &amp; category</span><span>Seats</span><span>Guide</span>
+    </div>
+
+    <ol class="ledger">
+      <li><a class="entry" href="texas-holdem.html" style="--i:0">
+        <span class="entry__no"></span>
+        <img class="entry__thumb" src="assets/games/texas-holdem.jpg" alt="Texas Hold'em" width="900" height="900" loading="lazy">
+        <span><span class="entry__name">Texas Hold&rsquo;em</span><span class="entry__cat">Poker</span></span>
+        <span class="entry__seats">2&ndash;9</span>
+        <span class="entry__status">Guide &rarr;</span>
+      </a></li>
+      <li class="entry entry--soon" style="--i:1">
+        <span class="entry__no"></span>
+        <img class="entry__thumb" src="assets/games/pot-limit-omaha.jpg" alt="Pot Limit Omaha" width="900" height="900" loading="lazy">
+        <span><span class="entry__name">Pot Limit Omaha</span><span class="entry__cat">Poker</span></span>
+        <span class="entry__seats">2&ndash;9</span>
+        <span class="entry__status">In preparation</span>
+      </li>
+      <li class="entry entry--soon" style="--i:2">
+        <span class="entry__no"></span>
+        <img class="entry__thumb" src="assets/games/blackjack.jpg" alt="Blackjack" width="900" height="900" loading="lazy">
+        <span><span class="entry__name">Blackjack</span><span class="entry__cat">Table</span></span>
+        <span class="entry__seats">1&ndash;7</span>
+        <span class="entry__status">In preparation</span>
+      </li>
+      <li class="entry entry--soon" style="--i:3">
+        <span class="entry__no"></span>
+        <img class="entry__thumb" src="assets/games/speed-baccarat.jpg" alt="Speed Baccarat" width="900" height="900" loading="lazy">
+        <span><span class="entry__name">Speed Baccarat</span><span class="entry__cat">Baccarat</span></span>
+        <span class="entry__seats">1&ndash;7</span>
+        <span class="entry__status">In preparation</span>
+      </li>
+      <li class="entry entry--soon" style="--i:4">
+        <span class="entry__no"></span>
+        <img class="entry__thumb" src="assets/games/bandar-baccarat.jpg" alt="Bandar Baccarat" width="900" height="900" loading="lazy">
+        <span><span class="entry__name">Bandar Baccarat</span><span class="entry__cat">Baccarat</span></span>
+        <span class="entry__seats">2&ndash;8</span>
+        <span class="entry__status">In preparation</span>
+      </li>
+      <li class="entry entry--soon" style="--i:5">
+        <span class="entry__no"></span>
+        <img class="entry__thumb" src="assets/games/samgong.jpg" alt="Samgong" width="900" height="900" loading="lazy">
+        <span><span class="entry__name">Samgong</span><span class="entry__cat">Card</span></span>
+        <span class="entry__seats">2&ndash;8</span>
+        <span class="entry__status">In preparation</span>
+      </li>
+      <li class="entry entry--soon" style="--i:6">
+        <span class="entry__no"></span>
+        <img class="entry__thumb" src="assets/games/niu-niu.jpg" alt="Niu Niu" width="900" height="900" loading="lazy">
+        <span><span class="entry__name">Niu Niu</span><span class="entry__cat">Card</span></span>
+        <span class="entry__seats">2&ndash;9</span>
+        <span class="entry__status">In preparation</span>
+      </li>
+      <li class="entry entry--soon" style="--i:7">
+        <span class="entry__no"></span>
+        <img class="entry__thumb" src="assets/games/super-10.jpg" alt="Super 10" width="900" height="900" loading="lazy">
+        <span><span class="entry__name">Super 10</span><span class="entry__cat">Card</span></span>
+        <span class="entry__seats">2&ndash;8</span>
+        <span class="entry__status">In preparation</span>
+      </li>
+      <li class="entry entry--soon" style="--i:8">
+        <span class="entry__no"></span>
+        <img class="entry__thumb" src="assets/games/bandar-ceme.jpg" alt="Bandar Ceme" width="900" height="900" loading="lazy">
+        <span><span class="entry__name">Bandar Ceme</span><span class="entry__cat">Domino</span></span>
+        <span class="entry__seats">2&ndash;8</span>
+        <span class="entry__status">In preparation</span>
+      </li>
+      <li class="entry entry--soon" style="--i:9">
+        <span class="entry__no"></span>
+        <img class="entry__thumb" src="assets/games/ceme-keliling.jpg" alt="Ceme Keliling" width="900" height="900" loading="lazy">
+        <span><span class="entry__name">Ceme Keliling</span><span class="entry__cat">Domino</span></span>
+        <span class="entry__seats">2&ndash;8</span>
+        <span class="entry__status">In preparation</span>
+      </li>
+      <li class="entry entry--soon" style="--i:10">
+        <span class="entry__no"></span>
+        <img class="entry__thumb" src="assets/games/domino-classic.jpg" alt="Domino Classic" width="900" height="900" loading="lazy">
+        <span><span class="entry__name">Domino Classic</span><span class="entry__cat">Domino</span></span>
+        <span class="entry__seats">2&ndash;4</span>
+        <span class="entry__status">In preparation</span>
+      </li>
+      <li class="entry entry--soon" style="--i:11">
+        <span class="entry__no"></span>
+        <img class="entry__thumb" src="assets/games/capsa-susun.jpg" alt="Capsa Susun" width="900" height="900" loading="lazy">
+        <span><span class="entry__name">Capsa Susun</span><span class="entry__cat">Card</span></span>
+        <span class="entry__seats">2&ndash;4</span>
+        <span class="entry__status">In preparation</span>
+      </li>
+      <li class="entry entry--soon" style="--i:12">
+        <span class="entry__no"></span>
+        <img class="entry__thumb" src="assets/games/capsa-banding.jpg" alt="Capsa Banding" width="900" height="900" loading="lazy">
+        <span><span class="entry__name">Capsa Banding</span><span class="entry__cat">Card</span></span>
+        <span class="entry__seats">2&ndash;4</span>
+        <span class="entry__status">In preparation</span>
+      </li>
+      <li class="entry entry--soon" style="--i:13">
+        <span class="entry__no"></span>
+        <img class="entry__thumb" src="assets/games/tongits-go.jpg" alt="Tongits Go" width="900" height="900" loading="lazy">
+        <span><span class="entry__name">Tongits Go</span><span class="entry__cat">Rummy</span></span>
+        <span class="entry__seats">2&ndash;4</span>
+        <span class="entry__status">In preparation</span>
+      </li>
+      <li class="entry entry--soon" style="--i:14">
+        <span class="entry__no"></span>
+        <img class="entry__thumb" src="assets/games/callbreak-quick.jpg" alt="Callbreak Quick" width="900" height="900" loading="lazy">
+        <span><span class="entry__name">Callbreak Quick</span><span class="entry__cat">Trick</span></span>
+        <span class="entry__seats">4</span>
+        <span class="entry__status">In preparation</span>
+      </li>
+    </ol>
+
+    <div class="colophon">
+      <div><b>How to read this</b>
+        <p>Rows are numbered in the order they joined the floor. Seats is the table
+           minimum and maximum, not the current count.</p></div>
+      <div><b>Guides</b>
+        <p>One guide is written so far. The rest follow the same format: objective,
+           table, betting rounds, actions, rankings.</p></div>
+      <div><b>Other views</b>
+        <p>The same fifteen games as a picture <a href="index.html">lobby</a>, or as a
+           full-bleed <a href="index-mosaic.html">wall</a>.</p></div>
+    </div>
+
+  </section>
+
+</main>
+
+<footer class="site-foot">
+  <div class="shell">
+    <span>&copy; 2026 PokerBolt</span>
+    <span>Play responsibly &middot; 18+</span>
+  </div>
+</footer>
+
+<script>
+(function () {
+  var root = document.documentElement;
+  var chips = document.querySelectorAll("[data-set-theme]");
+  /* no pin = following the OS, so show whichever of day/night that resolves to */
+  function active() {
+    return root.dataset.theme ||
+      (matchMedia("(prefers-color-scheme: light)").matches ? "day" : "night");
+  }
+  function sync() {
+    var now = active();
+    chips.forEach(function (c) {
+      c.setAttribute("aria-pressed", c.dataset.setTheme === now);
+    });
+  }
+  chips.forEach(function (c) {
+    c.addEventListener("click", function () {
+      root.dataset.theme = c.dataset.setTheme;
+      try { localStorage.setItem("pb-theme", root.dataset.theme); } catch (e) {}
+      sync();
+    });
+  });
+  sync();
+})();
+</script>
+</body>
+</html>

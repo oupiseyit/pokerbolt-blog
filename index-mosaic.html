@@ -1,0 +1,239 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PokerBolt — The Wall</title>
+<meta name="description" content="The PokerBolt floor as one full-bleed poster wall.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Barlow:wght@400;500;600&family=Bodoni+Moda:ital,opsz,wght@0,6..96,700;1,6..96,700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/site.css">
+<link rel="stylesheet" href="css/mosaic.css">
+<script>
+/* restore the pinned theme before first paint; no pin = follow the OS */
+try { var t = localStorage.getItem("pb-theme");
+      if (t) document.documentElement.dataset.theme = t; } catch (e) {}
+</script>
+</head>
+<body>
+
+<header class="site-head">
+  <div class="shell">
+    <a class="wordmark" href="index.html">Poker<span>Bolt</span></a>
+    <nav class="site-nav" aria-label="Primary">
+      <a href="index.html">Lobby</a>
+      <a href="index-rail.html">Index</a>
+      <a href="index-mosaic.html" aria-current="page">Wall</a>
+      <a href="index-beach.html">Beach</a>
+      <a href="index-studio.html">Portfolio</a>
+      <a href="texas-holdem.html">Guides</a>
+    </nav>
+    <div class="themes" role="group" aria-label="Colour theme">
+      <button class="chip chip--night" type="button" data-set-theme="night" aria-label="Night theme"></button>
+      <button class="chip chip--day"   type="button" data-set-theme="day"   aria-label="Day theme"></button>
+      <button class="chip chip--felt"  type="button" data-set-theme="felt"  aria-label="Felt theme"></button>
+      <button class="chip chip--neon"  type="button" data-set-theme="neon"  aria-label="Neon theme"></button>
+    </div>
+  </div>
+</header>
+
+<div class="ticker" aria-hidden="true">
+  <div class="ticker__track">
+    <div class="ticker__run"><span>Texas Hold&rsquo;em</span> <span>Pot Limit Omaha</span> <span>Blackjack</span> <span>Speed Baccarat</span> <span>Bandar Baccarat</span> <span>Samgong</span> <span>Niu Niu</span> <span>Super 10</span> <span>Bandar Ceme</span> <span>Ceme Keliling</span> <span>Domino Classic</span> <span>Capsa Susun</span> <span>Capsa Banding</span> <span>Tongits Go</span> <span>Callbreak Quick</span></div>
+    <div class="ticker__run"><span>Texas Hold&rsquo;em</span> <span>Pot Limit Omaha</span> <span>Blackjack</span> <span>Speed Baccarat</span> <span>Bandar Baccarat</span> <span>Samgong</span> <span>Niu Niu</span> <span>Super 10</span> <span>Bandar Ceme</span> <span>Ceme Keliling</span> <span>Domino Classic</span> <span>Capsa Susun</span> <span>Capsa Banding</span> <span>Tongits Go</span> <span>Callbreak Quick</span></div>
+  </div>
+</div>
+
+<main>
+
+  <section class="overture shell">
+    <p class="eyebrow">Now on the floor</p>
+    <h1>The Wall<em>fifteen deep</em></h1>
+    <span class="overture__count" aria-hidden="true">15</span>
+    <p class="lede">No ranking, no sorting, no filters. Every table the room has,
+      hung edge to edge. Find the one you like the look of.</p>
+  </section>
+
+  <section class="shell">
+    <ul class="wall">
+      <li class="is-xl"><a class="poster" href="texas-holdem.html" style="--i:0">
+        <span class="poster__flag">Guide</span>
+        <img class="poster__art" src="assets/games/texas-holdem.jpg" alt="Texas Hold'em" width="900" height="900" loading="lazy">
+        <span class="poster__scrim"></span>
+        <span class="poster__body">
+          <span class="poster__name">Texas Hold&rsquo;em</span>
+          <span class="poster__cat">Poker &middot; 2&ndash;9</span>
+          <span class="poster__cta">How to play &rarr;</span>
+        </span>
+      </a></li>
+      <li class=""><div class="poster poster--soon" style="--i:1">
+        <img class="poster__art" src="assets/games/pot-limit-omaha.jpg" alt="Pot Limit Omaha" width="900" height="900" loading="lazy">
+        <span class="poster__scrim"></span>
+        <span class="poster__body">
+          <span class="poster__name">Pot Limit Omaha</span>
+          <span class="poster__cat">Poker &middot; 2&ndash;9</span>
+          <span class="poster__cta">Guide coming soon</span>
+        </span>
+      </div></li>
+      <li class="is-xl"><div class="poster poster--soon" style="--i:2">
+        <img class="poster__art" src="assets/games/blackjack.jpg" alt="Blackjack" width="900" height="900" loading="lazy">
+        <span class="poster__scrim"></span>
+        <span class="poster__body">
+          <span class="poster__name">Blackjack</span>
+          <span class="poster__cat">Table &middot; 1&ndash;7</span>
+          <span class="poster__cta">Guide coming soon</span>
+        </span>
+      </div></li>
+      <li class="is-wide"><div class="poster poster--soon" style="--i:3">
+        <img class="poster__art" src="assets/games/speed-baccarat.jpg" alt="Speed Baccarat" width="900" height="900" loading="lazy">
+        <span class="poster__scrim"></span>
+        <span class="poster__body">
+          <span class="poster__name">Speed Baccarat</span>
+          <span class="poster__cat">Baccarat &middot; 1&ndash;7</span>
+          <span class="poster__cta">Guide coming soon</span>
+        </span>
+      </div></li>
+      <li class=""><div class="poster poster--soon" style="--i:4">
+        <img class="poster__art" src="assets/games/bandar-baccarat.jpg" alt="Bandar Baccarat" width="900" height="900" loading="lazy">
+        <span class="poster__scrim"></span>
+        <span class="poster__body">
+          <span class="poster__name">Bandar Baccarat</span>
+          <span class="poster__cat">Baccarat &middot; 2&ndash;8</span>
+          <span class="poster__cta">Guide coming soon</span>
+        </span>
+      </div></li>
+      <li class=""><div class="poster poster--soon" style="--i:5">
+        <img class="poster__art" src="assets/games/samgong.jpg" alt="Samgong" width="900" height="900" loading="lazy">
+        <span class="poster__scrim"></span>
+        <span class="poster__body">
+          <span class="poster__name">Samgong</span>
+          <span class="poster__cat">Card &middot; 2&ndash;8</span>
+          <span class="poster__cta">Guide coming soon</span>
+        </span>
+      </div></li>
+      <li class=""><div class="poster poster--soon" style="--i:6">
+        <img class="poster__art" src="assets/games/niu-niu.jpg" alt="Niu Niu" width="900" height="900" loading="lazy">
+        <span class="poster__scrim"></span>
+        <span class="poster__body">
+          <span class="poster__name">Niu Niu</span>
+          <span class="poster__cat">Card &middot; 2&ndash;9</span>
+          <span class="poster__cta">Guide coming soon</span>
+        </span>
+      </div></li>
+      <li class="is-wide"><div class="poster poster--soon" style="--i:7">
+        <img class="poster__art" src="assets/games/super-10.jpg" alt="Super 10" width="900" height="900" loading="lazy">
+        <span class="poster__scrim"></span>
+        <span class="poster__body">
+          <span class="poster__name">Super 10</span>
+          <span class="poster__cat">Card &middot; 2&ndash;8</span>
+          <span class="poster__cta">Guide coming soon</span>
+        </span>
+      </div></li>
+      <li class=""><div class="poster poster--soon" style="--i:8">
+        <img class="poster__art" src="assets/games/bandar-ceme.jpg" alt="Bandar Ceme" width="900" height="900" loading="lazy">
+        <span class="poster__scrim"></span>
+        <span class="poster__body">
+          <span class="poster__name">Bandar Ceme</span>
+          <span class="poster__cat">Domino &middot; 2&ndash;8</span>
+          <span class="poster__cta">Guide coming soon</span>
+        </span>
+      </div></li>
+      <li class=""><div class="poster poster--soon" style="--i:9">
+        <img class="poster__art" src="assets/games/ceme-keliling.jpg" alt="Ceme Keliling" width="900" height="900" loading="lazy">
+        <span class="poster__scrim"></span>
+        <span class="poster__body">
+          <span class="poster__name">Ceme Keliling</span>
+          <span class="poster__cat">Domino &middot; 2&ndash;8</span>
+          <span class="poster__cta">Guide coming soon</span>
+        </span>
+      </div></li>
+      <li class="is-wide"><div class="poster poster--soon" style="--i:10">
+        <img class="poster__art" src="assets/games/domino-classic.jpg" alt="Domino Classic" width="900" height="900" loading="lazy">
+        <span class="poster__scrim"></span>
+        <span class="poster__body">
+          <span class="poster__name">Domino Classic</span>
+          <span class="poster__cat">Domino &middot; 2&ndash;4</span>
+          <span class="poster__cta">Guide coming soon</span>
+        </span>
+      </div></li>
+      <li class=""><div class="poster poster--soon" style="--i:11">
+        <img class="poster__art" src="assets/games/capsa-susun.jpg" alt="Capsa Susun" width="900" height="900" loading="lazy">
+        <span class="poster__scrim"></span>
+        <span class="poster__body">
+          <span class="poster__name">Capsa Susun</span>
+          <span class="poster__cat">Card &middot; 2&ndash;4</span>
+          <span class="poster__cta">Guide coming soon</span>
+        </span>
+      </div></li>
+      <li class=""><div class="poster poster--soon" style="--i:12">
+        <img class="poster__art" src="assets/games/capsa-banding.jpg" alt="Capsa Banding" width="900" height="900" loading="lazy">
+        <span class="poster__scrim"></span>
+        <span class="poster__body">
+          <span class="poster__name">Capsa Banding</span>
+          <span class="poster__cat">Card &middot; 2&ndash;4</span>
+          <span class="poster__cta">Guide coming soon</span>
+        </span>
+      </div></li>
+      <li class=""><div class="poster poster--soon" style="--i:13">
+        <img class="poster__art" src="assets/games/tongits-go.jpg" alt="Tongits Go" width="900" height="900" loading="lazy">
+        <span class="poster__scrim"></span>
+        <span class="poster__body">
+          <span class="poster__name">Tongits Go</span>
+          <span class="poster__cat">Rummy &middot; 2&ndash;4</span>
+          <span class="poster__cta">Guide coming soon</span>
+        </span>
+      </div></li>
+      <li class=""><div class="poster poster--soon" style="--i:14">
+        <img class="poster__art" src="assets/games/callbreak-quick.jpg" alt="Callbreak Quick" width="900" height="900" loading="lazy">
+        <span class="poster__scrim"></span>
+        <span class="poster__body">
+          <span class="poster__name">Callbreak Quick</span>
+          <span class="poster__cat">Trick &middot; 4</span>
+          <span class="poster__cta">Guide coming soon</span>
+        </span>
+      </div></li>
+    </ul>
+
+    <div class="wall-closer">
+      <h2>Only one has a <em>guide</em> so far.</h2>
+      <a class="btn" href="texas-holdem.html">Texas Hold&rsquo;em &rarr;</a>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-foot">
+  <div class="shell">
+    <span>&copy; 2026 PokerBolt</span>
+    <span>Play responsibly &middot; 18+</span>
+  </div>
+</footer>
+
+<script>
+(function () {
+  var root = document.documentElement;
+  var chips = document.querySelectorAll("[data-set-theme]");
+  /* no pin = following the OS, so show whichever of day/night that resolves to */
+  function active() {
+    return root.dataset.theme ||
+      (matchMedia("(prefers-color-scheme: light)").matches ? "day" : "night");
+  }
+  function sync() {
+    var now = active();
+    chips.forEach(function (c) {
+      c.setAttribute("aria-pressed", c.dataset.setTheme === now);
+    });
+  }
+  chips.forEach(function (c) {
+    c.addEventListener("click", function () {
+      root.dataset.theme = c.dataset.setTheme;
+      try { localStorage.setItem("pb-theme", root.dataset.theme); } catch (e) {}
+      sync();
+    });
+  });
+  sync();
+})();
+</script>
+</body>
+</html>

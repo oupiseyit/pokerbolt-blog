@@ -1,0 +1,271 @@
+/* ============================================================
+   THE WALL — a dense poster wall, edge to edge.
+   Layered on top of site.css, so all four themes work unchanged.
+   ============================================================ */
+
+/* ---------- marquee ticker ------------------------------------- */
+
+.ticker {
+  overflow: hidden;
+  border-block: 1px solid var(--hairline);
+  background: color-mix(in srgb, var(--gold) 7%, transparent);
+  padding-block: 0.6rem;
+  /* fade the ends instead of hard-cutting the text */
+  mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
+}
+
+.ticker__track {
+  display: flex;
+  width: max-content;
+  animation: ticker 42s linear infinite;
+}
+
+.ticker:hover .ticker__track { animation-play-state: paused; }
+
+.ticker__run {
+  display: flex;
+  gap: 2.5rem;
+  padding-right: 2.5rem;
+  font: 600 0.78rem/1 var(--cond);
+  text-transform: uppercase;
+  letter-spacing: 0.24em;
+  color: var(--gold);
+  white-space: nowrap;
+}
+
+.ticker__run span::after {
+  content: " \25C6";
+  color: color-mix(in srgb, var(--gold) 45%, transparent);
+}
+
+@keyframes ticker {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+/* ---------- overture ------------------------------------------- */
+
+.overture {
+  position: relative;
+  padding-block: clamp(2.5rem, 7vw, 5rem) clamp(1.5rem, 3vw, 2.5rem);
+}
+
+.overture h1 {
+  font: 700 clamp(3.5rem, 15vw, 11rem)/0.8 var(--cond);
+  text-transform: uppercase;
+  letter-spacing: -0.02em;
+  margin: 0.6rem 0 0;
+  color: var(--gold-hi);
+}
+
+/* the second line is set in the display serif and pulled left,
+   so the two lines read as two different voices */
+.overture h1 em {
+  display: block;
+  font: 700 italic 0.62em/0.95 var(--display);
+  letter-spacing: -0.03em;
+  color: var(--gold);
+  margin-left: -0.02em;
+  text-transform: none;
+}
+
+.overture .lede { margin-top: 1.5rem; }
+
+.overture__count {
+  position: absolute;
+  top: clamp(2.5rem, 7vw, 5rem);
+  right: 0;
+  font: 700 clamp(4rem, 12vw, 9rem)/0.8 var(--display);
+  color: transparent;
+  -webkit-text-stroke: 1px color-mix(in srgb, var(--gold) 40%, transparent);
+  pointer-events: none;
+  user-select: none;
+}
+
+/* ---------- the wall ------------------------------------------- */
+
+.wall {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+  grid-auto-rows: 1fr;
+  grid-auto-flow: dense;
+  gap: 3px;
+  list-style: none;
+  margin: 0 0 clamp(3rem, 7vw, 5rem);
+  padding: 0;
+}
+
+/* square cells regardless of column width */
+.wall > li { aspect-ratio: 1; }
+.wall > li.is-xl { grid-column: span 2; grid-row: span 2; }
+.wall > li.is-wide { grid-column: span 2; aspect-ratio: 2 / 1; }
+
+.poster {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  text-decoration: none;
+  color: inherit;
+  background: var(--ink-2);
+  animation: poster-in 0.55s var(--ease) both;
+  animation-delay: calc(var(--i, 0) * 40ms);
+}
+
+@keyframes poster-in {
+  from { opacity: 0; transform: scale(0.96); }
+  to   { opacity: 1; transform: none; }
+}
+
+.poster__art {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.7s var(--ease), filter 0.5s var(--ease);
+  filter: saturate(0.85) brightness(0.82);
+}
+
+/* the scrim only covers the lower third until you hover it */
+.poster__scrim {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(0deg,
+    color-mix(in srgb, var(--ink) 92%, transparent) 0%,
+    color-mix(in srgb, var(--ink) 55%, transparent) 26%,
+    transparent 55%);
+  transition: background 0.5s var(--ease);
+}
+
+.poster__body {
+  position: absolute;
+  inset: auto 0 0 0;
+  padding: 0.9rem 1rem 1rem;
+}
+
+.poster__name {
+  display: block;
+  font: 700 1.05rem/1.05 var(--cond);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--gold-hi);
+  text-wrap: balance;
+}
+
+.is-xl .poster__name { font-size: clamp(1.3rem, 2.6vw, 2rem); letter-spacing: 0.02em; }
+.is-wide .poster__name { font-size: 1.2rem; }
+
+.poster__cat {
+  display: block;
+  margin-top: 0.3rem;
+  font: 600 0.62rem/1 var(--cond);
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: var(--gold);
+}
+
+/* the call to action is held back until hover, so the wall stays quiet */
+.poster__cta {
+  display: block;
+  overflow: hidden;
+  max-height: 0;
+  opacity: 0;
+  margin-top: 0;
+  font: 600 0.65rem/1.5 var(--cond);
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: var(--bone);
+  transition: max-height 0.4s var(--ease), opacity 0.35s var(--ease),
+              margin-top 0.4s var(--ease);
+}
+
+a.poster:hover .poster__cta,
+a.poster:focus-visible .poster__cta {
+  max-height: 2.5rem;
+  opacity: 1;
+  margin-top: 0.45rem;
+}
+
+a.poster:hover .poster__art,
+a.poster:focus-visible .poster__art {
+  transform: scale(1.06);
+  filter: none;
+}
+
+a.poster:hover .poster__scrim,
+a.poster:focus-visible .poster__scrim {
+  background: linear-gradient(0deg,
+    color-mix(in srgb, var(--ink) 95%, transparent) 0%,
+    color-mix(in srgb, var(--ink) 62%, transparent) 42%,
+    color-mix(in srgb, var(--ink) 18%, transparent) 100%);
+}
+
+a.poster:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: -4px;
+}
+
+/* an inner gold hairline that draws itself on hover */
+a.poster::after {
+  content: "";
+  position: absolute;
+  inset: 6px;
+  border: 1px solid var(--gold);
+  opacity: 0;
+  transform: scale(1.02);
+  transition: opacity 0.4s var(--ease), transform 0.4s var(--ease);
+  pointer-events: none;
+}
+
+a.poster:hover::after,
+a.poster:focus-visible::after { opacity: 1; transform: none; }
+
+.poster--soon .poster__art { filter: saturate(0.35) brightness(0.72); }
+.poster--soon .poster__name { color: color-mix(in srgb, var(--bone) 80%, transparent); }
+
+.poster__flag {
+  position: absolute;
+  z-index: 2;   /* the scrim is positioned and comes later in the DOM */
+  top: 0;
+  left: 0;
+  padding: 0.4rem 0.7rem;
+  font: 600 0.6rem/1 var(--cond);
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  background: var(--gold);
+  color: var(--on-gold);
+}
+
+/* ---------- closing band --------------------------------------- */
+
+.wall-closer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem 2rem;
+  flex-wrap: wrap;
+  padding-block: clamp(2.5rem, 6vw, 4rem);
+  border-top: 1px solid var(--hairline);
+}
+
+.wall-closer h2 {
+  font: 700 clamp(1.8rem, 4.5vw, 3rem)/1 var(--display);
+  margin: 0;
+  color: var(--gold-hi);
+}
+
+.wall-closer h2 em { font-style: italic; color: var(--gold); }
+
+/* ---------- responsive ----------------------------------------- */
+
+@media (max-width: 560px) {
+  .wall { grid-template-columns: repeat(2, 1fr); }
+  .overture__count { display: none; }
+  .is-xl .poster__name { font-size: 1.1rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  /* site.css clamps every duration to ~0, which would make an infinite
+     marquee strobe — stop it outright instead */
+  .ticker__track { animation-name: none; }
+}

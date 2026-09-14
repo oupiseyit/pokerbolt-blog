@@ -1,0 +1,240 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PokerBolt — Game Lobby</title>
+<meta name="description" content="Every game in the PokerBolt lobby, with how-to-play guides.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Barlow:wght@400;500;600&family=Bodoni+Moda:ital,opsz,wght@0,6..96,700;1,6..96,700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/site.css">
+<script>
+/* restore the pinned theme before first paint; no pin = follow the OS */
+try { var t = localStorage.getItem("pb-theme");
+      if (t) document.documentElement.dataset.theme = t; } catch (e) {}
+</script>
+</head>
+<body>
+
+<header class="site-head">
+  <div class="shell">
+    <a class="wordmark" href="index.html">Poker<span>Bolt</span></a>
+    <nav class="site-nav" aria-label="Primary">
+      <a href="index.html" aria-current="page">Lobby</a>
+      <a href="index-rail.html">Index</a>
+      <a href="index-mosaic.html">Wall</a>
+      <a href="index-beach.html">Beach</a>
+      <a href="index-studio.html">Portfolio</a>
+      <a href="texas-holdem.html">Guides</a>
+    </nav>
+    <div class="themes" role="group" aria-label="Colour theme">
+      <button class="chip chip--night" type="button" data-set-theme="night" aria-label="Night theme"></button>
+      <button class="chip chip--day"   type="button" data-set-theme="day"   aria-label="Day theme"></button>
+      <button class="chip chip--felt"  type="button" data-set-theme="felt"  aria-label="Felt theme"></button>
+      <button class="chip chip--neon"  type="button" data-set-theme="neon"  aria-label="Neon theme"></button>
+    </div>
+  </div>
+</header>
+
+<main>
+
+  <section class="hero shell">
+    <p class="eyebrow">The floor is open</p>
+    <h1>Fifteen tables.<br><em>One</em> deal at a time.</h1>
+    <p class="lede">Poker, baccarat, domino and the whole card-room floor — every title
+      in the collection, with a guide for each. Pick a table and learn it before you sit down.</p>
+    <ul class="stat-strip">
+      <li><b>15</b> Games live</li>
+      <li><b>2&ndash;9</b> Players per table</li>
+      <li><b>24/7</b> Dealers on the floor</li>
+    </ul>
+  </section>
+
+  <section class="shell" id="games">
+    <div class="section-head">
+      <span class="num">01 — The floor</span>
+      <h2>All <em>games</em></h2>
+    </div>
+
+    <ul class="grid">
+
+      <li><a class="tile" href="texas-holdem.html" style="--i:0">
+        <span class="badge badge--live">Guide</span>
+        <img class="tile__art" src="assets/games/texas-holdem.jpg" alt="Texas Hold'em" width="900" height="900">
+        <span class="tile__cap">
+          <span class="tile__name">Texas Hold&rsquo;em</span>
+          <span class="tile__cta">How to play &rarr;</span>
+        </span>
+      </a></li>
+
+      <li><div class="tile tile--soon" style="--i:1">
+        <span class="badge">Soon</span>
+        <img class="tile__art" src="assets/games/pot-limit-omaha.jpg" alt="Pot Limit Omaha" width="900" height="900" loading="lazy">
+        <span class="tile__cap">
+          <span class="tile__name">Pot Limit Omaha</span>
+          <span class="tile__cta">Guide coming soon</span>
+        </span>
+      </div></li>
+
+      <li><div class="tile tile--soon" style="--i:2">
+        <span class="badge">Soon</span>
+        <img class="tile__art" src="assets/games/blackjack.jpg" alt="Blackjack" width="900" height="900" loading="lazy">
+        <span class="tile__cap">
+          <span class="tile__name">Blackjack</span>
+          <span class="tile__cta">Guide coming soon</span>
+        </span>
+      </div></li>
+
+      <li><div class="tile tile--soon" style="--i:3">
+        <span class="badge">Soon</span>
+        <img class="tile__art" src="assets/games/speed-baccarat.jpg" alt="Speed Baccarat" width="900" height="900" loading="lazy">
+        <span class="tile__cap">
+          <span class="tile__name">Speed Baccarat</span>
+          <span class="tile__cta">Guide coming soon</span>
+        </span>
+      </div></li>
+
+      <li><div class="tile tile--soon" style="--i:4">
+        <span class="badge">Soon</span>
+        <img class="tile__art" src="assets/games/bandar-baccarat.jpg" alt="Bandar Baccarat" width="900" height="900" loading="lazy">
+        <span class="tile__cap">
+          <span class="tile__name">Bandar Baccarat</span>
+          <span class="tile__cta">Guide coming soon</span>
+        </span>
+      </div></li>
+
+      <li><div class="tile tile--soon" style="--i:5">
+        <span class="badge">Soon</span>
+        <img class="tile__art" src="assets/games/samgong.jpg" alt="Samgong" width="900" height="900" loading="lazy">
+        <span class="tile__cap">
+          <span class="tile__name">Samgong</span>
+          <span class="tile__cta">Guide coming soon</span>
+        </span>
+      </div></li>
+
+      <li><div class="tile tile--soon" style="--i:6">
+        <span class="badge">Soon</span>
+        <img class="tile__art" src="assets/games/niu-niu.jpg" alt="Niu Niu" width="900" height="900" loading="lazy">
+        <span class="tile__cap">
+          <span class="tile__name">Niu Niu</span>
+          <span class="tile__cta">Guide coming soon</span>
+        </span>
+      </div></li>
+
+      <li><div class="tile tile--soon" style="--i:7">
+        <span class="badge">Soon</span>
+        <img class="tile__art" src="assets/games/super-10.jpg" alt="Super 10" width="900" height="900" loading="lazy">
+        <span class="tile__cap">
+          <span class="tile__name">Super 10</span>
+          <span class="tile__cta">Guide coming soon</span>
+        </span>
+      </div></li>
+
+      <li><div class="tile tile--soon" style="--i:8">
+        <span class="badge">Soon</span>
+        <img class="tile__art" src="assets/games/bandar-ceme.jpg" alt="Bandar Ceme" width="900" height="900" loading="lazy">
+        <span class="tile__cap">
+          <span class="tile__name">Bandar Ceme</span>
+          <span class="tile__cta">Guide coming soon</span>
+        </span>
+      </div></li>
+
+      <li><div class="tile tile--soon" style="--i:9">
+        <span class="badge">Soon</span>
+        <img class="tile__art" src="assets/games/ceme-keliling.jpg" alt="Ceme Keliling" width="900" height="900" loading="lazy">
+        <span class="tile__cap">
+          <span class="tile__name">Ceme Keliling</span>
+          <span class="tile__cta">Guide coming soon</span>
+        </span>
+      </div></li>
+
+      <li><div class="tile tile--soon" style="--i:10">
+        <span class="badge">Soon</span>
+        <img class="tile__art" src="assets/games/domino-classic.jpg" alt="Domino Classic" width="900" height="900" loading="lazy">
+        <span class="tile__cap">
+          <span class="tile__name">Domino Classic</span>
+          <span class="tile__cta">Guide coming soon</span>
+        </span>
+      </div></li>
+
+      <li><div class="tile tile--soon" style="--i:11">
+        <span class="badge">Soon</span>
+        <img class="tile__art" src="assets/games/capsa-susun.jpg" alt="Capsa Susun" width="900" height="900" loading="lazy">
+        <span class="tile__cap">
+          <span class="tile__name">Capsa Susun</span>
+          <span class="tile__cta">Guide coming soon</span>
+        </span>
+      </div></li>
+
+      <li><div class="tile tile--soon" style="--i:12">
+        <span class="badge">Soon</span>
+        <img class="tile__art" src="assets/games/capsa-banding.jpg" alt="Capsa Banding" width="900" height="900" loading="lazy">
+        <span class="tile__cap">
+          <span class="tile__name">Capsa Banding</span>
+          <span class="tile__cta">Guide coming soon</span>
+        </span>
+      </div></li>
+
+      <li><div class="tile tile--soon" style="--i:13">
+        <span class="badge">Soon</span>
+        <img class="tile__art" src="assets/games/tongits-go.jpg" alt="Tongits Go" width="900" height="900" loading="lazy">
+        <span class="tile__cap">
+          <span class="tile__name">Tongits Go</span>
+          <span class="tile__cta">Guide coming soon</span>
+        </span>
+      </div></li>
+
+      <li><div class="tile tile--soon" style="--i:14">
+        <span class="badge">Soon</span>
+        <img class="tile__art" src="assets/games/callbreak-quick.jpg" alt="Callbreak Quick" width="900" height="900" loading="lazy">
+        <span class="tile__cap">
+          <span class="tile__name">Callbreak Quick</span>
+          <span class="tile__cta">Guide coming soon</span>
+        </span>
+      </div></li>
+
+    </ul>
+  </section>
+
+  <section class="shell closer">
+    <h2>New here? Start with <em>Hold&rsquo;em</em>.</h2>
+    <a class="btn" href="texas-holdem.html">Read the guide</a>
+  </section>
+
+</main>
+
+<footer class="site-foot">
+  <div class="shell">
+    <span>&copy; 2026 PokerBolt</span>
+    <span>Play responsibly &middot; 18+</span>
+  </div>
+</footer>
+
+<script>
+(function () {
+  var root = document.documentElement;
+  var chips = document.querySelectorAll("[data-set-theme]");
+  /* no pin = following the OS, so show whichever of day/night that resolves to */
+  function active() {
+    return root.dataset.theme ||
+      (matchMedia("(prefers-color-scheme: light)").matches ? "day" : "night");
+  }
+  function sync() {
+    var now = active();
+    chips.forEach(function (c) {
+      c.setAttribute("aria-pressed", c.dataset.setTheme === now);
+    });
+  }
+  chips.forEach(function (c) {
+    c.addEventListener("click", function () {
+      root.dataset.theme = c.dataset.setTheme;
+      try { localStorage.setItem("pb-theme", root.dataset.theme); } catch (e) {}
+      sync();
+    });
+  });
+  sync();
+})();
+</script>
+</body>
+</html>

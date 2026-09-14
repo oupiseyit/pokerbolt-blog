@@ -1,0 +1,333 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>How to play Texas Hold&rsquo;em — PokerBolt</title>
+<meta name="description" content="Learn Texas Hold'em: the table, the blinds, the four betting rounds, every action and all ten hand rankings.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Barlow:wght@400;500;600&family=Bodoni+Moda:ital,opsz,wght@0,6..96,700;1,6..96,700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/site.css">
+<script>
+/* restore the pinned theme before first paint; no pin = follow the OS */
+try { var t = localStorage.getItem("pb-theme");
+      if (t) document.documentElement.dataset.theme = t; } catch (e) {}
+</script>
+</head>
+<body>
+
+<header class="site-head">
+  <div class="shell">
+    <a class="wordmark" href="index.html">Poker<span>Bolt</span></a>
+    <nav class="site-nav" aria-label="Primary">
+      <a href="index.html">Lobby</a>
+      <a href="index-rail.html">Index</a>
+      <a href="index-mosaic.html">Wall</a>
+      <a href="index-beach.html">Beach</a>
+      <a href="index-studio.html">Portfolio</a>
+      <a href="texas-holdem.html" aria-current="page">Guides</a>
+    </nav>
+    <div class="themes" role="group" aria-label="Colour theme">
+      <button class="chip chip--night" type="button" data-set-theme="night" aria-label="Night theme"></button>
+      <button class="chip chip--day"   type="button" data-set-theme="day"   aria-label="Day theme"></button>
+      <button class="chip chip--felt"  type="button" data-set-theme="felt"  aria-label="Felt theme"></button>
+      <button class="chip chip--neon"  type="button" data-set-theme="neon"  aria-label="Neon theme"></button>
+    </div>
+  </div>
+</header>
+
+<main>
+
+  <section class="guide-hero">
+    <img class="guide-hero__art" src="assets/games/texas-holdem.jpg" alt="" width="900" height="900">
+    <span class="guide-hero__scrim"></span>
+    <div class="shell">
+      <a class="crumb" href="index.html#games">&larr; All games</a>
+      <h1>How to play <em>Texas Hold&rsquo;em</em></h1>
+      <p class="lede">Two cards that are yours alone, five on the table that belong to
+        everyone. Make the best five-card hand — or make everyone else believe you did.</p>
+      <ul class="chips">
+        <li>2&ndash;9 players</li>
+        <li>52-card deck</li>
+        <li>5 community cards</li>
+        <li>~5 min to learn</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="band shell">
+    <div class="section-head">
+      <span class="num">01</span>
+      <h2>The <em>objective</em></h2>
+    </div>
+    <p class="lede">You are dealt two private cards — your <b>hole cards</b>. Over four
+      betting rounds, five shared <b>community cards</b> are turned face up in the middle
+      of the table. Your hand is the best five-card combination you can build from those
+      seven cards, using either, one, or none of your hole cards.</p>
+    <p class="lede">You win a pot one of two ways: you hold the strongest hand when the
+      cards are shown, or everyone else folds and you are the last player left. The second
+      way is why the betting matters as much as the cards.</p>
+  </section>
+
+  <hr class="rule">
+
+  <section class="band shell">
+    <div class="section-head">
+      <span class="num">02</span>
+      <h2>The <em>table</em></h2>
+    </div>
+    <div class="table-fig">
+      <div class="felt">
+        <span class="felt__label">Community<br>cards</span>
+        <span class="seat seat--d"  style="top:12%;  left:50%">D</span>
+        <span class="seat seat--sb" style="top:30%;  left:82%">SB</span>
+        <span class="seat seat--bb" style="top:70%;  left:82%">BB</span>
+        <span class="seat" style="top:88%; left:50%">4</span>
+        <span class="seat" style="top:70%; left:18%">5</span>
+        <span class="seat" style="top:30%; left:18%">6</span>
+      </div>
+      <ul class="seat-key">
+        <li>
+          <span class="seat seat--d" style="position:static;transform:none">D</span>
+          <span><b>The button</b>
+            <p>Marks the nominal dealer. It moves one seat clockwise every hand, so
+               position rotates and nobody keeps an advantage.</p></span>
+        </li>
+        <li>
+          <span class="seat seat--sb" style="position:static;transform:none">SB</span>
+          <span><b>Small blind</b>
+            <p>First seat left of the button. Posts a forced half-bet before any cards
+               are dealt, so there is always something to play for.</p></span>
+        </li>
+        <li>
+          <span class="seat seat--bb" style="position:static;transform:none">BB</span>
+          <span><b>Big blind</b>
+            <p>Next seat along. Posts the full minimum bet — this is the stake other
+               players must at least match to stay in the hand.</p></span>
+        </li>
+      </ul>
+    </div>
+
+    <figure class="shot">
+      <img src="assets/screens/holdem-table.jpg"
+           alt="A Texas Hold&rsquo;em table in the PokerBolt client. Nine players sit around an oval red felt, five community cards lie face up across the middle, each player&rsquo;s last action and chip stack is shown beside their avatar, and fold, check and bet buttons run along the bottom of the screen."
+           width="2436" height="1125" loading="lazy">
+      <figcaption>
+        <p class="shot__lead"><b>The same table, in the client.</b> Every part of the
+          diagram above turns up here — the button rotating round the seats, the blinds
+          posted before the deal, and the community cards laid out in the middle.</p>
+        <ul class="shot__key">
+          <li><b>Top strip</b>
+            <p>Table name, buy-in range and the current blind level, so you know what a
+               seat costs before you take one.</p></li>
+          <li><b>Round the felt</b>
+            <p>Every seat shows that player&rsquo;s last action — call, raise, check, fold,
+               all-in — above their remaining stack.</p></li>
+          <li><b>The middle</b>
+            <p>The community cards, with the best five-card hand named underneath once
+               there is enough on the table to make one.</p></li>
+          <li><b>Bottom bar</b>
+            <p>Your own two hole cards, the three action buttons, and a sizing slider
+               with half-pot, three-quarter-pot and all-in shortcuts.</p></li>
+        </ul>
+      </figcaption>
+    </figure>
+  </section>
+
+  <hr class="rule">
+
+  <section class="band shell">
+    <div class="section-head">
+      <span class="num">03</span>
+      <h2>The betting <em>rounds</em></h2>
+    </div>
+    <p class="lede">Every hand runs through the same four rounds. Between each one, more
+      community cards appear and everyone still in gets another chance to act.</p>
+    <ol class="rounds" style="margin-top:2.5rem">
+      <li class="round">
+        <h3>Pre-flop</h3>
+        <p>Two hole cards to each player, face down. First betting round, starting left
+           of the big blind. Nothing is shared yet.</p>
+        <div class="hand" aria-hidden="true"><span class="card card--back"><span class="card__s">♣</span></span><span class="card card--back"><span class="card__s">♣</span></span><span class="card card--ph"><span class="card__s">?</span></span><span class="card card--ph"><span class="card__s">?</span></span><span class="card card--ph"><span class="card__s">?</span></span></div>
+        <span class="round__note">Your 2 cards &middot; 0 on the table</span>
+      </li>
+      <li class="round">
+        <h3>The flop</h3>
+        <p>Three community cards are turned face up at once. Second betting round —
+           this is where most hands take shape.</p>
+        <div class="hand" aria-hidden="true"><span class="card"><b class="card__r">A</b><span class="card__s">♣</span></span><span class="card"><b class="card__r">8</b><span class="card__s">♣</span></span><span class="card"><b class="card__r">5</b><span class="card__s">♣</span></span><span class="card card--ph"><span class="card__s">?</span></span><span class="card card--ph"><span class="card__s">?</span></span></div>
+        <span class="round__note">+3 shared &middot; 3 on the table</span>
+      </li>
+      <li class="round">
+        <h3>The turn</h3>
+        <p>A fourth community card. Third betting round, and bets typically double
+           in size from here.</p>
+        <div class="hand" aria-hidden="true"><span class="card"><b class="card__r">A</b><span class="card__s">♣</span></span><span class="card"><b class="card__r">8</b><span class="card__s">♣</span></span><span class="card"><b class="card__r">5</b><span class="card__s">♣</span></span><span class="card"><b class="card__r">A</b><span class="card__s">♠</span></span><span class="card card--ph"><span class="card__s">?</span></span></div>
+        <span class="round__note">+1 shared &middot; 4 on the table</span>
+      </li>
+      <li class="round">
+        <h3>The river</h3>
+        <p>The fifth and last community card. Final betting round. Every card that
+           will ever be seen is now on the table.</p>
+        <div class="hand" aria-hidden="true"><span class="card"><b class="card__r">A</b><span class="card__s">♣</span></span><span class="card"><b class="card__r">8</b><span class="card__s">♣</span></span><span class="card"><b class="card__r">5</b><span class="card__s">♣</span></span><span class="card"><b class="card__r">A</b><span class="card__s">♠</span></span><span class="card card--red"><b class="card__r">4</b><span class="card__s">♥</span></span></div>
+        <span class="round__note">+1 shared &middot; 5 on the table</span>
+      </li>
+      <li class="round">
+        <h3>Showdown</h3>
+        <p>If two or more players remain after the river, cards are turned over. Best
+           five-card hand takes the pot; identical hands split it.</p>
+        <div class="hand" aria-hidden="true"><span class="card"><b class="card__r">10</b><span class="card__s">♣</span></span><span class="card"><b class="card__r">2</b><span class="card__s">♣</span></span><span class="card"><b class="card__r">A</b><span class="card__s">♣</span></span><span class="card"><b class="card__r">8</b><span class="card__s">♣</span></span><span class="card"><b class="card__r">5</b><span class="card__s">♣</span></span></div>
+        <span class="round__note">Flush &middot; A 10 8 5 2 of clubs</span>
+      </li>
+    </ol>
+  </section>
+
+  <hr class="rule">
+
+  <section class="band shell">
+    <div class="section-head">
+      <span class="num">04</span>
+      <h2>Your <em>actions</em></h2>
+    </div>
+    <p class="lede">When the action reaches you, you have one of these choices. Which ones
+      are available depends on whether someone has already bet.</p>
+    <ul class="actions" style="margin-top:2.5rem">
+      <li class="action action--fold"><b>Fold</b>
+        <p>Throw the hand away. You lose whatever you have already put in the pot and
+           sit out until the next deal. Always available.</p></li>
+      <li class="action action--check"><b>Check</b>
+        <p>Pass the action on without betting. Only possible when nobody has bet before
+           you in this round.</p></li>
+      <li class="action"><b>Call</b>
+        <p>Match the current bet to stay in the hand. Costs exactly the difference
+           between what you have in and what is required.</p></li>
+      <li class="action action--bet"><b>Bet</b>
+        <p>Put chips in first when no one else has. Everyone after you must now call,
+           raise, or fold.</p></li>
+      <li class="action action--bet"><b>Raise</b>
+        <p>Increase an existing bet. Re-opens the action — everyone who already acted
+           must respond again.</p></li>
+      <li class="action"><b>All-in</b>
+        <p>Push your entire stack. You can never lose more than that, but you can only
+           win the portion of the pot you covered.</p></li>
+    </ul>
+  </section>
+
+  <hr class="rule">
+
+  <section class="band shell">
+    <div class="section-head">
+      <span class="num">05</span>
+      <h2>Hand <em>rankings</em></h2>
+    </div>
+    <p class="lede">Strongest at the top. When two players hold the same category, the
+      higher cards decide it — and if those are identical too, the pot is split.</p>
+    <ol class="ranks" style="margin-top:2.5rem">
+      <li class="rank">
+        <div><h3>Royal Flush</h3><p>Ten through Ace, all one suit. The unbeatable hand.</p></div>
+        <div class="hand" aria-hidden="true"><span class="card"><b class="card__r">A</b><span class="card__s">♠</span></span><span class="card"><b class="card__r">K</b><span class="card__s">♠</span></span><span class="card"><b class="card__r">Q</b><span class="card__s">♠</span></span><span class="card"><b class="card__r">J</b><span class="card__s">♠</span></span><span class="card"><b class="card__r">10</b><span class="card__s">♠</span></span></div>
+      </li>
+      <li class="rank">
+        <div><h3>Straight Flush</h3><p>Five in a row, all one suit.</p></div>
+        <div class="hand" aria-hidden="true"><span class="card card--red"><b class="card__r">9</b><span class="card__s">♥</span></span><span class="card card--red"><b class="card__r">8</b><span class="card__s">♥</span></span><span class="card card--red"><b class="card__r">7</b><span class="card__s">♥</span></span><span class="card card--red"><b class="card__r">6</b><span class="card__s">♥</span></span><span class="card card--red"><b class="card__r">5</b><span class="card__s">♥</span></span></div>
+      </li>
+      <li class="rank">
+        <div><h3>Four of a Kind</h3><p>All four cards of one rank, plus any fifth card.</p></div>
+        <div class="hand" aria-hidden="true"><span class="card"><b class="card__r">Q</b><span class="card__s">♠</span></span><span class="card card--red"><b class="card__r">Q</b><span class="card__s">♥</span></span><span class="card card--red"><b class="card__r">Q</b><span class="card__s">♦</span></span><span class="card"><b class="card__r">Q</b><span class="card__s">♣</span></span><span class="card"><b class="card__r">7</b><span class="card__s">♠</span></span></div>
+      </li>
+      <li class="rank">
+        <div><h3>Full House</h3><p>Three of one rank and two of another.</p></div>
+        <div class="hand" aria-hidden="true"><span class="card card--red"><b class="card__r">J</b><span class="card__s">♥</span></span><span class="card card--red"><b class="card__r">J</b><span class="card__s">♦</span></span><span class="card"><b class="card__r">J</b><span class="card__s">♣</span></span><span class="card"><b class="card__r">4</b><span class="card__s">♠</span></span><span class="card card--red"><b class="card__r">4</b><span class="card__s">♥</span></span></div>
+      </li>
+      <li class="rank">
+        <div><h3>Flush</h3><p>Any five of the same suit, not in sequence.</p></div>
+        <div class="hand" aria-hidden="true"><span class="card"><b class="card__r">A</b><span class="card__s">♣</span></span><span class="card"><b class="card__r">10</b><span class="card__s">♣</span></span><span class="card"><b class="card__r">8</b><span class="card__s">♣</span></span><span class="card"><b class="card__r">5</b><span class="card__s">♣</span></span><span class="card"><b class="card__r">2</b><span class="card__s">♣</span></span></div>
+      </li>
+      <li class="rank">
+        <div><h3>Straight</h3><p>Five in a row of mixed suits. Ace counts high or low.</p></div>
+        <div class="hand" aria-hidden="true"><span class="card"><b class="card__r">9</b><span class="card__s">♣</span></span><span class="card card--red"><b class="card__r">8</b><span class="card__s">♥</span></span><span class="card"><b class="card__r">7</b><span class="card__s">♠</span></span><span class="card card--red"><b class="card__r">6</b><span class="card__s">♦</span></span><span class="card"><b class="card__r">5</b><span class="card__s">♣</span></span></div>
+      </li>
+      <li class="rank">
+        <div><h3>Three of a Kind</h3><p>Three cards of the same rank, two unrelated.</p></div>
+        <div class="hand" aria-hidden="true"><span class="card"><b class="card__r">8</b><span class="card__s">♠</span></span><span class="card card--red"><b class="card__r">8</b><span class="card__s">♥</span></span><span class="card card--red"><b class="card__r">8</b><span class="card__s">♦</span></span><span class="card"><b class="card__r">K</b><span class="card__s">♣</span></span><span class="card"><b class="card__r">3</b><span class="card__s">♠</span></span></div>
+      </li>
+      <li class="rank">
+        <div><h3>Two Pair</h3><p>Two cards of one rank, two of another, plus a kicker.</p></div>
+        <div class="hand" aria-hidden="true"><span class="card"><b class="card__r">K</b><span class="card__s">♠</span></span><span class="card card--red"><b class="card__r">K</b><span class="card__s">♦</span></span><span class="card card--red"><b class="card__r">6</b><span class="card__s">♥</span></span><span class="card"><b class="card__r">6</b><span class="card__s">♣</span></span><span class="card"><b class="card__r">9</b><span class="card__s">♠</span></span></div>
+      </li>
+      <li class="rank">
+        <div><h3>One Pair</h3><p>Two cards of the same rank and three unrelated cards.</p></div>
+        <div class="hand" aria-hidden="true"><span class="card card--red"><b class="card__r">A</b><span class="card__s">♥</span></span><span class="card card--red"><b class="card__r">A</b><span class="card__s">♦</span></span><span class="card"><b class="card__r">J</b><span class="card__s">♣</span></span><span class="card"><b class="card__r">7</b><span class="card__s">♠</span></span><span class="card card--red"><b class="card__r">3</b><span class="card__s">♦</span></span></div>
+      </li>
+      <li class="rank">
+        <div><h3>High Card</h3><p>Nothing connects. Your highest card plays.</p></div>
+        <div class="hand" aria-hidden="true"><span class="card card--red"><b class="card__r">A</b><span class="card__s">♥</span></span><span class="card card--red"><b class="card__r">Q</b><span class="card__s">♦</span></span><span class="card"><b class="card__r">9</b><span class="card__s">♠</span></span><span class="card"><b class="card__r">5</b><span class="card__s">♣</span></span><span class="card card--red"><b class="card__r">3</b><span class="card__s">♥</span></span></div>
+      </li>
+    </ol>
+  </section>
+
+  <hr class="rule">
+
+  <section class="band shell">
+    <div class="section-head">
+      <span class="num">06</span>
+      <h2>Four things that <em>help</em></h2>
+    </div>
+    <ul class="tips">
+      <li><b>Position is money</b>
+        <p>Acting last means you have watched everyone else first. Play more hands
+           on the button, far fewer from the blinds.</p></li>
+      <li><b>Fold more than feels right</b>
+        <p>Most starting hands are not worth playing. Discipline before the flop saves
+           more chips than clever play after it.</p></li>
+      <li><b>Count the pot before you call</b>
+        <p>Compare what the call costs against what is already out there. Cheap calls
+           into big pots are the ones that pay.</p></li>
+      <li><b>Watch bet sizes, not faces</b>
+        <p>Online there are no faces. How much someone bets, and how fast, is the tell
+           you actually get.</p></li>
+    </ul>
+  </section>
+
+  <section class="shell closer">
+    <h2>That&rsquo;s the whole <em>game</em>.</h2>
+    <a class="btn" href="index.html#games">Back to the lobby</a>
+  </section>
+
+</main>
+
+<footer class="site-foot">
+  <div class="shell">
+    <span>&copy; 2026 PokerBolt</span>
+    <span>Play responsibly &middot; 18+</span>
+  </div>
+</footer>
+
+<script>
+(function () {
+  var root = document.documentElement;
+  var chips = document.querySelectorAll("[data-set-theme]");
+  /* no pin = following the OS, so show whichever of day/night that resolves to */
+  function active() {
+    return root.dataset.theme ||
+      (matchMedia("(prefers-color-scheme: light)").matches ? "day" : "night");
+  }
+  function sync() {
+    var now = active();
+    chips.forEach(function (c) {
+      c.setAttribute("aria-pressed", c.dataset.setTheme === now);
+    });
+  }
+  chips.forEach(function (c) {
+    c.addEventListener("click", function () {
+      root.dataset.theme = c.dataset.setTheme;
+      try { localStorage.setItem("pb-theme", root.dataset.theme); } catch (e) {}
+      sync();
+    });
+  });
+  sync();
+})();
+</script>
+</body>
+</html>

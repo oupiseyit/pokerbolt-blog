@@ -1,0 +1,475 @@
+/* ============================================================
+   THE BEACH — the game client itself, after the lobby artwork.
+   Standalone skin: it does NOT load site.css, because the beach
+   palette is the whole point. Everything below the signs is drawn
+   in CSS — there is no background illustration to ship.
+   ============================================================ */
+
+:root {
+  /* sky & sea */
+  --sky-high:  #2f6fd0;
+  --sky-mid:   #6aa8e8;
+  --sky-low:   #bfe2f5;
+  --sun:       #fff4cf;
+  --hill:      #6f7fb8;
+  --hill-far:  #8e9ccb;
+  --sea-far:   #4fc3c6;
+  --sea-near:  #1f9fae;
+  --foam:      #eafbfb;
+  --sand:      #f3c98d;
+  --sand-warm: #e8ab63;
+
+  /* carved wood chrome */
+  --wood-lit:  #d4924f;
+  --wood:      #a8642f;
+  --wood-deep: #7b431c;
+  --wood-edge: #3f2110;
+  --rope:      #edcd97;
+
+  /* gold signage */
+  --gold-hi:   #fff3c4;
+  --gold:      #ffd35c;
+  --gold-deep: #d98f1c;
+  --ink:       #43240f;
+
+  --display: "Titan One", "Baloo 2", system-ui, sans-serif;
+  --body:    "Baloo 2", "Trebuchet MS", sans-serif;
+  --ease:    cubic-bezier(0.25, 0.9, 0.35, 1.1);
+
+  --shell: min(1500px, 100% - 2.5rem);
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font: 500 1rem/1.6 var(--body);
+  color: #4a2a13;
+  background: var(--sky-mid);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+img { max-width: 100%; height: auto; display: block; }
+
+.shell { width: var(--shell); margin-inline: auto; }
+
+/* ============================================================
+   The scene. Fixed behind everything, like a game client's
+   backdrop — it stays put while the signs scroll over it.
+   ============================================================ */
+
+.scene {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+/* sky, with the sun burning through the upper right */
+.scene__sky {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(38rem 26rem at 78% -6%, var(--sun), rgba(255, 244, 207, 0) 62%),
+    linear-gradient(180deg, var(--sky-high) 0%, var(--sky-mid) 34%, var(--sea-far) 62%, var(--sky-low) 66%);
+}
+
+/* soft cloud bank, drifting */
+.scene__clouds {
+  position: absolute;
+  inset: 0 -20% 55%;
+  background:
+    radial-gradient(9rem 3.4rem at 18% 38%, rgba(255,255,255,0.92), transparent 70%),
+    radial-gradient(7rem 2.8rem at 26% 30%, rgba(255,255,255,0.85), transparent 70%),
+    radial-gradient(12rem 4rem at 52% 26%, rgba(255,255,255,0.8),  transparent 72%),
+    radial-gradient(8rem 3rem  at 68% 40%, rgba(255,255,255,0.75), transparent 70%),
+    radial-gradient(14rem 4.6rem at 88% 24%, rgba(255,255,255,0.7), transparent 72%);
+  filter: blur(2px);
+  animation: drift 90s linear infinite alternate;
+}
+
+@keyframes drift {
+  from { transform: translateX(-3%); }
+  to   { transform: translateX(3%); }
+}
+
+/* headland on the horizon */
+.scene__hills {
+  position: absolute;
+  left: -5%;
+  right: -5%;
+  top: 50%;
+  height: 8.5%;
+  background:
+    radial-gradient(9rem 3.4rem at 14% 100%, var(--hill-far) 0 98%, transparent 99%),
+    radial-gradient(13rem 4.6rem at 31% 100%, var(--hill) 0 98%, transparent 99%),
+    radial-gradient(10rem 3rem  at 58% 100%, var(--hill-far) 0 98%, transparent 99%),
+    radial-gradient(14rem 4rem  at 83% 100%, var(--hill) 0 98%, transparent 99%);
+  opacity: 0.42;
+  filter: blur(1px);
+}
+
+/* the water */
+.scene__sea {
+  position: absolute;
+  inset: 58% 0 22% 0;
+  background:
+    linear-gradient(180deg, var(--sea-far) 0%, var(--sea-near) 58%, #16c3b0 100%);
+}
+
+/* sunlight streak on the water */
+.scene__sea::after {
+  content: "";
+  position: absolute;
+  inset: 0 0 0 0;
+  background: radial-gradient(26rem 8rem at 76% 10%, rgba(255,255,255,0.35), transparent 70%);
+}
+
+/* surf: a soft wash with a bright leading edge, rather than hard scallops —
+   at this scale a scalloped band just read as a painted stripe */
+.scene__foam {
+  position: absolute;
+  left: -6%;
+  right: -6%;
+  top: calc(78% - 3rem);
+  height: 6rem;
+  background:
+    repeating-radial-gradient(5.5rem 2.4rem at 2.75rem 62%,
+      rgba(255, 255, 255, 0.75) 0 88%, transparent 92%),
+    linear-gradient(180deg,
+      transparent 0%,
+      rgba(234, 251, 251, 0.55) 38%,
+      var(--foam) 52%,
+      rgba(234, 251, 251, 0.6) 66%,
+      transparent 100%);
+  filter: blur(1.5px);
+  animation: lap 9s ease-in-out infinite alternate;
+}
+
+/* wet sand, just above the dry line */
+.scene__foam::after {
+  content: "";
+  position: absolute;
+  inset: 62% 0 -3rem 0;
+  background: linear-gradient(180deg, rgba(198, 146, 84, 0.35), transparent 80%);
+}
+
+@keyframes lap {
+  from { transform: translate(-1.2rem, 0.2rem); }
+  to   { transform: translate(1.2rem, -0.2rem); }
+}
+
+/* sand, with a little grain and a few pebbles */
+.scene__sand {
+  position: absolute;
+  inset: 78% 0 0 0;
+  background:
+    radial-gradient(0.5rem 0.25rem at 14% 30%, rgba(180,128,70,0.35), transparent),
+    radial-gradient(0.7rem 0.3rem at 62% 48%, rgba(180,128,70,0.3), transparent),
+    radial-gradient(0.6rem 0.3rem at 84% 22%, rgba(180,128,70,0.3), transparent),
+    linear-gradient(180deg, #f7dcae 0%, var(--sand) 26%, var(--sand-warm) 100%);
+}
+
+.scene__sand::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(58deg,
+    rgba(255,255,255,0.1) 0 1px, transparent 1px 4px);
+}
+
+/* ============================================================
+   Carved wood — one surface, reused for every piece of chrome
+   ============================================================ */
+
+.wood {
+  background:
+    repeating-linear-gradient(93deg,
+      rgba(63, 33, 16, 0.16) 0 2px, transparent 2px 11px),
+    linear-gradient(180deg, var(--wood-lit) 0%, var(--wood) 48%, var(--wood-deep) 100%);
+  border: 3px solid var(--wood-edge);
+  box-shadow:
+    inset 0 2px 0 rgba(255, 224, 176, 0.55),
+    inset 0 -3px 0 rgba(63, 33, 16, 0.35),
+    0 6px 0 rgba(63, 33, 16, 0.28),
+    0 12px 22px rgba(24, 48, 76, 0.3);
+}
+
+/* chunky carved gold lettering */
+.carved {
+  font-family: var(--display);
+  color: var(--gold);
+  -webkit-text-stroke: 0.16em var(--ink);
+  paint-order: stroke fill;
+  text-shadow:
+    0 0.06em 0 var(--gold-deep),
+    0 0.11em 0 #a9660f,
+    0 0.16em 0.1em rgba(40, 20, 6, 0.45);
+  letter-spacing: 0.01em;
+}
+
+/* ============================================================
+   HUD — round wood buttons, held to the right
+   ============================================================ */
+
+.hud {
+  position: relative;
+  z-index: 5;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-end;
+  gap: 1rem;
+  flex-wrap: wrap;
+  padding-block: 1.1rem;
+}
+
+.knobs {
+  display: flex;
+  gap: 0.6rem;
+  align-items: center;
+}
+
+/* every knob is a real link — no dead chrome on this page */
+.knob {
+  display: grid;
+  place-items: center;
+  width: 3.3rem;
+  height: 3.3rem;
+  border-radius: 0.95rem;
+  text-decoration: none;
+  font: 600 0.58rem/1 var(--body);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #ffeecb;
+  text-shadow: 0 2px 0 rgba(63, 33, 16, 0.65);
+  transition: transform 0.22s var(--ease), filter 0.22s var(--ease);
+}
+
+.knob__ico {
+  display: block;
+  font-size: 1.15rem;
+  line-height: 1;
+  margin-bottom: 0.12rem;
+  color: var(--gold);
+}
+
+.knob:hover, .knob:focus-visible {
+  transform: translateY(-3px);
+  filter: brightness(1.1);
+}
+
+.knob:focus-visible { outline: 3px solid #fff8e2; outline-offset: 3px; }
+
+.knob[aria-current] {
+  filter: brightness(1.14);
+  box-shadow:
+    inset 0 2px 0 rgba(255, 224, 176, 0.55),
+    0 0 0 3px var(--gold),
+    0 6px 0 rgba(63, 33, 16, 0.28),
+    0 12px 22px rgba(24, 48, 76, 0.3);
+}
+
+/* ============================================================
+   Title board
+   ============================================================ */
+
+.board {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  padding-block: clamp(1rem, 3vw, 2rem) clamp(1.5rem, 4vw, 2.5rem);
+}
+
+.board h1 {
+  margin: 0;
+  font-size: clamp(2.4rem, 7vw, 4.6rem);
+  line-height: 1.05;
+}
+
+.board__sub {
+  display: inline-block;
+  margin-top: 0.9rem;
+  padding: 0.4rem 1.4rem;
+  border-radius: 999px;
+  font: 600 0.82rem/1.6 var(--body);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #ffeecb;
+  text-shadow: 0 2px 0 rgba(63, 33, 16, 0.6);
+}
+
+/* ============================================================
+   The signs
+   ============================================================ */
+
+.signs {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+  gap: clamp(1.6rem, 3.2vw, 3rem) clamp(1.2rem, 2.4vw, 2.2rem);
+  list-style: none;
+  margin: 0 0 clamp(2rem, 5vw, 3.5rem);
+  padding: 0;
+}
+
+.signs > li {
+  /* each sign is hung slightly differently, like real signage */
+  transform: translateY(var(--dy, 0)) rotate(var(--rot, 0deg));
+}
+
+.sign {
+  display: block;
+  text-decoration: none;
+  animation:
+    sign-drop 0.62s var(--ease) both,
+    bob 5.5s ease-in-out infinite;
+  animation-delay: calc(var(--i, 0) * 60ms), calc(var(--i, 0) * 180ms);
+}
+
+@keyframes sign-drop {
+  from { opacity: 0; transform: translateY(-26px) scale(0.94); }
+  to   { opacity: 1; transform: none; }
+}
+
+@keyframes bob {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-6px); }
+}
+
+/* rope-wrapped frame: the twist is a striped border-box gradient */
+.sign__frame {
+  position: relative;
+  display: block;
+  border: 7px solid transparent;
+  border-radius: 1.6rem;
+  overflow: hidden;
+  background:
+    linear-gradient(#0000, #0000) padding-box,
+    repeating-linear-gradient(45deg,
+      var(--rope) 0 7px, #c2955c 7px 14px) border-box;
+  box-shadow:
+    0 0 0 3px var(--wood-edge),
+    0 10px 0 rgba(63, 33, 16, 0.22),
+    0 16px 26px rgba(24, 48, 76, 0.32);
+  transition: box-shadow 0.3s var(--ease);
+}
+
+.sign__frame img {
+  width: 100%;
+  aspect-ratio: 1;
+  object-fit: cover;
+  transition: transform 0.5s var(--ease);
+}
+
+/* the name plank, hung across the bottom of the frame */
+.sign__plank {
+  position: relative;
+  z-index: 3;
+  display: block;
+  width: 92%;
+  margin: -1.5rem auto 0;
+  padding: 0.5rem 0.7rem 0.6rem;
+  border-radius: 0.8rem;
+  text-align: center;
+  font-size: clamp(0.95rem, 1.5vw, 1.2rem);
+  line-height: 1.2;
+  transition: transform 0.3s var(--ease);
+}
+
+.sign__meta {
+  display: block;
+  margin-top: 0.45rem;
+  font: 600 0.68rem/1 var(--body);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #ffe6b8;
+  -webkit-text-stroke: 0;
+  text-shadow: 0 1px 0 rgba(63, 33, 16, 0.7);
+}
+
+a.sign:hover .sign__frame,
+a.sign:focus-visible .sign__frame {
+  box-shadow:
+    0 0 0 3px var(--wood-edge),
+    0 0 0 8px rgba(255, 211, 92, 0.55),
+    0 14px 0 rgba(63, 33, 16, 0.22),
+    0 22px 34px rgba(24, 48, 76, 0.38);
+}
+
+a.sign:hover .sign__frame img,
+a.sign:focus-visible .sign__frame img { transform: scale(1.06); }
+
+a.sign:hover .sign__plank,
+a.sign:focus-visible .sign__plank { transform: translateY(3px) scale(1.04); }
+
+a.sign:focus-visible { outline: none; }
+
+/* a game with no guide yet: still on the wall, just not lit */
+.sign--soon { filter: saturate(0.72); }
+.sign--soon .sign__frame img { opacity: 0.85; }
+
+.flag {
+  position: absolute;
+  z-index: 4;
+  top: 0.6rem;
+  left: 0.6rem;
+  padding: 0.22rem 0.6rem 0.28rem;
+  border-radius: 0.5rem;
+  font: 400 0.62rem/1.4 var(--display);
+  letter-spacing: 0.06em;
+  color: #fff6da;
+  background: linear-gradient(180deg, #e8574f, #bf2f2c);
+  border: 2px solid var(--wood-edge);
+  text-shadow: 0 1px 0 rgba(63, 33, 16, 0.7);
+}
+
+/* ============================================================
+   Footer plank
+   ============================================================ */
+
+.beach-foot {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.6rem 1.5rem;
+  flex-wrap: wrap;
+  margin-bottom: 2.5rem;
+  padding: 0.8rem 1.4rem;
+  border-radius: 1rem;
+  font: 600 0.78rem/1.7 var(--body);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #ffeecb;
+  text-shadow: 0 2px 0 rgba(63, 33, 16, 0.6);
+}
+
+.beach-foot a { color: var(--gold); }
+
+/* ============================================================
+   Responsive
+   ============================================================ */
+
+@media (max-width: 700px) {
+  :root { --shell: min(1500px, 100% - 1.5rem); }
+  .signs { grid-template-columns: repeat(2, 1fr); }
+  .signs > li { --rot: 0deg; --dy: 0; }
+  .knob { width: 2.9rem; height: 2.9rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-delay: 0ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+  /* the drop animation ends on the right frame; the loops must not */
+  .scene__clouds, .scene__foam { animation: none; }
+  .sign { animation: none; }
+}
