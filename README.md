@@ -1,7 +1,7 @@
 # PokerBolt — Game Display
 
-
 Live: https://oupiseyit.github.io/pokerbolt-blog/
+
 Static HTML/CSS mockups of the PokerBolt game lobby: five layout variants of the
 same 15-game catalogue, plus one game detail page. No build step — open any
 `.html` file in a browser, or `python3 -m http.server` from this directory.
