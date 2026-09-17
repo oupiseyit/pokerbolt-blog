@@ -1,0 +1,2045 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Game Library &amp; How to Play — Pokerbolt</title>
+    <meta
+      name="description"
+      content="Every game on the Pokerbolt poker client, with the rules, the turn order, the scoring and the table controls for each one: Texas Hold'em, Omaha, Capsa, Ceme, Baccarat, Niu Niu, Samgong, Domino, Call Break, Tongits Go and more."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&display=swap"
+    />
+    <link rel="stylesheet" href="site.css" />
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to main content</a>
+
+    <header class="masthead" id="top">
+      <div class="shell masthead__inner">
+        <p class="masthead__brand">
+          <img
+            class="brand-mark"
+            src="sample-data/logo-pokerbolt.png"
+            alt="Pokerbolt"
+            width="3559"
+            height="538"
+          />
+        </p>
+        <nav class="nav-primary" aria-label="Primary">
+          <ul>
+            <li><a href="#library" aria-current="page">Games</a></li>
+            <li><a href="#tutorials">How to play</a></li>
+            <li><a href="#devices">Play anywhere</a></li>
+            <li><a href="#compare">Compare</a></li>
+            <li><a href="#hand-ranking">Hand ranking</a></li>
+          </ul>
+        </nav>
+        <button
+          class="btn theme-toggle"
+          type="button"
+          popovertarget="theme-menu"
+          data-theme-toggle
+          hidden
+        >
+          <svg
+            class="theme-toggle__icon"
+            data-icon="sun"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.8"
+            stroke-linecap="round"
+            aria-hidden="true"
+            focusable="false"
+          >
+            <circle cx="12" cy="12" r="4.2" />
+            <path
+              d="M12 2.2v2.1M12 19.7v2.1M4.1 4.1l1.5 1.5M18.4 18.4l1.5 1.5M2.2 12h2.1M19.7 12h2.1M4.1 19.9l1.5-1.5M18.4 5.6l1.5-1.5"
+            />
+          </svg>
+          <svg
+            class="theme-toggle__icon"
+            data-icon="moon"
+            viewBox="0 0 24 24"
+            fill="currentColor"
+            aria-hidden="true"
+            focusable="false"
+            hidden
+          >
+            <path
+              d="M20.3 14.9A8.6 8.6 0 0 1 9.1 3.7a8.6 8.6 0 1 0 11.2 11.2Z"
+            />
+          </svg>
+        </button>
+        <div class="theme-menu" id="theme-menu" popover>
+          <p class="theme-menu__title" id="theme-menu-title">Theme</p>
+          <div role="group" aria-labelledby="theme-menu-title">
+          <button
+            class="theme-menu__item"
+            type="button"
+            data-theme-set="dark"
+            aria-pressed="false"
+            popovertarget="theme-menu"
+            popovertargetaction="hide"
+          >
+            <span class="theme-menu__swatch" data-theme="dark" aria-hidden="true"></span>
+            Midnight
+          </button>
+          <button
+            class="theme-menu__item"
+            type="button"
+            data-theme-set="light"
+            aria-pressed="false"
+            popovertarget="theme-menu"
+            popovertargetaction="hide"
+          >
+            <span class="theme-menu__swatch" data-theme="light" aria-hidden="true"></span>
+            Daylight
+          </button>
+          <button
+            class="theme-menu__item"
+            type="button"
+            data-theme-set="felt"
+            aria-pressed="false"
+            popovertarget="theme-menu"
+            popovertargetaction="hide"
+          >
+            <span class="theme-menu__swatch" data-theme="felt" aria-hidden="true"></span>
+            Felt
+          </button>
+          <button
+            class="theme-menu__item"
+            type="button"
+            data-theme-set="ember"
+            aria-pressed="false"
+            popovertarget="theme-menu"
+            popovertargetaction="hide"
+          >
+            <span class="theme-menu__swatch" data-theme="ember" aria-hidden="true"></span>
+            Ember
+          </button>
+          <button
+            class="theme-menu__item"
+            type="button"
+            data-theme-set="paper"
+            aria-pressed="false"
+            popovertarget="theme-menu"
+            popovertargetaction="hide"
+          >
+            <span class="theme-menu__swatch" data-theme="paper" aria-hidden="true"></span>
+            Paper
+          </button>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <div class="shell">
+      <section class="hero" aria-labelledby="hero-title">
+        <div class="hero__copy">
+          <p class="eyebrow">Fifteen titles · One client</p>
+          <h1 id="hero-title">
+            <span class="mask"><span class="line">The table</span></span>
+            <span class="mask"><em class="line">is open</em></span>
+          </h1>
+          <p class="lede">
+            Every game shipped in the Pokerbolt client, documented the same way:
+            what you are dealt, whose turn it is, how a hand is scored, and what
+            the buttons on the table actually do. Read a tutorial end to end in
+            about two minutes, then sit down.
+          </p>
+          <dl class="hero__meta">
+            <div>
+              <dt>Games</dt>
+              <dd>15</dd>
+            </div>
+            <div>
+              <dt>Card titles</dt>
+              <dd>11</dd>
+            </div>
+            <div>
+              <dt>Domino titles</dt>
+              <dd>04</dd>
+            </div>
+            <div>
+              <dt>Read time</dt>
+              <dd>2m</dd>
+            </div>
+          </dl>
+        </div>
+        <div class="hero__art">
+          <div class="device-duo device">
+            <div class="iphone">
+              <span class="iphone__island" aria-hidden="true"></span>
+              <div class="device__screen iphone__screen">
+                <img
+                  src="sample-data/01-poker03.png"
+                  alt="Pokerbolt poker table on an iPhone, portrait layout"
+                  loading="lazy"
+                />
+              </div>
+            </div>
+            <div class="iphone">
+              <span class="iphone__island" aria-hidden="true"></span>
+              <div class="device__screen iphone__screen">
+                <img
+                  src="sample-data/01-poker05.png"
+                  alt="A second Pokerbolt table showing the betting controls"
+                  loading="lazy"
+                />
+              </div>
+            </div>
+          </div>
+          <p class="device-caption">iPhone duo · portrait client</p>
+        </div>
+      </section>
+
+      <section class="devices" id="devices" aria-labelledby="devices-title">
+        <div class="devices__intro reveal">
+          <h2 id="devices-title">Play anywhere</h2>
+          <p>
+            The same fifteen games, the same tables and the same balance on
+            every screen. The desktop client gives you the full felt; the phone
+            client stacks the seats into a portrait layout without hiding a
+            single control.
+          </p>
+        </div>
+
+        <figure class="device reveal">
+          <div class="imac">
+            <div class="imac__body">
+              <div class="device__screen imac__screen">
+                <img
+                  src="sample-data/01-poker.png"
+                  alt="Pokerbolt Texas Hold'em table on an iMac, nine seats around the felt"
+                  loading="lazy"
+                />
+              </div>
+              <p class="imac__chin">
+                <img
+                  class="brand-mark brand-mark--chin"
+                  src="sample-data/logo-pokerbolt.png"
+                  alt=""
+                  width="3559"
+                  height="538"
+                />
+              </p>
+            </div>
+            <div class="imac__stand" aria-hidden="true"></div>
+          </div>
+          <figcaption>iMac · Texas Hold'em, full table view</figcaption>
+        </figure>
+
+        <figure class="device reveal">
+          <div class="iphone">
+            <span class="iphone__island" aria-hidden="true"></span>
+            <div class="device__screen iphone__screen">
+              <img
+                src="sample-data/01-poker04.png"
+                alt="Pokerbolt poker table on an iPhone 18 with the action buttons under the hand"
+                loading="lazy"
+              />
+            </div>
+          </div>
+          <figcaption>iPhone 18 · action buttons under your hand</figcaption>
+        </figure>
+      </section>
+
+      <div class="layout">
+        <aside class="sidebar">
+          <nav class="toc" aria-label="Game index">
+            <h2>Game index</h2>
+            <ul>
+              <li><a href="#texas-holdem"><b>01</b> Texas Hold'em</a></li>
+              <li><a href="#capsa-banting"><b>02</b> Capsa Banting</a></li>
+              <li><a href="#capsa-susun"><b>03</b> Capsa Susun</a></li>
+              <li><a href="#baccarat"><b>04</b> Baccarat</a></li>
+              <li><a href="#ceme"><b>05</b> Ceme</a></li>
+              <li><a href="#ceme-keliling"><b>06</b> Ceme Keliling</a></li>
+              <li><a href="#super10"><b>07</b> Super10</a></li>
+              <li><a href="#niu-niu"><b>08</b> Niu Niu</a></li>
+              <li><a href="#omaha"><b>09</b> Omaha Poker</a></li>
+              <li><a href="#domino-classic"><b>10</b> Domino Classic</a></li>
+              <li><a href="#samgong"><b>11</b> Samgong</a></li>
+              <li><a href="#blackjack"><b>12</b> Blackjack</a></li>
+              <li><a href="#call-break"><b>13</b> Call Break</a></li>
+              <li><a href="#speed-baccarat"><b>14</b> Speed Baccarat</a></li>
+              <li><a href="#tongits-go"><b>15</b> Tongits Go</a></li>
+            </ul>
+          </nav>
+        </aside>
+
+        <main class="content" id="main">
+          <section id="library" aria-labelledby="library-title">
+            <div class="section-head">
+              <h2 id="library-title">The library</h2>
+              <p>
+                Pick a game to jump to its tutorial. Every card links to the
+                full rules below.
+              </p>
+            </div>
+
+            <ul class="game-grid">
+              <li>
+                <a class="card" href="#texas-holdem">
+                  <span class="card__media">
+                    <img src="sample-data/01-poker.png" alt="" loading="lazy" />
+                    <span class="card__num">01</span>
+                  </span>
+                  <span class="card__body">
+                    <h3>Texas Hold'em</h3>
+                    <p>Two hole cards, five on the board, four betting rounds.</p>
+                    <span class="card__go">Read the rules</span>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a class="card" href="#capsa-banting">
+                  <span class="card__media">
+                    <img src="sample-data/02-capsa-banting02.png" alt="" loading="lazy" />
+                    <span class="card__num">02</span>
+                  </span>
+                  <span class="card__body">
+                    <h3>Capsa Banting</h3>
+                    <p>Shed all thirteen cards first. Big Two, four seats.</p>
+                    <span class="card__go">Read the rules</span>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a class="card" href="#capsa-susun">
+                  <span class="card__media">
+                    <img src="sample-data/03-capsa-susun02.png" alt="" loading="lazy" />
+                    <span class="card__num">03</span>
+                  </span>
+                  <span class="card__body">
+                    <h3>Capsa Susun</h3>
+                    <p>Arrange thirteen cards into three legal hands.</p>
+                    <span class="card__go">Read the rules</span>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a class="card" href="#baccarat">
+                  <span class="card__media">
+                    <img src="sample-data/04-baccarat01.png" alt="" loading="lazy" />
+                    <span class="card__num">04</span>
+                  </span>
+                  <span class="card__body">
+                    <h3>Baccarat</h3>
+                    <p>Back Player, Banker or Tie. Closest to nine wins.</p>
+                    <span class="card__go">Read the rules</span>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a class="card" href="#ceme">
+                  <span class="card__media">
+                    <img src="sample-data/05-ceme01.png" alt="" loading="lazy" />
+                    <span class="card__num">05</span>
+                  </span>
+                  <span class="card__body">
+                    <h3>Ceme</h3>
+                    <p>Two dominoes against the dealer. Last digit is your score.</p>
+                    <span class="card__go">Read the rules</span>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a class="card" href="#ceme-keliling">
+                  <span class="card__media">
+                    <img src="sample-data/06-cemekeliling01.png" alt="" loading="lazy" />
+                    <span class="card__num">06</span>
+                  </span>
+                  <span class="card__body">
+                    <h3>Ceme Keliling</h3>
+                    <p>Ceme with the dealer seat rotating around the table.</p>
+                    <span class="card__go">Read the rules</span>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a class="card" href="#super10">
+                  <span class="card__media">
+                    <img src="sample-data/07-superten01.png" alt="" loading="lazy" />
+                    <span class="card__num">07</span>
+                  </span>
+                  <span class="card__body">
+                    <h3>Super10</h3>
+                    <p>Three cards, pictures are worth ten, ten is the top score.</p>
+                    <span class="card__go">Read the rules</span>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a class="card" href="#niu-niu">
+                  <span class="card__media">
+                    <img src="sample-data/08-niuniu02.png" alt="" loading="lazy" />
+                    <span class="card__num">08</span>
+                  </span>
+                  <span class="card__body">
+                    <h3>Niu Niu</h3>
+                    <p>Split five cards into a bull of three and a score of two.</p>
+                    <span class="card__go">Read the rules</span>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a class="card" href="#omaha">
+                  <span class="card__media">
+                    <img src="sample-data/09-pokeromaha02.png" alt="" loading="lazy" />
+                    <span class="card__num">09</span>
+                  </span>
+                  <span class="card__body">
+                    <h3>Omaha Poker</h3>
+                    <p>Four hole cards — use exactly two, plus three from the board.</p>
+                    <span class="card__go">Read the rules</span>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a class="card" href="#domino-classic">
+                  <span class="card__media">
+                    <img src="sample-data/10-domino-classic01.png" alt="" loading="lazy" />
+                    <span class="card__num">10</span>
+                  </span>
+                  <span class="card__body">
+                    <h3>Domino Classic</h3>
+                    <p>Gaple. Match the open ends, empty your hand first.</p>
+                    <span class="card__go">Read the rules</span>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a class="card" href="#samgong">
+                  <span class="card__media">
+                    <img src="sample-data/11-samgong01.png" alt="" loading="lazy" />
+                    <span class="card__num">11</span>
+                  </span>
+                  <span class="card__body">
+                    <h3>Samgong</h3>
+                    <p>Three cards against the dealer. Three pictures is the nuts.</p>
+                    <span class="card__go">Read the rules</span>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a class="card" href="#blackjack">
+                  <span class="card__media">
+                    <img src="sample-data/12-blackjack01.png" alt="" loading="lazy" />
+                    <span class="card__num">12</span>
+                  </span>
+                  <span class="card__body">
+                    <h3>Blackjack</h3>
+                    <p>Beat the dealer to twenty-one without going bust.</p>
+                    <span class="card__go">Read the rules</span>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a class="card" href="#call-break">
+                  <span class="card__media">
+                    <img src="sample-data/13-callbreak01.png" alt="" loading="lazy" />
+                    <span class="card__num">13</span>
+                  </span>
+                  <span class="card__body">
+                    <h3>Call Break</h3>
+                    <p>Bid your tricks, spades are trumps, five rounds.</p>
+                    <span class="card__go">Read the rules</span>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a class="card" href="#speed-baccarat">
+                  <span class="card__media">
+                    <img src="sample-data/14-speed-baccarat01.png" alt="" loading="lazy" />
+                    <span class="card__num">14</span>
+                  </span>
+                  <span class="card__body">
+                    <h3>Speed Baccarat</h3>
+                    <p>Baccarat rules on a roughly half-minute round clock.</p>
+                    <span class="card__go">Read the rules</span>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a class="card" href="#tongits-go">
+                  <span class="card__media">
+                    <img src="sample-data/15-tongits-go01.png" alt="" loading="lazy" />
+                    <span class="card__num">15</span>
+                  </span>
+                  <span class="card__body">
+                    <h3>Tongits Go</h3>
+                    <p>Meld, discard, and go out before the other two seats.</p>
+                    <span class="card__go">Read the rules</span>
+                  </span>
+                </a>
+              </li>
+            </ul>
+          </section>
+
+          <div class="ticker" aria-hidden="true">
+            <div class="ticker__track">
+              <span>Texas Hold'em</span>
+              <i aria-hidden="true">✦</i>
+              <span>Capsa Banting</span>
+              <i aria-hidden="true">✦</i>
+              <span>Capsa Susun</span>
+              <i aria-hidden="true">✦</i>
+              <span>Baccarat</span>
+              <i aria-hidden="true">✦</i>
+              <span>Ceme</span>
+              <i aria-hidden="true">✦</i>
+              <span>Ceme Keliling</span>
+              <i aria-hidden="true">✦</i>
+              <span>Super10</span>
+              <i aria-hidden="true">✦</i>
+              <span>Niu Niu</span>
+              <i aria-hidden="true">✦</i>
+              <span>Omaha Poker</span>
+              <i aria-hidden="true">✦</i>
+              <span>Domino Classic</span>
+              <i aria-hidden="true">✦</i>
+              <span>Samgong</span>
+              <i aria-hidden="true">✦</i>
+              <span>Blackjack</span>
+              <i aria-hidden="true">✦</i>
+              <span>Call Break</span>
+              <i aria-hidden="true">✦</i>
+              <span>Speed Baccarat</span>
+              <i aria-hidden="true">✦</i>
+              <span>Tongits Go</span>
+              <i aria-hidden="true">✦</i>
+              <span>Texas Hold'em</span>
+              <i aria-hidden="true">✦</i>
+              <span>Capsa Banting</span>
+              <i aria-hidden="true">✦</i>
+              <span>Capsa Susun</span>
+              <i aria-hidden="true">✦</i>
+              <span>Baccarat</span>
+              <i aria-hidden="true">✦</i>
+              <span>Ceme</span>
+              <i aria-hidden="true">✦</i>
+              <span>Ceme Keliling</span>
+              <i aria-hidden="true">✦</i>
+              <span>Super10</span>
+              <i aria-hidden="true">✦</i>
+              <span>Niu Niu</span>
+              <i aria-hidden="true">✦</i>
+              <span>Omaha Poker</span>
+              <i aria-hidden="true">✦</i>
+              <span>Domino Classic</span>
+              <i aria-hidden="true">✦</i>
+              <span>Samgong</span>
+              <i aria-hidden="true">✦</i>
+              <span>Blackjack</span>
+              <i aria-hidden="true">✦</i>
+              <span>Call Break</span>
+              <i aria-hidden="true">✦</i>
+              <span>Speed Baccarat</span>
+              <i aria-hidden="true">✦</i>
+              <span>Tongits Go</span>
+              <i aria-hidden="true">✦</i>
+            </div>
+          </div>
+
+          <section id="compare" aria-labelledby="compare-title">
+            <div class="section-head">
+              <h2 id="compare-title">At a glance</h2>
+              <p>Seats, deal size and who you are actually playing against.</p>
+            </div>
+            <div class="table-scroll">
+              <table>
+                <caption>
+                  Table shape by game
+                </caption>
+                <thead>
+                  <tr>
+                    <th scope="col">Game</th>
+                    <th scope="col">Seats</th>
+                    <th scope="col">You are dealt</th>
+                    <th scope="col">You play against</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <th scope="row"><a href="#texas-holdem">Texas Hold'em</a></th>
+                    <td>2–9</td>
+                    <td>2 cards</td>
+                    <td>The other players</td>
+                  </tr>
+                  <tr>
+                    <th scope="row"><a href="#omaha">Omaha Poker</a></th>
+                    <td>2–9</td>
+                    <td>4 cards</td>
+                    <td>The other players</td>
+                  </tr>
+                  <tr>
+                    <th scope="row"><a href="#capsa-banting">Capsa Banting</a></th>
+                    <td>4</td>
+                    <td>13 cards</td>
+                    <td>The other players</td>
+                  </tr>
+                  <tr>
+                    <th scope="row"><a href="#capsa-susun">Capsa Susun</a></th>
+                    <td>2–4</td>
+                    <td>13 cards</td>
+                    <td>Every other player, line by line</td>
+                  </tr>
+                  <tr>
+                    <th scope="row"><a href="#ceme">Ceme</a></th>
+                    <td>2–8</td>
+                    <td>2 dominoes</td>
+                    <td>The dealer seat</td>
+                  </tr>
+                  <tr>
+                    <th scope="row"><a href="#super10">Super10</a></th>
+                    <td>2–6</td>
+                    <td>3 cards</td>
+                    <td>The dealer seat</td>
+                  </tr>
+                  <tr>
+                    <th scope="row"><a href="#niu-niu">Niu Niu</a></th>
+                    <td>2–6</td>
+                    <td>5 cards</td>
+                    <td>The dealer seat</td>
+                  </tr>
+                  <tr>
+                    <th scope="row"><a href="#baccarat">Baccarat</a></th>
+                    <td>Unlimited</td>
+                    <td>Nothing — you bet</td>
+                    <td>The house</td>
+                  </tr>
+                  <tr>
+                    <th scope="row"><a href="#blackjack">Blackjack</a></th>
+                    <td>1–7</td>
+                    <td>2 cards</td>
+                    <td>The house</td>
+                  </tr>
+                  <tr>
+                    <th scope="row"><a href="#call-break">Call Break</a></th>
+                    <td>4</td>
+                    <td>13 cards</td>
+                    <td>The other players</td>
+                  </tr>
+                  <tr>
+                    <th scope="row"><a href="#tongits-go">Tongits Go</a></th>
+                    <td>3</td>
+                    <td>12 cards</td>
+                    <td>The other players</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+
+          <section id="tutorials" aria-labelledby="tutorials-title">
+            <div class="section-head">
+              <h2 id="tutorials-title">How to play</h2>
+              <p>
+                Each tutorial follows the same order: the deal, the turn, the
+                scoring, then the table controls.
+              </p>
+            </div>
+
+            <!-- 01 -->
+            <article class="game" id="texas-holdem" aria-labelledby="t01">
+              <div class="game__head">
+                <p class="game__num">01</p>
+                <div>
+                  <h2 id="t01">Texas Hold'em Poker</h2>
+                  <p>
+                    The house game. You hold two private cards, five community
+                    cards are dealt face up in the middle, and the best
+                    five-card hand you can build from those seven takes the pot.
+                  </p>
+                  <ul class="tags">
+                    <li>Cards</li>
+                    <li>2–9 seats</li>
+                    <li>Betting rounds</li>
+                  </ul>
+                </div>
+              </div>
+
+              <div class="game__body">
+                <ol class="steps">
+                  <li>
+                    <strong>Post the blinds</strong>
+                    Two seats left of the dealer button post the small and big
+                    blind. The buy-in and blind level are printed in the table
+                    header, for example <em>Buy in 200K–1M, blind 5K–10K</em>.
+                  </li>
+                  <li>
+                    <strong>Pre-flop</strong>
+                    Everyone gets two hole cards. Starting left of the big
+                    blind, each seat folds, calls or raises.
+                  </li>
+                  <li>
+                    <strong>Flop, turn, river</strong>
+                    Three community cards, then one, then one more — with a
+                    betting round after each. Check when nobody has bet; call,
+                    raise or fold when they have.
+                  </li>
+                  <li>
+                    <strong>Showdown</strong>
+                    The last aggressor shows first. The client names the winning
+                    hand on the table banner (<em>Straight A 2 3 4 5</em>) and
+                    pushes the pot.
+                  </li>
+                </ol>
+
+                <aside class="facts">
+                  <h3 class="facts__title">Table facts</h3>
+                  <dl>
+                    <dt>Deck</dt>
+                    <dd>52 cards, no joker</dd>
+                    <dt>Your hand</dt>
+                    <dd>Best 5 of your 7 cards</dd>
+                    <dt>Actions</dt>
+                    <dd>Fold, check, call, raise, all in</dd>
+                    <dt>Clock</dt>
+                    <dd>Slow and fast tables; the label is in the header</dd>
+                    <dt>Jackpot</dt>
+                    <dd>Optional side bet, bought before the deal</dd>
+                  </dl>
+                  <p class="note">
+                    <b>Beginner tip</b>
+                    Fold most starting hands. Position matters more than
+                    pretty cards — acting last on every street is worth more
+                    than a suited connector.
+                  </p>
+                </aside>
+              </div>
+
+              <ul class="shots">
+                <li>
+                  <figure>
+                    <img src="sample-data/01-poker.png" alt="Texas Hold'em table with five community cards and the winning hand banner reading Straight" loading="lazy" />
+                    <figcaption>Showdown: the banner names the winning hand.</figcaption>
+                  </figure>
+                </li>
+                <li>
+                  <figure>
+                    <img src="sample-data/01-poker04.png" alt="Portrait phone view of a Hold'em table with the action buttons at the bottom" loading="lazy" />
+                    <figcaption>Portrait layout — action buttons sit under your cards.</figcaption>
+                  </figure>
+                </li>
+              </ul>
+            </article>
+
+            <!-- 02 -->
+            <article class="game" id="capsa-banting" aria-labelledby="t02">
+              <div class="game__head">
+                <p class="game__num">02</p>
+                <div>
+                  <h2 id="t02">Capsa Banting</h2>
+                  <p>
+                    Known elsewhere as Big Two. Four players, thirteen cards
+                    each, and one job: get rid of every card before anyone else
+                    does.
+                  </p>
+                  <ul class="tags">
+                    <li>Cards</li>
+                    <li>4 seats</li>
+                    <li>Shedding</li>
+                  </ul>
+                </div>
+              </div>
+
+              <div class="game__body">
+                <ol class="steps">
+                  <li>
+                    <strong>The whole deck goes out</strong>
+                    Fifty-two cards, thirteen to each of the four seats.
+                  </li>
+                  <li>
+                    <strong>Lowest card opens</strong>
+                    The seat holding the 3 of diamonds leads first and must
+                    include that card in the opening play.
+                  </li>
+                  <li>
+                    <strong>Follow or pass</strong>
+                    Each play must match the shape of the lead — single for
+                    single, pair for pair, five-card hand for five-card hand —
+                    and must beat it. Otherwise press <em>Pass</em>. Passing
+                    locks you out until the round is won and a new lead starts.
+                  </li>
+                  <li>
+                    <strong>Empty your hand</strong>
+                    First player out wins the round. The others pay on the cards
+                    still in hand, and the result board shows each seat's reward
+                    and card price.
+                  </li>
+                </ol>
+
+                <aside class="facts">
+                  <h3 class="facts__title">Table facts</h3>
+                  <dl>
+                    <dt>Card order</dt>
+                    <dd>3 4 5 6 7 8 9 10 J Q K A 2 — the 2 is highest</dd>
+                    <dt>Suit order</dt>
+                    <dd>♦ lowest, then ♣, ♥, ♠ highest</dd>
+                    <dt>Legal shapes</dt>
+                    <dd>Single, pair, three of a kind, five-card poker hand</dd>
+                    <dt>Five-card rank</dt>
+                    <dd>Straight &lt; flush &lt; full house &lt; four of a kind &lt; straight flush</dd>
+                    <dt>Controls</dt>
+                    <dd>Play, Pass, Clear, Hint</dd>
+                  </dl>
+                  <p class="note">
+                    <b>Watch the 2s</b>
+                    Single 2s are unbeatable as singles. Holding one is the
+                    cheapest way to take back the lead late in a round.
+                  </p>
+                </aside>
+              </div>
+
+              <ul class="shots">
+                <li>
+                  <figure>
+                    <img src="sample-data/02-capsa-banting01.png" alt="Capsa Banting result board listing reward, card price and total for each player" loading="lazy" />
+                    <figcaption>The result board settles rewards and card price.</figcaption>
+                  </figure>
+                </li>
+                <li>
+                  <figure>
+                    <img src="sample-data/02-capsa-banting02.png" alt="Capsa Banting table in play with a hand of thirteen cards at the bottom" loading="lazy" />
+                    <figcaption>Your thirteen cards, with Play, Pass and Hint.</figcaption>
+                  </figure>
+                </li>
+              </ul>
+            </article>
+
+            <!-- 03 -->
+            <article class="game" id="capsa-susun" aria-labelledby="t03">
+              <div class="game__head">
+                <p class="game__num">03</p>
+                <div>
+                  <h2 id="t03">Capsa Susun</h2>
+                  <p>
+                    Chinese Poker. The same thirteen cards, but instead of
+                    playing them out you arrange them into three separate poker
+                    hands and compare each line against every opponent.
+                  </p>
+                  <ul class="tags">
+                    <li>Cards</li>
+                    <li>2–4 seats</li>
+                    <li>Arranging</li>
+                  </ul>
+                </div>
+              </div>
+
+              <div class="game__body">
+                <ol class="steps">
+                  <li>
+                    <strong>Take thirteen cards</strong>
+                    Each seat is dealt thirteen cards and gets a fixed timer to
+                    sort them.
+                  </li>
+                  <li>
+                    <strong>Build three rows</strong>
+                    Bottom row five cards, middle row five cards, top row three
+                    cards.
+                  </li>
+                  <li>
+                    <strong>Keep the order legal</strong>
+                    Bottom must be stronger than or equal to middle, and middle
+                    stronger than or equal to top. Break that and your hand is
+                    fouled — you lose every line for the round.
+                  </li>
+                  <li>
+                    <strong>Compare and settle</strong>
+                    Rows are compared row against row with every other player.
+                    Each row won scores a unit; sweeping all three rows against
+                    one opponent scores a bonus.
+                  </li>
+                </ol>
+
+                <aside class="facts">
+                  <h3 class="facts__title">Table facts</h3>
+                  <dl>
+                    <dt>Rows</dt>
+                    <dd>5 bottom · 5 middle · 3 top</dd>
+                    <dt>Top row</dt>
+                    <dd>Three cards only — pairs and trips, no straights</dd>
+                    <dt>Foul</dt>
+                    <dd>Rows out of order; all lines lost</dd>
+                    <dt>Bonuses</dt>
+                    <dd>Paid for premium rows and for sweeping an opponent</dd>
+                    <dt>Auto-arrange</dt>
+                    <dd>The client can sort for you before the timer expires</dd>
+                  </dl>
+                  <p class="note">
+                    <b>Sort from the bottom up</b>
+                    Place your strongest five first, then check the middle can
+                    still legally sit under it. Most fouls happen when a good
+                    top row is set too early.
+                  </p>
+                </aside>
+              </div>
+
+              <ul class="shots">
+                <li>
+                  <figure>
+                    <img src="sample-data/03-capsa-susun01.png" alt="Capsa Susun table showing the three-row arrangement in progress" loading="lazy" />
+                    <figcaption>Three rows: bottom, middle, top.</figcaption>
+                  </figure>
+                </li>
+                <li>
+                  <figure>
+                    <img src="sample-data/03-capsa-susun02.png" alt="Capsa Susun hand being arranged with the sorting controls visible" loading="lazy" />
+                    <figcaption>Arrange before the timer runs out.</figcaption>
+                  </figure>
+                </li>
+                <li>
+                  <figure>
+                    <img src="sample-data/03-capsa-susun03.png" alt="Capsa Susun showdown comparing every row between players" loading="lazy" />
+                    <figcaption>Every row is compared with every opponent.</figcaption>
+                  </figure>
+                </li>
+              </ul>
+            </article>
+
+            <!-- 04 -->
+            <article class="game" id="baccarat" aria-labelledby="t04">
+              <div class="game__head">
+                <p class="game__num">04</p>
+                <div>
+                  <h2 id="t04">Baccarat</h2>
+                  <p>
+                    You are not dealt anything — you bet on which of two hands,
+                    Player or Banker, will finish closest to nine. The drawing
+                    rules are fixed, so no decisions are left to you after the
+                    bet.
+                  </p>
+                  <ul class="tags">
+                    <li>Cards</li>
+                    <li>Unlimited seats</li>
+                    <li>Betting</li>
+                  </ul>
+                </div>
+              </div>
+
+              <div class="game__body">
+                <ol class="steps">
+                  <li>
+                    <strong>Place your chips</strong>
+                    Bet Player, Banker or Tie during the betting window. Side
+                    bets on Player Pair and Banker Pair sit beside the main
+                    boxes.
+                  </li>
+                  <li>
+                    <strong>Two cards each</strong>
+                    Player and Banker are dealt two cards face up.
+                  </li>
+                  <li>
+                    <strong>Count to nine</strong>
+                    Add the card values and drop the tens digit: 7 + 8 = 15,
+                    which counts as 5. Aces are 1, and 10, J, Q and K are worth
+                    zero.
+                  </li>
+                  <li>
+                    <strong>The third card is automatic</strong>
+                    A total of 8 or 9 on either side is a natural and stands.
+                    Otherwise the fixed drawing rules decide whether a third
+                    card comes out. Nothing is left to choose.
+                  </li>
+                </ol>
+
+                <aside class="facts">
+                  <h3 class="facts__title">Table facts</h3>
+                  <dl>
+                    <dt>Player bet</dt>
+                    <dd>Pays even money</dd>
+                    <dt>Banker bet</dt>
+                    <dd>Pays even money, less the standard 5% commission</dd>
+                    <dt>Tie bet</dt>
+                    <dd>Pays at long odds and loses on any non-tie</dd>
+                    <dt>Card values</dt>
+                    <dd>A = 1 · 2–9 face value · 10, J, Q, K = 0</dd>
+                    <dt>Roadmaps</dt>
+                    <dd>The bead and big road track past results</dd>
+                  </dl>
+                  <p class="note">
+                    <b>About the roads</b>
+                    The roadmaps record history, they do not predict it. Every
+                    round is independent of the last.
+                  </p>
+                </aside>
+              </div>
+
+              <ul class="shots">
+                <li>
+                  <figure>
+                    <img src="sample-data/04-baccarat01.png" alt="Baccarat table with Player, Banker and Tie betting boxes" loading="lazy" />
+                    <figcaption>Betting boxes and the round timer.</figcaption>
+                  </figure>
+                </li>
+                <li>
+                  <figure>
+                    <img src="sample-data/04-baccarat02.png" alt="Baccarat result with both hands turned over and the roadmaps below" loading="lazy" />
+                    <figcaption>Result, with the roadmaps updating underneath.</figcaption>
+                  </figure>
+                </li>
+              </ul>
+            </article>
+
+            <!-- 05 -->
+            <article class="game" id="ceme" aria-labelledby="t05">
+              <div class="game__head">
+                <p class="game__num">05</p>
+                <div>
+                  <h2 id="t05">Ceme</h2>
+                  <p>
+                    A domino game played against one dealer seat. You get two
+                    tiles, add the pips, and the last digit of that total is
+                    your score. Nine is the best you can hold.
+                  </p>
+                  <ul class="tags">
+                    <li>Dominoes</li>
+                    <li>2–8 seats</li>
+                    <li>Versus dealer</li>
+                  </ul>
+                </div>
+              </div>
+
+              <div class="game__body">
+                <ol class="steps">
+                  <li>
+                    <strong>Bet before the deal</strong>
+                    Choose your stake while the betting window is open. One seat
+                    at the table holds the dealer position and covers everyone.
+                  </li>
+                  <li>
+                    <strong>Take two tiles</strong>
+                    Every player and the dealer receive two dominoes from the
+                    28-tile set.
+                  </li>
+                  <li>
+                    <strong>Add the pips, drop the tens</strong>
+                    A 5-6 and a 3-4 make 18, which scores 8. The highest normal
+                    score is 9.
+                  </li>
+                  <li>
+                    <strong>Compare with the dealer only</strong>
+                    You beat the dealer or you do not; other players are
+                    irrelevant to your result. The dealer takes ties.
+                  </li>
+                </ol>
+
+                <aside class="facts">
+                  <h3 class="facts__title">Table facts</h3>
+                  <dl>
+                    <dt>Tiles</dt>
+                    <dd>28-tile double-six set</dd>
+                    <dt>Your hand</dt>
+                    <dd>2 tiles, scored as total pips modulo 10</dd>
+                    <dt>Best score</dt>
+                    <dd>9</dd>
+                    <dt>Ties</dt>
+                    <dd>Go to the dealer</dd>
+                    <dt>Special hands</dt>
+                    <dd>Paid at a multiplier; the table info panel lists the exact set in play</dd>
+                  </dl>
+                  <p class="note">
+                    <b>Check the info panel</b>
+                    Which special tile combinations pay, and at what multiple,
+                    varies by table. Open the table info before you sit rather
+                    than assuming the last room's rules.
+                  </p>
+                </aside>
+              </div>
+
+              <ul class="shots">
+                <li>
+                  <figure>
+                    <img src="sample-data/05-ceme01.png" alt="Ceme table with players holding two dominoes each against the dealer seat" loading="lazy" />
+                    <figcaption>Every seat plays the dealer, not each other.</figcaption>
+                  </figure>
+                </li>
+                <li>
+                  <figure>
+                    <img src="sample-data/05-ceme02.png" alt="Ceme round settling with each player's two-tile score shown" loading="lazy" />
+                    <figcaption>Scores settle tile by tile.</figcaption>
+                  </figure>
+                </li>
+                <li>
+                  <figure>
+                    <img src="sample-data/05-ceme03.png" alt="Close view of a Ceme hand and the betting controls" loading="lazy" />
+                    <figcaption>Stake is set before the tiles are dealt.</figcaption>
+                  </figure>
+                </li>
+              </ul>
+            </article>
+
+            <!-- 06 -->
+            <article class="game" id="ceme-keliling" aria-labelledby="t06">
+              <div class="game__head">
+                <p class="game__num">06</p>
+                <div>
+                  <h2 id="t06">Ceme Keliling</h2>
+                  <p>
+                    Ceme with a travelling dealer. The rules of the hand are
+                    identical; what changes is that the dealer seat moves around
+                    the table, so everyone banks in turn.
+                  </p>
+                  <ul class="tags">
+                    <li>Dominoes</li>
+                    <li>2–8 seats</li>
+                    <li>Rotating dealer</li>
+                  </ul>
+                </div>
+              </div>
+
+              <div class="game__body">
+                <ol class="steps">
+                  <li>
+                    <strong>Learn Ceme first</strong>
+                    The deal, the scoring and the tie rule are exactly as in
+                    <a href="#ceme">Ceme</a>.
+                  </li>
+                  <li>
+                    <strong>The bank moves</strong>
+                    After each round the dealer position passes to the next
+                    seat. Your turn comes around whether you want it or not.
+                  </li>
+                  <li>
+                    <strong>Dealing has a cost</strong>
+                    While you hold the bank you pay every player who beats you,
+                    so you need enough chips in front of you to cover the table.
+                  </li>
+                  <li>
+                    <strong>Banking wins the ties</strong>
+                    The dealer takes equal scores — that edge is the
+                    compensation for the risk.
+                  </li>
+                </ol>
+
+                <aside class="facts">
+                  <h3 class="facts__title">Table facts</h3>
+                  <dl>
+                    <dt>Differs from Ceme</dt>
+                    <dd>Only in who holds the bank</dd>
+                    <dt>Rotation</dt>
+                    <dd>One round per seat, clockwise</dd>
+                    <dt>Requirement</dt>
+                    <dd>Minimum balance to take the dealer seat</dd>
+                    <dt>Ties</dt>
+                    <dd>Go to whoever is dealing that round</dd>
+                  </dl>
+                  <p class="note">
+                    <b>Sit with a cushion</b>
+                    Buy in deeper than you would for standard Ceme. A short
+                    stack cannot take the bank when the rotation reaches it.
+                  </p>
+                </aside>
+              </div>
+
+              <ul class="shots">
+                <li>
+                  <figure>
+                    <img src="sample-data/06-cemekeliling01.png" alt="Ceme Keliling table showing the dealer marker on a player seat" loading="lazy" />
+                    <figcaption>The dealer marker sits with a player, not the house.</figcaption>
+                  </figure>
+                </li>
+                <li>
+                  <figure>
+                    <img src="sample-data/06-cemekeliling02.png" alt="Ceme Keliling round in progress with tiles dealt to every seat" loading="lazy" />
+                    <figcaption>Same hand, different bank each round.</figcaption>
+                  </figure>
+                </li>
+              </ul>
+            </article>
+
+            <!-- 07 -->
+            <article class="game" id="super10" aria-labelledby="t07">
+              <div class="game__head">
+                <p class="game__num">07</p>
+                <div>
+                  <h2 id="t07">Super10</h2>
+                  <p>
+                    Three cards, counted to ten instead of nine. Picture cards
+                    are worth ten each, which makes three of them the best hand
+                    on the table.
+                  </p>
+                  <ul class="tags">
+                    <li>Cards</li>
+                    <li>2–6 seats</li>
+                    <li>Versus dealer</li>
+                  </ul>
+                </div>
+              </div>
+
+              <div class="game__body">
+                <ol class="steps">
+                  <li>
+                    <strong>Stake first</strong>
+                    Place your bet while the window is open. One seat deals.
+                  </li>
+                  <li>
+                    <strong>Three cards each</strong>
+                    Every seat, dealer included, receives three cards.
+                  </li>
+                  <li>
+                    <strong>Add and drop the tens</strong>
+                    Ace counts 1, number cards count face value, and J, Q and K
+                    count 10. A 7, 8 and 9 make 24, which scores 4. Ten is the
+                    top score.
+                  </li>
+                  <li>
+                    <strong>Beat the dealer</strong>
+                    Only your hand versus the dealer's matters. Three picture
+                    cards — Super Ten — is the strongest hand and is paid at a
+                    multiplier.
+                  </li>
+                </ol>
+
+                <aside class="facts">
+                  <h3 class="facts__title">Table facts</h3>
+                  <dl>
+                    <dt>Card values</dt>
+                    <dd>A = 1 · 2–10 face value · J, Q, K = 10</dd>
+                    <dt>Your hand</dt>
+                    <dd>3 cards, total modulo 10</dd>
+                    <dt>Best hand</dt>
+                    <dd>Super Ten — three picture cards</dd>
+                    <dt>Ties</dt>
+                    <dd>Go to the dealer</dd>
+                    <dt>Related</dt>
+                    <dd>Same family as <a href="#samgong">Samgong</a></dd>
+                  </dl>
+                  <p class="note">
+                    <b>Ten is the target, not nine</b>
+                    Coming from Ceme or Baccarat, this is the one number to
+                    re-learn. A total of 0 is the worst hand you can hold.
+                  </p>
+                </aside>
+              </div>
+
+              <ul class="shots">
+                <li>
+                  <figure>
+                    <img src="sample-data/07-superten01.png" alt="Super10 table with three cards dealt to each seat" loading="lazy" />
+                    <figcaption>Three cards a seat, counted to ten.</figcaption>
+                  </figure>
+                </li>
+              </ul>
+            </article>
+
+            <!-- 08 -->
+            <article class="game" id="niu-niu" aria-labelledby="t08">
+              <div class="game__head">
+                <p class="game__num">08</p>
+                <div>
+                  <h2 id="t08">Niu Niu</h2>
+                  <p>
+                    Bull Bull. Five cards, of which three must add to a multiple
+                    of ten — that is your bull. The other two decide how much
+                    you win.
+                  </p>
+                  <ul class="tags">
+                    <li>Cards</li>
+                    <li>2–6 seats</li>
+                    <li>Versus dealer</li>
+                  </ul>
+                </div>
+              </div>
+
+              <div class="game__body">
+                <ol class="steps">
+                  <li>
+                    <strong>Bet, then take five cards</strong>
+                    Stakes are placed before the deal; every seat gets five
+                    cards.
+                  </li>
+                  <li>
+                    <strong>Find the bull</strong>
+                    Look for any three cards totalling a multiple of ten. If no
+                    three cards do, you have no bull and hold the weakest hand.
+                  </li>
+                  <li>
+                    <strong>Score the other two</strong>
+                    Add the remaining two cards and drop the tens digit. That
+                    number, 1 to 9, is your score. Two cards making exactly ten
+                    or twenty is Niu Niu — the best hand.
+                  </li>
+                  <li>
+                    <strong>Settle against the dealer</strong>
+                    Higher scores pay more: the top scores carry a payout
+                    multiplier rather than paying flat.
+                  </li>
+                </ol>
+
+                <aside class="facts">
+                  <h3 class="facts__title">Table facts</h3>
+                  <dl>
+                    <dt>Card values</dt>
+                    <dd>A = 1 · 2–10 face value · J, Q, K = 10</dd>
+                    <dt>Bull</dt>
+                    <dd>Any 3 cards summing to a multiple of 10</dd>
+                    <dt>Score</dt>
+                    <dd>Remaining 2 cards, modulo 10</dd>
+                    <dt>Best hand</dt>
+                    <dd>Niu Niu — score of 10</dd>
+                    <dt>Worst hand</dt>
+                    <dd>No bull at all</dd>
+                  </dl>
+                  <p class="note">
+                    <b>Let the client check</b>
+                    The table highlights your best legal split automatically.
+                    Verify it rather than hunting for the combination by hand
+                    under the clock.
+                  </p>
+                </aside>
+              </div>
+
+              <ul class="shots">
+                <li>
+                  <figure>
+                    <img src="sample-data/08-niuniu01.png" alt="Niu Niu hand of five cards split into a bull of three and a score of two" loading="lazy" />
+                    <figcaption>Three cards form the bull, two form the score.</figcaption>
+                  </figure>
+                </li>
+                <li>
+                  <figure>
+                    <img src="sample-data/08-niuniu02.png" alt="Niu Niu table with every seat's five cards revealed at settlement" loading="lazy" />
+                    <figcaption>Settlement against the dealer seat.</figcaption>
+                  </figure>
+                </li>
+              </ul>
+            </article>
+
+            <!-- 09 -->
+            <article class="game" id="omaha" aria-labelledby="t09">
+              <div class="game__head">
+                <p class="game__num">09</p>
+                <div>
+                  <h2 id="t09">Omaha Poker</h2>
+                  <p>
+                    Hold'em's bigger sibling. Four hole cards instead of two —
+                    but you must use exactly two of them, and exactly three from
+                    the board, to make your hand.
+                  </p>
+                  <ul class="tags">
+                    <li>Cards</li>
+                    <li>2–9 seats</li>
+                    <li>Betting rounds</li>
+                  </ul>
+                </div>
+              </div>
+
+              <div class="game__body">
+                <ol class="steps">
+                  <li>
+                    <strong>Four cards down</strong>
+                    Blinds are posted as in Hold'em, then each seat receives
+                    four private cards.
+                  </li>
+                  <li>
+                    <strong>Same four streets</strong>
+                    Pre-flop, flop, turn, river — with a betting round after
+                    each.
+                  </li>
+                  <li>
+                    <strong>Two from hand, three from board</strong>
+                    Always. Four hearts in your hand plus one on the board is
+                    not a flush, because only two of your cards may play.
+                  </li>
+                  <li>
+                    <strong>Showdown</strong>
+                    The banner names the best legal combination — the client
+                    applies the two-and-three rule for you.
+                  </li>
+                </ol>
+
+                <aside class="facts">
+                  <h3 class="facts__title">Table facts</h3>
+                  <dl>
+                    <dt>Hole cards</dt>
+                    <dd>4</dd>
+                    <dt>Must use</dt>
+                    <dd>Exactly 2 hole cards + 3 community cards</dd>
+                    <dt>Hand ranking</dt>
+                    <dd>Identical to <a href="#hand-ranking">Hold'em</a></dd>
+                    <dt>Typical result</dt>
+                    <dd>Stronger hands than Hold'em; two pair wins far less often</dd>
+                  </dl>
+                  <p class="note">
+                    <b>Read the board twice</b>
+                    The most common beginner loss in Omaha is a flush that was
+                    never there. Count two cards from your hand, every time.
+                  </p>
+                </aside>
+              </div>
+
+              <ul class="shots">
+                <li>
+                  <figure>
+                    <img src="sample-data/09-pokeromaha02.png" alt="Omaha table at showdown with the banner reading Two Pair Q Q K K" loading="lazy" />
+                    <figcaption>Omaha showdown — the banner shows the legal five.</figcaption>
+                  </figure>
+                </li>
+              </ul>
+            </article>
+
+            <!-- 10 -->
+            <article class="game" id="domino-classic" aria-labelledby="t10">
+              <div class="game__head">
+                <p class="game__num">10</p>
+                <div>
+                  <h2 id="t10">Domino Classic</h2>
+                  <p>
+                    Gaple. Tiles are played out onto a chain, each one matching
+                    an open end, and the first player with nothing left in hand
+                    takes the round.
+                  </p>
+                  <ul class="tags">
+                    <li>Dominoes</li>
+                    <li>4 seats</li>
+                    <li>Shedding</li>
+                  </ul>
+                </div>
+              </div>
+
+              <div class="game__body">
+                <ol class="steps">
+                  <li>
+                    <strong>Seven tiles each</strong>
+                    Four players draw seven tiles from the 28-tile set.
+                  </li>
+                  <li>
+                    <strong>Open the chain</strong>
+                    The opening tile starts the line; play then passes around
+                    the table.
+                  </li>
+                  <li>
+                    <strong>Match an open end</strong>
+                    Your tile must share a number with one of the two ends of
+                    the chain. No matching tile means you pass.
+                  </li>
+                  <li>
+                    <strong>Win by emptying — or by counting</strong>
+                    Play your last tile and the round is yours. If the chain
+                    gets blocked and nobody can move, the lowest total pips
+                    still in hand wins.
+                  </li>
+                </ol>
+
+                <aside class="facts">
+                  <h3 class="facts__title">Table facts</h3>
+                  <dl>
+                    <dt>Tiles</dt>
+                    <dd>28-tile double-six set</dd>
+                    <dt>Hand size</dt>
+                    <dd>7 tiles</dd>
+                    <dt>Turn</dt>
+                    <dd>Match either open end, or pass</dd>
+                    <dt>Blocked game</dt>
+                    <dd>Fewest pips in hand wins</dd>
+                    <dt>Settlement</dt>
+                    <dd>Losers pay on the pips they are left holding</dd>
+                  </dl>
+                  <p class="note">
+                    <b>Dump the doubles early</b>
+                    A double only ever matches one number. Left until late it is
+                    the tile that strands you with a full hand.
+                  </p>
+                </aside>
+              </div>
+
+              <ul class="shots">
+                <li>
+                  <figure>
+                    <img src="sample-data/10-domino-classic01.png" alt="Domino Classic table with a chain of tiles and seven tiles in hand" loading="lazy" />
+                    <figcaption>Match either open end of the chain.</figcaption>
+                  </figure>
+                </li>
+              </ul>
+            </article>
+
+            <!-- 11 -->
+            <article class="game" id="samgong" aria-labelledby="t11">
+              <div class="game__head">
+                <p class="game__num">11</p>
+                <div>
+                  <h2 id="t11">Samgong</h2>
+                  <p>
+                    Three-card Samgong, sometimes called Three Pictures. Count
+                    your three cards toward a target, and try to hold the three
+                    picture cards that beat everything.
+                  </p>
+                  <ul class="tags">
+                    <li>Cards</li>
+                    <li>2–6 seats</li>
+                    <li>Versus dealer</li>
+                  </ul>
+                </div>
+              </div>
+
+              <div class="game__body">
+                <ol class="steps">
+                  <li>
+                    <strong>Bet, then three cards</strong>
+                    Stake before the deal; each seat and the dealer take three
+                    cards.
+                  </li>
+                  <li>
+                    <strong>Count them</strong>
+                    Ace is 1, number cards are face value, and J, Q and K count
+                    10 each.
+                  </li>
+                  <li>
+                    <strong>Three pictures is the top hand</strong>
+                    J, Q or K in all three slots — thirty — is Samgong and beats
+                    every other holding.
+                  </li>
+                  <li>
+                    <strong>Otherwise drop the tens</strong>
+                    Any other hand scores its total modulo ten, and is compared
+                    with the dealer's hand alone.
+                  </li>
+                </ol>
+
+                <aside class="facts">
+                  <h3 class="facts__title">Table facts</h3>
+                  <dl>
+                    <dt>Card values</dt>
+                    <dd>A = 1 · 2–10 face value · J, Q, K = 10</dd>
+                    <dt>Top hand</dt>
+                    <dd>Samgong — three picture cards</dd>
+                    <dt>Normal score</dt>
+                    <dd>Total modulo 10</dd>
+                    <dt>Ties</dt>
+                    <dd>Go to the dealer</dd>
+                    <dt>Related</dt>
+                    <dd>See <a href="#super10">Super10</a> for the ten-target variant</dd>
+                  </dl>
+                  <p class="note">
+                    <b>Two pictures is not two of anything</b>
+                    J + Q = 20, which scores zero. Picture cards are only worth
+                    holding as a complete set of three.
+                  </p>
+                </aside>
+              </div>
+
+              <ul class="shots">
+                <li>
+                  <figure>
+                    <img src="sample-data/11-samgong01.png" alt="Samgong table with three cards dealt to each player and the dealer" loading="lazy" />
+                    <figcaption>Three cards, dealer-comparison scoring.</figcaption>
+                  </figure>
+                </li>
+              </ul>
+            </article>
+
+            <!-- 12 -->
+            <article class="game" id="blackjack" aria-labelledby="t12">
+              <div class="game__head">
+                <p class="game__num">12</p>
+                <div>
+                  <h2 id="t12">Blackjack</h2>
+                  <p>
+                    Get closer to twenty-one than the dealer without going over.
+                    The only game here where you choose how many cards you take.
+                  </p>
+                  <ul class="tags">
+                    <li>Cards</li>
+                    <li>1–7 seats</li>
+                    <li>Versus house</li>
+                  </ul>
+                </div>
+              </div>
+
+              <div class="game__body">
+                <ol class="steps">
+                  <li>
+                    <strong>Bet and take two cards</strong>
+                    You and the dealer each get two cards; one of the dealer's
+                    is face up.
+                  </li>
+                  <li>
+                    <strong>Hit or stand</strong>
+                    Draw more cards while you are under twenty-one, or stand on
+                    what you have. Over twenty-one is a bust and the bet is
+                    lost immediately.
+                  </li>
+                  <li>
+                    <strong>Double or split</strong>
+                    Double down for one final card at twice the stake. A pair
+                    can be split into two separate hands.
+                  </li>
+                  <li>
+                    <strong>The dealer plays last</strong>
+                    The dealer draws to a fixed total and stands — no judgement
+                    involved. Nearest to twenty-one wins; equal totals push.
+                  </li>
+                </ol>
+
+                <aside class="facts">
+                  <h3 class="facts__title">Table facts</h3>
+                  <dl>
+                    <dt>Card values</dt>
+                    <dd>A = 1 or 11 · 2–10 face value · J, Q, K = 10</dd>
+                    <dt>Blackjack</dt>
+                    <dd>Ace + ten-value card on the first two cards</dd>
+                    <dt>Actions</dt>
+                    <dd>Hit, stand, double, split, insurance</dd>
+                    <dt>Push</dt>
+                    <dd>Equal totals — your stake comes back</dd>
+                    <dt>Dealer rule</dt>
+                    <dd>Fixed; shown on the table felt</dd>
+                  </dl>
+                  <p class="note">
+                    <b>Never take insurance</b>
+                    It is a separate bet on the dealer's hole card, priced in
+                    the house's favour. Skip it and play your own hand.
+                  </p>
+                </aside>
+              </div>
+
+              <ul class="shots">
+                <li>
+                  <figure>
+                    <img src="sample-data/12-blackjack01.png" alt="Blackjack table with the dealer's up card and hit and stand controls" loading="lazy" />
+                    <figcaption>Hit, stand, double and split sit under your hand.</figcaption>
+                  </figure>
+                </li>
+              </ul>
+            </article>
+
+            <!-- 13 -->
+            <article class="game" id="call-break" aria-labelledby="t13">
+              <div class="game__head">
+                <p class="game__num">13</p>
+                <div>
+                  <h2 id="t13">Call Break</h2>
+                  <p>
+                    A trick-taking game with a promise attached. You call how
+                    many tricks you will win, and you are scored on whether you
+                    keep your word.
+                  </p>
+                  <ul class="tags">
+                    <li>Cards</li>
+                    <li>4 seats</li>
+                    <li>Trick taking</li>
+                  </ul>
+                </div>
+              </div>
+
+              <div class="game__body">
+                <ol class="steps">
+                  <li>
+                    <strong>Thirteen cards, then a call</strong>
+                    The full deck is dealt to four players. Each seat calls the
+                    number of tricks it expects to take.
+                  </li>
+                  <li>
+                    <strong>Spades are always trumps</strong>
+                    Any spade beats any card of another suit.
+                  </li>
+                  <li>
+                    <strong>Follow suit, and beat it if you can</strong>
+                    You must follow the suit led and play higher than the
+                    current winning card when possible. Holding none of that
+                    suit, you must trump with a spade if you have one.
+                  </li>
+                  <li>
+                    <strong>Score the call</strong>
+                    Make your call and you score it, with a small bonus per
+                    extra trick. Fall short and you lose the full amount you
+                    called. Five rounds decide the game.
+                  </li>
+                </ol>
+
+                <aside class="facts">
+                  <h3 class="facts__title">Table facts</h3>
+                  <dl>
+                    <dt>Players</dt>
+                    <dd>4</dd>
+                    <dt>Trump</dt>
+                    <dd>Spades, fixed</dd>
+                    <dt>Tricks per round</dt>
+                    <dd>13</dd>
+                    <dt>Rounds</dt>
+                    <dd>5</dd>
+                    <dt>Failing a call</dt>
+                    <dd>Minus the whole call, not the difference</dd>
+                  </dl>
+                  <p class="note">
+                    <b>Call low</b>
+                    Overtricks are worth a fraction of a point; a missed call
+                    costs the lot. Bid the tricks you are sure of and treat the
+                    rest as upside.
+                  </p>
+                </aside>
+              </div>
+
+              <ul class="shots">
+                <li>
+                  <figure>
+                    <img src="sample-data/13-callbreak01.png" alt="Call Break table during the bidding step" loading="lazy" />
+                    <figcaption>Every seat calls before the first trick.</figcaption>
+                  </figure>
+                </li>
+                <li>
+                  <figure>
+                    <img src="sample-data/13-callbreak02.png" alt="Call Break trick in progress with spades trumping the led suit" loading="lazy" />
+                    <figcaption>Follow suit, or trump with a spade.</figcaption>
+                  </figure>
+                </li>
+              </ul>
+            </article>
+
+            <!-- 14 -->
+            <article class="game" id="speed-baccarat" aria-labelledby="t14">
+              <div class="game__head">
+                <p class="game__num">14</p>
+                <div>
+                  <h2 id="t14">Speed Baccarat</h2>
+                  <p>
+                    Baccarat with the pauses removed. Identical rules, identical
+                    payouts, roughly half a minute per round instead of a
+                    minute.
+                  </p>
+                  <ul class="tags">
+                    <li>Cards</li>
+                    <li>Unlimited seats</li>
+                    <li>Fast round</li>
+                  </ul>
+                </div>
+              </div>
+
+              <div class="game__body">
+                <ol class="steps">
+                  <li>
+                    <strong>Rules as standard</strong>
+                    Counting, the third-card rule and the payouts are exactly as
+                    in <a href="#baccarat">Baccarat</a>.
+                  </li>
+                  <li>
+                    <strong>Shorter betting window</strong>
+                    Fewer seconds to place chips. Set a repeat or double bet so
+                    a stake is ready before the window opens.
+                  </li>
+                  <li>
+                    <strong>Cards come face up immediately</strong>
+                    There is no squeeze or reveal animation — the result lands
+                    as soon as the hand is dealt.
+                  </li>
+                  <li>
+                    <strong>Pace yourself</strong>
+                    Roughly twice the rounds per hour means roughly twice the
+                    turnover. Decide a session limit before you sit.
+                  </li>
+                </ol>
+
+                <aside class="facts">
+                  <h3 class="facts__title">Table facts</h3>
+                  <dl>
+                    <dt>Differs from Baccarat</dt>
+                    <dd>Only in timing</dd>
+                    <dt>Round length</dt>
+                    <dd>About 27 seconds</dd>
+                    <dt>Bets</dt>
+                    <dd>Player, Banker, Tie and the pair side bets</dd>
+                    <dt>Helpers</dt>
+                    <dd>Repeat, double and undo on the bet bar</dd>
+                  </dl>
+                  <p class="note">
+                    <b>Undo has a deadline</b>
+                    The undo control stops working the instant betting closes.
+                    On a speed table that is sooner than the reflex expects.
+                  </p>
+                </aside>
+              </div>
+
+              <ul class="shots">
+                <li>
+                  <figure>
+                    <img src="sample-data/14-speed-baccarat01.png" alt="Speed Baccarat table with a short countdown on the betting window" loading="lazy" />
+                    <figcaption>Same table, shorter clock.</figcaption>
+                  </figure>
+                </li>
+              </ul>
+            </article>
+
+            <!-- 15 -->
+            <article class="game" id="tongits-go" aria-labelledby="t15">
+              <div class="game__head">
+                <p class="game__num">15</p>
+                <div>
+                  <h2 id="t15">Tongits Go</h2>
+                  <p>
+                    A three-player rummy from the Philippines. Draw, meld,
+                    discard — and get out before the other two, or be caught
+                    holding cards when someone else does.
+                  </p>
+                  <ul class="tags">
+                    <li>Cards</li>
+                    <li>3 seats</li>
+                    <li>Rummy</li>
+                  </ul>
+                </div>
+              </div>
+
+              <div class="game__body">
+                <ol class="steps">
+                  <li>
+                    <strong>Twelve cards each</strong>
+                    Three players take twelve cards; the dealer takes an extra
+                    one and plays first.
+                  </li>
+                  <li>
+                    <strong>Draw then discard</strong>
+                    On your turn take the top of the stock or the last discard,
+                    then throw one card away.
+                  </li>
+                  <li>
+                    <strong>Meld to lower your count</strong>
+                    Lay down sets of the same rank or runs in one suit. Melded
+                    cards no longer count against you, and you can add to melds
+                    already on the table.
+                  </li>
+                  <li>
+                    <strong>Go out, or call the fight</strong>
+                    Discarding your last card is Tongits and wins outright. You
+                    can instead challenge for a showdown — the lowest total of
+                    unmelded cards wins, and calling it with the higher count is
+                    the expensive way to lose.
+                  </li>
+                </ol>
+
+                <aside class="facts">
+                  <h3 class="facts__title">Table facts</h3>
+                  <dl>
+                    <dt>Players</dt>
+                    <dd>3</dd>
+                    <dt>Hand size</dt>
+                    <dd>12, or 13 for the dealer</dd>
+                    <dt>Melds</dt>
+                    <dd>Sets of equal rank, or runs in one suit</dd>
+                    <dt>Card points</dt>
+                    <dd>A = 1 · 2–10 face value · J, Q, K = 10</dd>
+                    <dt>Winning</dt>
+                    <dd>Tongits, a won challenge, or the stock running out</dd>
+                  </dl>
+                  <p class="note">
+                    <b>Count before you challenge</b>
+                    A challenge is only worth calling when your unmelded total
+                    is genuinely the lowest. The client shows your count — read
+                    it first.
+                  </p>
+                </aside>
+              </div>
+
+              <ul class="shots">
+                <li>
+                  <figure>
+                    <img src="sample-data/15-tongits-go01.png" alt="Tongits Go table with melds laid out and a hand of twelve cards" loading="lazy" />
+                    <figcaption>Melds on the table, unmelded cards against you.</figcaption>
+                  </figure>
+                </li>
+              </ul>
+            </article>
+          </section>
+
+          <section id="hand-ranking" aria-labelledby="hand-ranking-title">
+            <div class="section-head">
+              <h2 id="hand-ranking-title">Poker hand ranking</h2>
+              <p>
+                Used by Texas Hold'em, Omaha, and the five-card shapes in both
+                Capsa games. Strongest first.
+              </p>
+            </div>
+            <div class="table-scroll">
+              <table>
+                <caption>
+                  Five-card hands, strongest to weakest
+                </caption>
+                <thead>
+                  <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Hand</th>
+                    <th scope="col">What it is</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr><th scope="row">1</th><td>Royal flush</td><td>A K Q J 10, all one suit</td></tr>
+                  <tr><th scope="row">2</th><td>Straight flush</td><td>Five in sequence, all one suit</td></tr>
+                  <tr><th scope="row">3</th><td>Four of a kind</td><td>Four cards of the same rank</td></tr>
+                  <tr><th scope="row">4</th><td>Full house</td><td>Three of a kind plus a pair</td></tr>
+                  <tr><th scope="row">5</th><td>Flush</td><td>Five of one suit, any order</td></tr>
+                  <tr><th scope="row">6</th><td>Straight</td><td>Five in sequence, mixed suits</td></tr>
+                  <tr><th scope="row">7</th><td>Three of a kind</td><td>Three cards of the same rank</td></tr>
+                  <tr><th scope="row">8</th><td>Two pair</td><td>Two different pairs</td></tr>
+                  <tr><th scope="row">9</th><td>One pair</td><td>Two cards of the same rank</td></tr>
+                  <tr><th scope="row">10</th><td>High card</td><td>None of the above; highest card plays</td></tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="cta">
+              <h2>Ready to sit down?</h2>
+              <p>
+                Pick a game from the library and read its tutorial, or take the
+                integration guide instead if you are building against the
+                platform rather than playing on it.
+              </p>
+              <a class="btn btn--primary" href="#library">Browse the games</a>
+              <a class="btn" href="#">Integration guide</a>
+            </div>
+          </section>
+        </main>
+      </div>
+    </div>
+
+    <footer class="site-footer">
+      <div class="shell">
+        <nav class="nav-secondary" aria-label="Footer">
+          <ul>
+            <li><a href="#library">Games</a></li>
+            <li><a href="#tutorials">How to play</a></li>
+            <li><a href="#devices">Play anywhere</a></li>
+            <li><a href="#compare">Compare</a></li>
+            <li><a href="#hand-ranking">Hand ranking</a></li>
+            <li><a href="sample/index.html">Developer docs</a></li>
+            <li><a href="#responsible" aria-disabled="true">Responsible play (offline)</a></li>
+          </ul>
+        </nav>
+        <p>Play responsibly. 18+ only.</p>
+      </div>
+    </footer>
+
+    <a class="btn to-top" href="#top" aria-label="Back to top">
+      <svg
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.8"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        aria-hidden="true"
+        focusable="false"
+      >
+        <path d="M12 19.5V4.8M5.2 11.6 12 4.8l6.8 6.8" />
+      </svg>
+    </a>
+    <script>
+      // Theme: system preference by default, overridden by an explicit
+      // choice that is remembered per browser. The menu's open/close state is
+      // the native popover's business; this only sets the palette.
+      (function () {
+        var KEY = "pokerbolt-theme";
+        var DARK = { dark: true, felt: true, ember: true };
+        var root = document.documentElement;
+        var button = document.querySelector("[data-theme-toggle]");
+        var items = document.querySelectorAll("[data-theme-set]");
+        var media = window.matchMedia("(prefers-color-scheme: light)");
+
+        function current() {
+          return root.dataset.theme || (media.matches ? "light" : "dark");
+        }
+
+        var sun = button.querySelector('[data-icon="sun"]');
+        var moon = button.querySelector('[data-icon="moon"]');
+
+        // `hidden` is an HTMLElement property; an <svg> is an SVGElement, so
+        // the attribute has to be set directly.
+        function show(icon, on) {
+          if (on) icon.removeAttribute("hidden");
+          else icon.setAttribute("hidden", "");
+        }
+
+        function label() {
+          var name = current();
+          var dark = DARK[name] === true;
+          // The icon reports the theme in use, not the next one.
+          show(moon, dark);
+          show(sun, !dark);
+          button.setAttribute("aria-label", "Theme: " + name + ". Change it");
+          items.forEach(function (item) {
+            item.setAttribute(
+              "aria-pressed",
+              String(item.dataset.themeSet === name)
+            );
+          });
+        }
+
+        try {
+          var stored = localStorage.getItem(KEY);
+          // Anything else in storage is stale or hand-edited: ignore it.
+          if (document.querySelector('[data-theme-set="' + stored + '"]')) {
+            root.dataset.theme = stored;
+          }
+        } catch (e) {
+          // Private mode or blocked storage: fall back to the system setting.
+        }
+
+        label();
+        button.hidden = false;
+        media.addEventListener("change", label);
+
+        items.forEach(function (item) {
+          item.addEventListener("click", function () {
+            root.dataset.theme = item.dataset.themeSet;
+            try {
+              localStorage.setItem(KEY, root.dataset.theme);
+            } catch (e) {}
+            label();
+          });
+        });
+      })();
+
+      // Back to top: shown once the hero has left the viewport.
+      (function () {
+        var button = document.querySelector(".to-top");
+        var hero = document.querySelector(".hero");
+        if (!button || !hero) return;
+
+        new IntersectionObserver(function (entries) {
+          button.classList.toggle("is-visible", !entries[0].isIntersecting);
+        }).observe(hero);
+      })();
+
+      // Game index scroll spy: mark the entry for whichever game section is
+      // crossing the middle of the viewport. The band is a tenth of the
+      // viewport tall, so one section is active at a time.
+      (function () {
+        var links = new Map();
+        document.querySelectorAll(".toc a").forEach(function (a) {
+          links.set(a.hash.slice(1), a);
+        });
+        var sidebar = document.querySelector(".sidebar");
+
+        var spy = new IntersectionObserver(
+          function (entries) {
+            entries.forEach(function (entry) {
+              if (!entry.isIntersecting) return;
+              var link = links.get(entry.target.id);
+              if (!link) return;
+              links.forEach(function (a) {
+                a.removeAttribute("aria-current");
+              });
+              link.setAttribute("aria-current", "true");
+              // Keep the active entry visible, but only when the index is its
+              // own scroll container — otherwise this would move the page.
+              if (sidebar && sidebar.scrollHeight > sidebar.clientHeight) {
+                link.scrollIntoView({ block: "nearest" });
+              }
+            });
+          },
+          { rootMargin: "-45% 0px -45% 0px" }
+        );
+
+        document.querySelectorAll(".game").forEach(function (game) {
+          spy.observe(game);
+        });
+      })();
+    </script>
+  </body>
+</html>

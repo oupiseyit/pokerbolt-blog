@@ -1,0 +1,1461 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Pokerbolt — The Gilded Rail</title>
+    <meta
+      name="description"
+      content="Fifteen card and domino games, and how each one is played. Design study A: art deco salon."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300&family=Jost:wght@300;400;500&display=swap"
+    />
+    <style>
+      /* =====================================================================
+         Design study A — "The Gilded Rail"
+         A 1920s salon: symmetry, gold hairlines, engraved type, nothing rushed.
+         Tokens only below the :root block.
+         ================================================================== */
+
+      :root {
+        color-scheme: dark;
+
+        --ink: #0a0f0d;
+        --ink-raised: #101815;
+        --paper: #f2ede3;
+        --body: #c8c3b4;
+        --quiet: #8e8877;
+        --gold: #c9a227;
+        --jade: #1f7a5a;
+
+        --display: "Cormorant Garamond", Georgia, serif;
+        --text: "Jost", "Helvetica Neue", sans-serif;
+
+        --s1: 0.35rem;
+        --s2: 0.6rem;
+        --s3: 1rem;
+        --s4: 1.6rem;
+        --s5: 2.6rem;
+        --s6: 4.2rem;
+        --s7: 6.8rem;
+
+        --rule: 1px;
+        --rule-focus: 2px;
+        --slow: 900ms;
+        --mid: 420ms;
+        --ease: cubic-bezier(0.2, 0.7, 0.2, 1);
+
+        --hair: color-mix(in srgb, var(--gold) 42%, transparent);
+        --hair-dim: color-mix(in srgb, var(--gold) 16%, transparent);
+        --measure: 68rem;
+
+        /* Named separately because the day theme cannot derive them: grain
+           reads heavier on ivory, and the wordmark needs a ground of its own. */
+        --grain-alpha: 0.4;
+        --brand-backdrop: transparent;
+      }
+
+      /* ---------------------------------------------------------------------
+         Day. The same salon before the lamps are lit: ivory stock, ink, and
+         gold taken down to a bronze that survives on a pale ground. Checked
+         against WCAG 2.2 AA on both surfaces and on the filled button; the
+         weakest pairing is bronze on the raised surface at 5.02:1.
+         Follows the system setting unless the reader has chosen a side.
+         ------------------------------------------------------------------ */
+
+      @media (prefers-color-scheme: light) {
+        :root:not([data-theme="dark"]) {
+          color-scheme: light;
+
+          --ink: #f7f3ea;
+          --ink-raised: #ebe4d3;
+          --paper: #14100a;
+          --body: #3d382d;
+          --quiet: #655d4c;
+          --gold: #7a5a12;
+          --jade: #2f7d5e;
+
+          --hair: color-mix(in srgb, var(--gold) 55%, transparent);
+          --hair-dim: color-mix(in srgb, var(--gold) 24%, transparent);
+          --grain-alpha: 0.18;
+          --brand-backdrop: #14100a;
+        }
+      }
+
+      :root[data-theme="light"] {
+        color-scheme: light;
+
+        --ink: #f7f3ea;
+        --ink-raised: #ebe4d3;
+        --paper: #14100a;
+        --body: #3d382d;
+        --quiet: #655d4c;
+        --gold: #7a5a12;
+        --jade: #2f7d5e;
+
+        --hair: color-mix(in srgb, var(--gold) 55%, transparent);
+        --hair-dim: color-mix(in srgb, var(--gold) 24%, transparent);
+        --grain-alpha: 0.18;
+        --brand-backdrop: #14100a;
+      }
+
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+      }
+
+      /* A class that sets `display` would otherwise outrank the UA rule for
+         [hidden], and both theme icons would show at once. */
+      [hidden] {
+        display: none !important;
+      }
+
+      body {
+        margin: 0;
+        background: var(--ink);
+        color: var(--body);
+        font-family: var(--text);
+        font-size: 1.0625rem;
+        font-weight: 300;
+        line-height: 1.7;
+        /* The salon's atmosphere: a low lamp above the table, plus grain. */
+        background-image: radial-gradient(
+            120% 80% at 50% -10%,
+            color-mix(in srgb, var(--jade) 26%, transparent),
+            transparent 62%
+          ),
+          radial-gradient(
+            60% 40% at 50% 0%,
+            color-mix(in srgb, var(--gold) 12%, transparent),
+            transparent 70%
+          );
+        background-attachment: fixed;
+      }
+
+      /* The lamp over the table is on a dimmer, and it is never quite still. */
+      body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        z-index: -1;
+        pointer-events: none;
+        background: radial-gradient(
+          46% 30% at 50% 0%,
+          color-mix(in srgb, var(--gold) 15%, transparent),
+          transparent 72%
+        );
+        animation: lamp 11s ease-in-out infinite alternate;
+      }
+
+      @keyframes lamp {
+        to {
+          opacity: 0.4;
+        }
+      }
+
+      body::after {
+        content: "";
+        position: fixed;
+        inset: 0;
+        z-index: 3;
+        pointer-events: none;
+        opacity: var(--grain-alpha);
+        background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='120'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3'/></filter><rect width='120' height='120' filter='url(%23n)' opacity='0.35'/></svg>");
+        mix-blend-mode: overlay;
+      }
+
+      :focus-visible {
+        outline: var(--rule-focus) solid var(--gold);
+        outline-offset: var(--s1);
+      }
+
+      .skip {
+        position: absolute;
+        left: var(--s3);
+        top: -6rem;
+        z-index: 9;
+        padding: var(--s2) var(--s4);
+        background: var(--gold);
+        color: var(--ink);
+        text-decoration: none;
+        transition: top var(--mid) var(--ease);
+      }
+
+      .skip:focus-visible {
+        top: var(--s3);
+      }
+
+      .wrap {
+        width: min(100% - 2 * var(--s4), var(--measure));
+        margin-inline: auto;
+      }
+
+      /* ---- masthead: centred, engraved, a rule under it ---- */
+
+      .masthead {
+        position: sticky;
+        top: 0;
+        z-index: 4;
+        padding-block: var(--s3);
+        background: color-mix(in srgb, var(--ink) 86%, transparent);
+        backdrop-filter: blur(0.6rem);
+        border-bottom: var(--rule) solid var(--hair-dim);
+      }
+
+      .masthead .wrap {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        gap: var(--s3) var(--s4);
+      }
+
+      /* The wordmark's silver half disappears on ivory, so under the day
+         theme it keeps a dark plate of its own. */
+      .masthead img {
+        display: block;
+        width: auto;
+        height: var(--s4);
+        padding: var(--s1);
+        background: var(--brand-backdrop);
+      }
+
+      .masthead nav ul {
+        display: flex;
+        flex-wrap: wrap;
+        gap: var(--s4);
+        margin: 0;
+        padding: 0;
+        list-style: none;
+      }
+
+      .masthead a {
+        position: relative;
+        color: var(--body);
+        font-size: 0.72rem;
+        letter-spacing: 0.24em;
+        text-transform: uppercase;
+        text-decoration: none;
+        transition: color var(--mid) var(--ease);
+      }
+
+      .masthead a:hover {
+        color: var(--gold);
+      }
+
+      /* A hairline that opens from the centre, the way a deco rule is set. */
+      .masthead a::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: calc(var(--s1) * -1);
+        height: var(--rule);
+        background: var(--gold);
+        scale: 0 1;
+        transition: scale var(--mid) var(--ease);
+      }
+
+      .masthead a:hover::after,
+      .masthead a:focus-visible::after {
+        scale: 1 1;
+      }
+
+      /* ---- hero ---- */
+
+      .hero {
+        padding-block: var(--s7) var(--s6);
+        text-align: center;
+      }
+
+      .eyebrow {
+        margin: 0 0 var(--s4);
+        font-size: 0.72rem;
+        letter-spacing: 0.42em;
+        text-transform: uppercase;
+        color: var(--gold);
+      }
+
+      .hero h1 {
+        margin: 0;
+        font-family: var(--display);
+        font-weight: 300;
+        font-size: clamp(3rem, 11vw, 7.5rem);
+        line-height: 0.95;
+        color: var(--paper);
+      }
+
+      .hero h1 em {
+        display: block;
+        font-style: italic;
+        font-weight: 400;
+        color: var(--gold);
+      }
+
+      /* The deco rule: a diamond between two hairlines, drawn on load. */
+      .rule {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: var(--s3);
+        margin-block: var(--s4);
+      }
+
+      .rule::before,
+      .rule::after {
+        content: "";
+        flex: 1;
+        max-width: 14rem;
+        height: var(--rule);
+        background: linear-gradient(
+          to var(--dir, right),
+          transparent,
+          var(--hair)
+        );
+        transform-origin: var(--dir, right);
+        animation: draw var(--slow) var(--ease) both;
+      }
+
+      .rule::after {
+        --dir: left;
+      }
+
+      .rule span {
+        width: var(--s2);
+        height: var(--s2);
+        rotate: 45deg;
+        border: var(--rule) solid var(--gold);
+      }
+
+      .lede {
+        max-width: 40rem;
+        margin: 0 auto var(--s5);
+        font-size: 1.15rem;
+        color: var(--body);
+      }
+
+      .actions {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: var(--s3);
+      }
+
+      /* The gold is a background *image*, sized from nothing to full width, so
+         the fill leafs across the button rather than switching on. Doing it
+         with background-size keeps the label above it without a wrapper. */
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        gap: var(--s2);
+        min-height: 2.75rem;
+        padding: var(--s2) var(--s5);
+        border: var(--rule) solid var(--hair);
+        background-color: transparent;
+        background-image: linear-gradient(to right, var(--gold), var(--gold));
+        background-repeat: no-repeat;
+        background-size: 0% 100%;
+        color: var(--gold);
+        font-family: var(--text);
+        font-size: 0.72rem;
+        letter-spacing: 0.24em;
+        text-transform: uppercase;
+        text-decoration: none;
+        cursor: pointer;
+        transition: background-size var(--mid) var(--ease),
+          color var(--mid) var(--ease), border-color var(--mid) var(--ease);
+      }
+
+      .btn:hover,
+      .btn:focus-visible {
+        background-size: 100% 100%;
+        border-color: var(--gold);
+        color: var(--ink);
+      }
+
+      /* The solid one starts gilded and un-leafs, right to left. */
+      .btn--solid {
+        background-position: right;
+        background-size: 100% 100%;
+        border-color: var(--gold);
+        color: var(--ink);
+      }
+
+      .btn--solid:hover,
+      .btn--solid:focus-visible {
+        background-size: 0% 100%;
+        color: var(--gold);
+      }
+
+      .btn:active {
+        translate: 0 var(--rule);
+      }
+
+      .btn:disabled,
+      .btn[aria-disabled="true"] {
+        border-color: var(--hair-dim);
+        background-size: 0% 100%;
+        color: var(--quiet);
+        cursor: not-allowed;
+      }
+
+      /* Day/night switch — a .btn, so every state comes with it. Square, and
+         short enough not to raise the masthead line. */
+      .theme-toggle {
+        min-height: auto;
+        padding: var(--s2);
+      }
+
+      .theme-toggle svg {
+        display: block;
+        width: var(--s4);
+        height: var(--s4);
+      }
+
+      /* ---- the framed plate: hero art inside a deco border ---- */
+
+      .plate {
+        position: relative;
+        margin-top: var(--s6);
+        padding: var(--s3);
+        border: var(--rule) solid var(--hair);
+      }
+
+      .plate::before {
+        content: "";
+        position: absolute;
+        inset: var(--s1);
+        border: var(--rule) solid var(--hair-dim);
+        pointer-events: none;
+      }
+
+      .plate img {
+        display: block;
+        width: 100%;
+        height: auto;
+      }
+
+      .plate figcaption {
+        padding-top: var(--s3);
+        font-size: 0.72rem;
+        letter-spacing: 0.24em;
+        text-transform: uppercase;
+        color: var(--quiet);
+        text-align: center;
+      }
+
+      /* ---- section headings ---- */
+
+      section {
+        padding-block: var(--s6);
+      }
+
+      .sec-head {
+        text-align: center;
+        margin-bottom: var(--s5);
+      }
+
+      .sec-head h2 {
+        position: relative;
+        margin: 0;
+        padding-bottom: var(--s3);
+        font-family: var(--display);
+        font-weight: 300;
+        font-size: clamp(2rem, 5vw, 3.4rem);
+        line-height: 1.05;
+        color: var(--paper);
+      }
+
+      .sec-head h2::after {
+        content: "";
+        position: absolute;
+        left: 50%;
+        bottom: 0;
+        width: var(--s7);
+        height: var(--rule);
+        translate: -50% 0;
+        background: var(--gold);
+      }
+
+      .sec-head p {
+        margin: var(--s2) auto 0;
+        max-width: 34rem;
+        color: var(--quiet);
+      }
+
+      /* ---- the card list, as a salon menu of plaques ---- */
+
+      .plaques {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
+        gap: var(--s4);
+        margin: 0;
+        padding: 0;
+        list-style: none;
+      }
+
+      .plaque a {
+        display: block;
+        height: 100%;
+        padding: var(--s3);
+        border: var(--rule) solid var(--hair-dim);
+        color: inherit;
+        text-decoration: none;
+        transition: border-color var(--mid) var(--ease),
+          background var(--mid) var(--ease), translate var(--mid) var(--ease);
+      }
+
+      .plaque a:hover {
+        border-color: var(--hair);
+        background: var(--ink-raised);
+        translate: 0 calc(var(--s1) * -1);
+      }
+
+      .plaque a:active {
+        translate: 0 0;
+      }
+
+      .plaque figure {
+        position: relative;
+        margin: 0 0 var(--s3);
+        overflow: hidden;
+        aspect-ratio: 16 / 10;
+        border: var(--rule) solid var(--hair-dim);
+      }
+
+      .plaque img {
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        /* Sepia-and-gold: the whole salon is lit by one lamp. */
+        filter: sepia(0.35) saturate(0.85) contrast(1.05);
+        transition: scale var(--slow) var(--ease), filter var(--slow) var(--ease);
+      }
+
+      .plaque a:hover img {
+        scale: 1.05;
+        filter: none;
+      }
+
+      /* One slow pass of lamplight across the plate. */
+      .plaque figure::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        background: linear-gradient(
+          104deg,
+          transparent 38%,
+          color-mix(in srgb, var(--gold) 34%, transparent) 50%,
+          transparent 62%
+        );
+        translate: -130% 0;
+      }
+
+      .plaque a:hover figure::after,
+      .plaque a:focus-visible figure::after {
+        animation: gleam var(--slow) var(--ease) both;
+      }
+
+      @keyframes gleam {
+        to {
+          translate: 130% 0;
+        }
+      }
+
+      .plaque .num {
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        padding: var(--s1) var(--s2);
+        background: color-mix(in srgb, var(--ink) 80%, transparent);
+        font-family: var(--display);
+        font-style: italic;
+        font-size: 1.1rem;
+        color: var(--gold);
+      }
+
+      .plaque h3 {
+        margin: 0 0 var(--s1);
+        font-family: var(--display);
+        font-weight: 600;
+        font-size: 1.5rem;
+        line-height: 1.15;
+        color: var(--paper);
+      }
+
+      .plaque p {
+        margin: 0;
+        font-size: 0.92rem;
+        color: var(--quiet);
+      }
+
+      /* ---- tutorial ---- */
+
+      .lesson {
+        display: grid;
+        gap: var(--s5);
+        padding-top: var(--s5);
+        border-top: var(--rule) solid var(--hair-dim);
+      }
+
+      @media (min-width: 52rem) {
+        .lesson {
+          grid-template-columns: minmax(0, 1.55fr) minmax(0, 1fr);
+        }
+      }
+
+      .steps {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+        counter-reset: step;
+      }
+
+      .steps li {
+        position: relative;
+        padding: 0 0 var(--s4) var(--s6);
+        counter-increment: step;
+      }
+
+      .steps li + li {
+        border-top: var(--rule) solid var(--hair-dim);
+        padding-top: var(--s4);
+      }
+
+      .steps li::before {
+        content: counter(step, upper-roman);
+        position: absolute;
+        left: 0;
+        top: var(--s1);
+        width: var(--s5);
+        font-family: var(--display);
+        font-size: 1.5rem;
+        color: var(--gold);
+        text-align: right;
+      }
+
+      .steps li + li::before {
+        top: calc(var(--s4) + var(--s1));
+      }
+
+      .steps strong {
+        display: block;
+        font-family: var(--display);
+        font-weight: 600;
+        font-size: 1.35rem;
+        color: var(--paper);
+      }
+
+      .facts {
+        padding: var(--s4);
+        border: var(--rule) solid var(--hair-dim);
+        background: var(--ink-raised);
+        align-self: start;
+      }
+
+      .facts h3 {
+        margin: 0 0 var(--s3);
+        font-size: 0.72rem;
+        letter-spacing: 0.24em;
+        text-transform: uppercase;
+        color: var(--gold);
+      }
+
+      .facts dl {
+        margin: 0;
+        display: grid;
+        grid-template-columns: auto 1fr;
+        gap: var(--s2) var(--s3);
+        font-size: 0.95rem;
+      }
+
+      .facts dt {
+        color: var(--quiet);
+      }
+
+      .facts dd {
+        margin: 0;
+        color: var(--paper);
+      }
+
+      .note {
+        margin: var(--s4) 0 0;
+        padding-top: var(--s3);
+        border-top: var(--rule) solid var(--hair-dim);
+        font-size: 0.95rem;
+      }
+
+      .note b {
+        display: block;
+        font-family: var(--display);
+        font-weight: 600;
+        font-size: 1.15rem;
+        color: var(--gold);
+      }
+
+      .tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: var(--s2);
+        margin: var(--s3) 0 0;
+        padding: 0;
+        list-style: none;
+      }
+
+      .tags li {
+        padding: var(--s1) var(--s3);
+        border: var(--rule) solid var(--hair-dim);
+        font-size: 0.68rem;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        color: var(--quiet);
+      }
+
+      .shots {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+        gap: var(--s4);
+        margin: var(--s5) 0 0;
+        padding: 0;
+        list-style: none;
+      }
+
+      .shots img {
+        display: block;
+        width: 100%;
+        height: auto;
+        border: var(--rule) solid var(--hair-dim);
+      }
+
+      .shots figcaption {
+        padding-top: var(--s2);
+        font-size: 0.85rem;
+        color: var(--quiet);
+      }
+
+      /* ---- ranking table ---- */
+
+      .scroll {
+        overflow-x: auto;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 0.95rem;
+      }
+
+      caption {
+        padding-bottom: var(--s3);
+        font-size: 0.72rem;
+        letter-spacing: 0.24em;
+        text-transform: uppercase;
+        color: var(--quiet);
+        text-align: left;
+      }
+
+      th,
+      td {
+        padding: var(--s2) var(--s3);
+        text-align: left;
+        border-bottom: var(--rule) solid var(--hair-dim);
+      }
+
+      th {
+        font-weight: 400;
+        font-size: 0.7rem;
+        letter-spacing: 0.24em;
+        text-transform: uppercase;
+        color: var(--gold);
+      }
+
+      tbody th {
+        font-family: var(--display);
+        font-size: 1.15rem;
+        letter-spacing: 0;
+        text-transform: none;
+        color: var(--paper);
+      }
+
+      tbody th {
+        transition: color var(--mid) var(--ease);
+      }
+
+      tbody tr:hover td,
+      tbody tr:hover th {
+        background: var(--ink-raised);
+      }
+
+      tbody tr:hover th {
+        color: var(--gold);
+      }
+
+      /* ---- closing ---- */
+
+      .close {
+        padding: var(--s6) var(--s4);
+        border: var(--rule) solid var(--hair);
+        text-align: center;
+      }
+
+      .close h2 {
+        margin: 0 0 var(--s3);
+        font-family: var(--display);
+        font-weight: 300;
+        font-size: clamp(2rem, 6vw, 4rem);
+        line-height: 1;
+        color: var(--paper);
+      }
+
+      footer {
+        padding-block: var(--s5);
+        border-top: var(--rule) solid var(--hair-dim);
+        font-size: 0.8rem;
+        color: var(--quiet);
+      }
+
+      footer ul {
+        display: flex;
+        flex-wrap: wrap;
+        gap: var(--s4);
+        margin: 0 0 var(--s3);
+        padding: 0;
+        list-style: none;
+      }
+
+      footer a {
+        color: var(--body);
+        text-decoration: none;
+        border-bottom: var(--rule) solid var(--hair-dim);
+      }
+
+      footer a:hover {
+        color: var(--gold);
+        border-color: var(--gold);
+      }
+
+      /* ======================================================================
+         Motion. The salon does nothing quickly.
+           1. the entrance — rules draw, lines rise out of their mask, the
+              plate's inner frame settles inward;
+           2. scroll work — progress hairline, staggered plaques, heading
+              rules drawn by the scroll itself, the plate drifting on exit;
+           3. ambient — the lamp on its dimmer.
+         prefers-reduced-motion switches off all three.
+          =================================================================== */
+
+      @keyframes draw {
+        from {
+          scale: 0 1;
+        }
+      }
+
+      @keyframes rise {
+        from {
+          opacity: 0;
+          translate: 0 var(--s4);
+        }
+      }
+
+      /* Each line is set below its mask and lifted into place. */
+      @keyframes line-in {
+        from {
+          translate: 0 110%;
+        }
+      }
+
+      /* The diamond is cut as it arrives. */
+      @keyframes facet {
+        from {
+          rotate: 0deg;
+          scale: 0.2;
+        }
+      }
+
+      /* The inner frame is laid on the plate, not printed with it. */
+      @keyframes inset-frame {
+        from {
+          inset: 0;
+          opacity: 0;
+        }
+      }
+
+      @keyframes drift {
+        to {
+          translate: 0 calc(var(--s5) * -1);
+        }
+      }
+
+      @keyframes progress {
+        to {
+          scale: 1 1;
+        }
+      }
+
+      /* ---- tier 1: the entrance ---- */
+
+      .hero .eyebrow,
+      .hero .lede,
+      .hero .actions,
+      .hero .plate {
+        animation: rise var(--slow) var(--ease) both;
+      }
+
+      .hero h1 .mask {
+        display: block;
+        overflow: hidden;
+        /* Descenders and the italic's overhang need room inside the mask. */
+        padding-block: 0.08em;
+        margin-block: -0.08em;
+      }
+
+      .hero h1 .line {
+        display: block;
+        animation: line-in var(--slow) var(--ease) both;
+      }
+
+      .hero h1 em .line {
+        animation-delay: 120ms;
+      }
+
+      .hero .lede {
+        animation-delay: 240ms;
+      }
+      .hero .actions {
+        animation-delay: 330ms;
+      }
+      .hero .plate {
+        animation-delay: 420ms;
+      }
+
+      .rule span {
+        animation: facet var(--slow) var(--ease) both;
+      }
+
+      .plate::before {
+        animation: inset-frame var(--slow) var(--ease) 520ms both;
+      }
+
+      /* ---- tier 2: scroll-driven ---- */
+
+      @supports (animation-timeline: view()) {
+        @media (prefers-reduced-motion: no-preference) {
+          /* Both animations are listed together: a second `animation` rule
+             would drop the entrance and leave only the drift. */
+          .hero .plate {
+            animation: rise var(--slow) var(--ease) 420ms both,
+              drift linear both;
+            animation-timeline: auto, view();
+            animation-range: normal, exit -20% exit 100%;
+          }
+
+          .sec-head,
+          .tags,
+          .facts,
+          .steps li,
+          .shots li,
+          .scroll,
+          .close {
+            animation: rise var(--slow) var(--ease) both;
+            animation-timeline: view();
+            animation-range: entry 0% entry 62%;
+          }
+
+          /* The heading's rule is drawn by the scroll, not by a clock. */
+          .sec-head h2::after {
+            animation: draw linear both;
+            animation-timeline: view();
+            animation-range: entry 15% entry 55%;
+          }
+
+          .plaque {
+            animation: rise var(--slow) var(--ease) both;
+            animation-timeline: view();
+            animation-range: entry 0% entry 62%;
+          }
+        }
+      }
+
+      /* Reading progress, a hairline of gold along the masthead. */
+      @supports (animation-timeline: scroll()) {
+        @media (prefers-reduced-motion: no-preference) {
+          .masthead::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: calc(var(--rule) * -1);
+            height: var(--rule);
+            background: linear-gradient(
+              to right,
+              var(--gold),
+              color-mix(in srgb, var(--gold) 20%, transparent)
+            );
+            transform-origin: left;
+            scale: 0 1;
+            animation: progress linear both;
+            animation-timeline: scroll(root block);
+          }
+        }
+      }
+
+      @media (prefers-reduced-motion: no-preference) {
+        html {
+          scroll-behavior: smooth;
+        }
+      }
+
+      /* ---- the switch ---- */
+
+      @media (prefers-reduced-motion: reduce) {
+        *,
+        *::before,
+        *::after {
+          animation-duration: 1ms !important;
+          animation-delay: 0ms !important;
+          animation-iteration-count: 1 !important;
+          transition-duration: 1ms !important;
+          scroll-behavior: auto !important;
+        }
+
+        /* Decoration only: drop it rather than freeze it mid-pass. */
+        .plaque figure::after {
+          display: none;
+        }
+      }
+
+    </style>
+  </head>
+  <body>
+    <a class="skip" href="#main">Skip to content</a>
+
+    <header class="masthead">
+      <div class="wrap">
+        <img src="sample-data/logo-pokerbolt.png" alt="Pokerbolt" />
+        <nav aria-label="Primary">
+          <ul>
+            <li><a href="#library">The games</a></li>
+            <li><a href="#lesson">How to play</a></li>
+            <li><a href="#ranking">Hand ranking</a></li>
+            <li><a href="index.html">Full guide</a></li>
+          </ul>
+        </nav>
+        <button class="btn theme-toggle" type="button" data-theme-toggle hidden>
+          <svg
+            data-icon="sun"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.4"
+            stroke-linecap="round"
+            aria-hidden="true"
+            focusable="false"
+          >
+            <circle cx="12" cy="12" r="4.2" />
+            <path
+              d="M12 2.2v2.1M12 19.7v2.1M4.1 4.1l1.5 1.5M18.4 18.4l1.5 1.5M2.2 12h2.1M19.7 12h2.1M4.1 19.9l1.5-1.5M18.4 5.6l1.5-1.5"
+            />
+          </svg>
+          <svg
+            data-icon="moon"
+            viewBox="0 0 24 24"
+            fill="currentColor"
+            aria-hidden="true"
+            focusable="false"
+            hidden
+          >
+            <path
+              d="M20.3 14.9A8.6 8.6 0 0 1 9.1 3.7a8.6 8.6 0 1 0 11.2 11.2Z"
+            />
+          </svg>
+        </button>
+      </div>
+    </header>
+
+    <main id="main">
+      <div class="wrap">
+        <section class="hero">
+          <p class="eyebrow">Fifteen titles · One client</p>
+          <h1>
+            <span class="mask"><span class="line">The house is open</span></span>
+            <em class="mask"><span class="line">learn every table</span></em>
+          </h1>
+          <p class="rule"><span></span></p>
+          <p class="lede">
+            Poker, dominoes, baccarat and the Southeast Asian card games that
+            sit beside them — each with the rules written out, in order, in
+            plain language.
+          </p>
+          <div class="actions">
+            <a class="btn btn--solid" href="#library">See the fifteen</a>
+            <a class="btn" href="#lesson">Start with Hold'em</a>
+          </div>
+
+          <figure class="plate">
+            <img src="sample-data/01-poker.png" alt="A Texas Hold'em table in the Pokerbolt client, mid hand." />
+            <figcaption>The table, as dealt</figcaption>
+          </figure>
+        </section>
+
+        <section id="library">
+          <div class="sec-head">
+            <h2>The card room</h2>
+            <p>
+              Every title in the client, numbered as it appears in the lobby.
+            </p>
+          </div>
+          <ul class="plaques">
+              <li class="plaque">
+                <a href="#lesson">
+                  <figure>
+                    <img src="sample-data/01-poker.png" alt="" loading="lazy" />
+                    <span class="num">01</span>
+                  </figure>
+                  <h3>Texas Hold'em</h3>
+                  <p>Two hole cards, five on the board, four betting rounds.</p>
+                </a>
+              </li>
+              <li class="plaque">
+                <a href="index.html#capsa-banting">
+                  <figure>
+                    <img src="sample-data/02-capsa-banting02.png" alt="" loading="lazy" />
+                    <span class="num">02</span>
+                  </figure>
+                  <h3>Capsa Banting</h3>
+                  <p>Shed all thirteen cards first. Big Two, four seats.</p>
+                </a>
+              </li>
+              <li class="plaque">
+                <a href="index.html#capsa-susun">
+                  <figure>
+                    <img src="sample-data/03-capsa-susun02.png" alt="" loading="lazy" />
+                    <span class="num">03</span>
+                  </figure>
+                  <h3>Capsa Susun</h3>
+                  <p>Arrange thirteen cards into three legal hands.</p>
+                </a>
+              </li>
+              <li class="plaque">
+                <a href="index.html#baccarat">
+                  <figure>
+                    <img src="sample-data/04-baccarat01.png" alt="" loading="lazy" />
+                    <span class="num">04</span>
+                  </figure>
+                  <h3>Baccarat</h3>
+                  <p>Back Player, Banker or Tie. Closest to nine wins.</p>
+                </a>
+              </li>
+              <li class="plaque">
+                <a href="index.html#ceme">
+                  <figure>
+                    <img src="sample-data/05-ceme01.png" alt="" loading="lazy" />
+                    <span class="num">05</span>
+                  </figure>
+                  <h3>Ceme</h3>
+                  <p>Two dominoes against the dealer. Last digit is your score.</p>
+                </a>
+              </li>
+              <li class="plaque">
+                <a href="index.html#ceme-keliling">
+                  <figure>
+                    <img src="sample-data/06-cemekeliling01.png" alt="" loading="lazy" />
+                    <span class="num">06</span>
+                  </figure>
+                  <h3>Ceme Keliling</h3>
+                  <p>Ceme with the dealer seat rotating around the table.</p>
+                </a>
+              </li>
+              <li class="plaque">
+                <a href="index.html#super10">
+                  <figure>
+                    <img src="sample-data/07-superten01.png" alt="" loading="lazy" />
+                    <span class="num">07</span>
+                  </figure>
+                  <h3>Super10</h3>
+                  <p>Three cards, pictures are worth ten, ten is the top score.</p>
+                </a>
+              </li>
+              <li class="plaque">
+                <a href="index.html#niu-niu">
+                  <figure>
+                    <img src="sample-data/08-niuniu02.png" alt="" loading="lazy" />
+                    <span class="num">08</span>
+                  </figure>
+                  <h3>Niu Niu</h3>
+                  <p>Split five cards into a bull of three and a score of two.</p>
+                </a>
+              </li>
+              <li class="plaque">
+                <a href="index.html#omaha">
+                  <figure>
+                    <img src="sample-data/09-pokeromaha02.png" alt="" loading="lazy" />
+                    <span class="num">09</span>
+                  </figure>
+                  <h3>Omaha Poker</h3>
+                  <p>Four hole cards — use exactly two, plus three from the board.</p>
+                </a>
+              </li>
+              <li class="plaque">
+                <a href="index.html#domino-classic">
+                  <figure>
+                    <img src="sample-data/10-domino-classic01.png" alt="" loading="lazy" />
+                    <span class="num">10</span>
+                  </figure>
+                  <h3>Domino Classic</h3>
+                  <p>Gaple. Match the open ends, empty your hand first.</p>
+                </a>
+              </li>
+              <li class="plaque">
+                <a href="index.html#samgong">
+                  <figure>
+                    <img src="sample-data/11-samgong01.png" alt="" loading="lazy" />
+                    <span class="num">11</span>
+                  </figure>
+                  <h3>Samgong</h3>
+                  <p>Three cards against the dealer. Three pictures is the nuts.</p>
+                </a>
+              </li>
+              <li class="plaque">
+                <a href="index.html#blackjack">
+                  <figure>
+                    <img src="sample-data/12-blackjack01.png" alt="" loading="lazy" />
+                    <span class="num">12</span>
+                  </figure>
+                  <h3>Blackjack</h3>
+                  <p>Beat the dealer to twenty-one without going bust.</p>
+                </a>
+              </li>
+              <li class="plaque">
+                <a href="index.html#call-break">
+                  <figure>
+                    <img src="sample-data/13-callbreak01.png" alt="" loading="lazy" />
+                    <span class="num">13</span>
+                  </figure>
+                  <h3>Call Break</h3>
+                  <p>Bid your tricks, spades are trumps, five rounds.</p>
+                </a>
+              </li>
+              <li class="plaque">
+                <a href="index.html#speed-baccarat">
+                  <figure>
+                    <img src="sample-data/14-speed-baccarat01.png" alt="" loading="lazy" />
+                    <span class="num">14</span>
+                  </figure>
+                  <h3>Speed Baccarat</h3>
+                  <p>Baccarat rules on a roughly half-minute round clock.</p>
+                </a>
+              </li>
+              <li class="plaque">
+                <a href="index.html#tongits-go">
+                  <figure>
+                    <img src="sample-data/15-tongits-go01.png" alt="" loading="lazy" />
+                    <span class="num">15</span>
+                  </figure>
+                  <h3>Tongits Go</h3>
+                  <p>Meld, discard, and go out before the other two seats.</p>
+                </a>
+              </li></ul>
+        </section>
+
+        <section id="lesson">
+          <div class="sec-head">
+            <h2>Texas Hold'em</h2>
+            <p>
+              Two private cards, five in the middle, and the best five of those
+              seven takes the pot.
+            </p>
+          </div>
+
+          <ul class="tags">
+            <li>Cards</li>
+            <li>2–9 seats</li>
+            <li>Betting rounds</li>
+          </ul>
+
+          <div class="lesson">
+            <ol class="steps">
+              <li>
+                <strong>Post the blinds</strong>
+                Two seats left of the dealer button post the small and big
+                blind. The buy-in and blind level are printed in the table
+                header, for example <em>Buy in 200K–1M, blind 5K–10K</em>.
+              </li>
+              <li>
+                <strong>Pre-flop</strong>
+                Everyone gets two hole cards. Starting left of the big blind,
+                each seat folds, calls or raises.
+              </li>
+              <li>
+                <strong>Flop, turn, river</strong>
+                Three community cards, then one, then one more — with a betting
+                round after each. Check when nobody has bet; call, raise or fold
+                when they have.
+              </li>
+              <li>
+                <strong>Showdown</strong>
+                The last aggressor shows first. The client names the winning
+                hand on the table banner and pushes the pot.
+              </li>
+            </ol>
+
+            <aside class="facts">
+              <h3>Table facts</h3>
+              <dl>
+                <dt>Deck</dt>
+                <dd>52 cards, no joker</dd>
+                <dt>Your hand</dt>
+                <dd>Best 5 of your 7</dd>
+                <dt>Actions</dt>
+                <dd>Fold, check, call, raise, all in</dd>
+                <dt>Clock</dt>
+                <dd>Slow and fast tables</dd>
+                <dt>Jackpot</dt>
+                <dd>Optional, bought before the deal</dd>
+              </dl>
+              <p class="note">
+                <b>Beginner tip</b>
+                Fold most starting hands. Position matters more than pretty
+                cards — acting last on every street is worth more than a suited
+                connector.
+              </p>
+            </aside>
+          </div>
+
+          <ul class="shots">
+            <li>
+              <figure>
+                <img src="sample-data/01-poker04.png" alt="The betting controls during a Hold'em hand." loading="lazy" />
+                <figcaption>Fold, check and raise sit on the rail.</figcaption>
+              </figure>
+            </li>
+            <li>
+              <figure>
+                <img src="sample-data/01-poker05.png" alt="A completed Hold'em showdown with the winning hand named." loading="lazy" />
+                <figcaption>The banner names the winning hand.</figcaption>
+              </figure>
+            </li>
+          </ul>
+        </section>
+
+        <section id="ranking">
+          <div class="sec-head">
+            <h2>Hand ranking</h2>
+            <p>Strongest at the top. Shared by Hold'em, Omaha and Capsa Susun.</p>
+          </div>
+          <div class="scroll">
+            <table>
+              <caption>Five-card hands, high to low</caption>
+              <thead>
+                <tr>
+                  <th scope="col">Rank</th>
+                  <th scope="col">Hand</th>
+                  <th scope="col">Example</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><th scope="row">Royal flush</th><td>1</td><td>A K Q J 10, one suit</td></tr>
+                <tr><th scope="row">Straight flush</th><td>2</td><td>9 8 7 6 5, one suit</td></tr>
+                <tr><th scope="row">Four of a kind</th><td>3</td><td>Q Q Q Q 7</td></tr>
+                <tr><th scope="row">Full house</th><td>4</td><td>J J J 4 4</td></tr>
+                <tr><th scope="row">Flush</th><td>5</td><td>K 10 8 5 2, one suit</td></tr>
+                <tr><th scope="row">Straight</th><td>6</td><td>8 7 6 5 4, mixed suits</td></tr>
+                <tr><th scope="row">Three of a kind</th><td>7</td><td>6 6 6 K 3</td></tr>
+                <tr><th scope="row">Two pair</th><td>8</td><td>10 10 5 5 A</td></tr>
+                <tr><th scope="row">One pair</th><td>9</td><td>A A 9 6 2</td></tr>
+                <tr><th scope="row">High card</th><td>10</td><td>A J 8 4 3</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section>
+          <div class="close">
+            <h2>Take a seat</h2>
+            <p class="lede">
+              Read the rules first, then play the table you understand.
+            </p>
+            <div class="actions">
+              <a class="btn btn--solid" href="index.html">Open the full guide</a>
+              <a class="btn" href="#library">Back to the card room</a>
+            </div>
+          </div>
+        </section>
+      </div>
+    </main>
+
+    <footer>
+      <div class="wrap">
+        <ul>
+          <li><a href="#library">Games</a></li>
+          <li><a href="#lesson">How to play</a></li>
+          <li><a href="#ranking">Hand ranking</a></li>
+          <li><a href="index.html">Full guide</a></li>
+        </ul>
+        <p>
+          Pokerbolt · Design study A, “The Gilded Rail”. Play responsibly; these
+          pages explain rules, not odds.
+        </p>
+      </div>
+    </footer>
+    <script>
+      // Theme: the system setting decides, until the reader picks a side —
+      // then that choice is remembered for this browser.
+      (function () {
+        var KEY = "pokerbolt-deco-theme";
+        var root = document.documentElement;
+        var button = document.querySelector("[data-theme-toggle]");
+        var media = window.matchMedia("(prefers-color-scheme: light)");
+        var sun = button.querySelector('[data-icon="sun"]');
+        var moon = button.querySelector('[data-icon="moon"]');
+
+        function current() {
+          return root.dataset.theme || (media.matches ? "light" : "dark");
+        }
+
+        // `hidden` is an HTMLElement property and an <svg> is an SVGElement,
+        // so the attribute has to be set directly.
+        function show(icon, on) {
+          if (on) icon.removeAttribute("hidden");
+          else icon.setAttribute("hidden", "");
+        }
+
+        function label() {
+          var dark = current() === "dark";
+          // The icon shows what a press switches TO.
+          show(sun, dark);
+          show(moon, !dark);
+          button.setAttribute(
+            "aria-label",
+            "Switch to the " + (dark ? "day" : "night") + " theme"
+          );
+        }
+
+        try {
+          var stored = localStorage.getItem(KEY);
+          if (stored === "light" || stored === "dark") root.dataset.theme = stored;
+        } catch (e) {
+          // Private mode or blocked storage: the system setting still works.
+        }
+
+        label();
+        button.hidden = false;
+        media.addEventListener("change", label);
+
+        button.addEventListener("click", function () {
+          root.dataset.theme = current() === "dark" ? "light" : "dark";
+          try {
+            localStorage.setItem(KEY, root.dataset.theme);
+          } catch (e) {}
+          label();
+        });
+      })();
+    </script>
+  </body>
+</html>

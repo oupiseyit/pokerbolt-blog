@@ -1,0 +1,1692 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Pokerbolt — Night Shift</title>
+    <meta
+      name="description"
+      content="Fifteen card and domino games, and how each one is played. Design study C: neon arcade."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Bungee&family=Chakra+Petch:ital,wght@0,300;0,400;0,600;0,700;1,400&display=swap"
+    />
+    <style>
+      /* =====================================================================
+         Design study C — "Night Shift"
+         A CRT cabinet at 2am: scanlines, neon, and everything slightly skewed.
+         Tokens only below the :root block.
+         ================================================================== */
+
+      :root {
+        color-scheme: dark;
+
+        --void: #0b0716;
+        --panel: #150d2a;
+        --text: #d8d2f0;
+        --quiet: #9b91c4;
+        --cyan: #4cf0e0;
+        --magenta: #ff5cc8;
+
+        --display: "Bungee", Impact, sans-serif;
+        --body-font: "Chakra Petch", ui-monospace, monospace;
+
+        --s1: 0.3rem;
+        --s2: 0.6rem;
+        --s3: 1rem;
+        --s4: 1.6rem;
+        --s5: 2.6rem;
+        --s6: 4.4rem;
+        --s7: 7rem;
+
+        --rule: 2px;
+        --fast: 160ms;
+        --mid: 380ms;
+        --slow: 800ms;
+        --ease: cubic-bezier(0.2, 0.9, 0.1, 1);
+
+        --skew: -3deg;
+        --glow-cyan: 0 0 var(--s3) color-mix(in srgb, var(--cyan) 55%, transparent);
+        --glow-magenta: 0 0 var(--s3) color-mix(in srgb, var(--magenta) 55%, transparent);
+        --measure: 76rem;
+
+        /* Named separately because the day theme cannot derive them: the
+           scanlines have to darken when the ground goes white, and the
+           power-on flash has to stop being a colour you can stare at. */
+        --scan: #0b0716;
+        --scan-alpha: 0.55;
+        --flash: #4cf0e0;
+        --brand-backdrop: transparent;
+      }
+
+      /* ---------------------------------------------------------------------
+         Day shift. Same cabinet, house lights on: the neon darkens into ink so
+         it still reads on white. Checked against WCAG 2.2 AA on both surfaces
+         and on the filled buttons; the weakest pairing is cyan on panel at
+         4.73:1.
+         Follows the system setting unless the reader has picked a side.
+         ------------------------------------------------------------------ */
+
+      @media (prefers-color-scheme: light) {
+        :root:not([data-theme="dark"]) {
+          color-scheme: light;
+
+          --void: #f5f2fb;
+          --panel: #e7e1f4;
+          --text: #2a2140;
+          --quiet: #574d75;
+          --cyan: #0a6f68;
+          --magenta: #b0106f;
+
+          --glow-cyan: 0 0 var(--s2)
+            color-mix(in srgb, var(--cyan) 28%, transparent);
+          --glow-magenta: 0 0 var(--s2)
+            color-mix(in srgb, var(--magenta) 28%, transparent);
+
+          --scan: #2a2140;
+          --scan-alpha: 0.2;
+          --flash: #ffffff;
+          --brand-backdrop: #2a2140;
+        }
+      }
+
+      :root[data-theme="light"] {
+        color-scheme: light;
+
+        --void: #f5f2fb;
+        --panel: #e7e1f4;
+        --text: #2a2140;
+        --quiet: #574d75;
+        --cyan: #0a6f68;
+        --magenta: #b0106f;
+
+        --glow-cyan: 0 0 var(--s2)
+          color-mix(in srgb, var(--cyan) 28%, transparent);
+        --glow-magenta: 0 0 var(--s2)
+          color-mix(in srgb, var(--magenta) 28%, transparent);
+
+        --scan: #2a2140;
+        --scan-alpha: 0.2;
+        --flash: #ffffff;
+        --brand-backdrop: #2a2140;
+      }
+
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+      }
+
+      /* A class that sets `display` would otherwise outrank the UA rule for
+         [hidden], and both theme icons would show at once. */
+      [hidden] {
+        display: none !important;
+      }
+
+      body {
+        margin: 0;
+        background: var(--void);
+        color: var(--text);
+        font-family: var(--body-font);
+        font-size: 1rem;
+        font-weight: 400;
+        line-height: 1.65;
+        background-image: radial-gradient(
+            100% 60% at 20% 0%,
+            color-mix(in srgb, var(--magenta) 18%, transparent),
+            transparent 60%
+          ),
+          radial-gradient(
+            90% 60% at 90% 20%,
+            color-mix(in srgb, var(--cyan) 16%, transparent),
+            transparent 60%
+          );
+        background-attachment: fixed;
+      }
+
+      /* The tube: scanlines over everything, never in the way of a click.
+         They crawl one line at a time — no CRT ever held perfectly still. */
+      body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        z-index: 8;
+        pointer-events: none;
+        background-image: repeating-linear-gradient(
+          to bottom,
+          color-mix(in srgb, var(--scan) 45%, transparent) 0 1px,
+          transparent 1px 3px
+        );
+        background-size: 100% 3px;
+        opacity: var(--scan-alpha);
+        animation: roll 2.4s linear infinite;
+      }
+
+      /* The refresh band: one soft pass down the glass every few seconds. */
+      body::after {
+        content: "";
+        position: fixed;
+        inset-inline: 0;
+        top: 0;
+        height: 28vh;
+        z-index: 8;
+        pointer-events: none;
+        background: linear-gradient(
+          to bottom,
+          transparent,
+          color-mix(in srgb, var(--cyan) 9%, transparent),
+          transparent
+        );
+        animation: sweep 7.5s linear infinite;
+      }
+
+      /* Power-on flash. Fires once, then sits at zero opacity and untouchable. */
+      html::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        z-index: 9;
+        pointer-events: none;
+        background: var(--flash);
+        animation: flash 760ms var(--ease) both;
+      }
+
+      @keyframes roll {
+        to {
+          background-position: 0 -3px;
+        }
+      }
+
+      @keyframes sweep {
+        from {
+          translate: 0 -30vh;
+        }
+        to {
+          translate: 0 130vh;
+        }
+      }
+
+      @keyframes flash {
+        from {
+          opacity: 0.4;
+        }
+        to {
+          opacity: 0;
+        }
+      }
+
+      :focus-visible {
+        outline: var(--rule) solid var(--cyan);
+        outline-offset: var(--s1);
+      }
+
+      .skip {
+        position: absolute;
+        left: var(--s3);
+        top: -6rem;
+        z-index: 9;
+        padding: var(--s2) var(--s4);
+        background: var(--cyan);
+        color: var(--void);
+        font-weight: 700;
+        text-decoration: none;
+        transition: top var(--mid) var(--ease);
+      }
+
+      .skip:focus-visible {
+        top: var(--s3);
+      }
+
+      .wrap {
+        width: min(100% - 2 * var(--s3), var(--measure));
+        margin-inline: auto;
+      }
+
+      /* ---- cabinet header ---- */
+
+      .bar {
+        position: sticky;
+        top: 0;
+        z-index: 6;
+        background: color-mix(in srgb, var(--void) 88%, transparent);
+        backdrop-filter: blur(0.7rem);
+        border-bottom: var(--rule) solid
+          color-mix(in srgb, var(--cyan) 35%, transparent);
+      }
+
+      .bar .wrap {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        gap: var(--s3);
+        padding-block: var(--s3);
+      }
+
+      /* The wordmark's silver half disappears on a light ground, so it keeps
+         its own dark chip under the day theme. */
+      .bar img {
+        display: block;
+        width: auto;
+        height: 1.4rem;
+        padding: var(--s1);
+        background: var(--brand-backdrop);
+      }
+
+      .bar nav ul {
+        display: flex;
+        flex-wrap: wrap;
+        gap: var(--s4);
+        margin: 0;
+        padding: 0;
+        list-style: none;
+      }
+
+      .bar a {
+        position: relative;
+        color: var(--text);
+        font-size: 0.75rem;
+        font-weight: 700;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        text-decoration: none;
+        transition: color var(--fast) linear, text-shadow var(--fast) linear;
+      }
+
+      .bar a:hover {
+        color: var(--cyan);
+        text-shadow: var(--glow-cyan);
+      }
+
+      /* The rule draws in from the left and retracts to the right. */
+      .bar a::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: calc(var(--s1) * -1);
+        height: var(--rule);
+        background: currentColor;
+        scale: 0 1;
+        transform-origin: right;
+        transition: scale var(--fast) var(--ease);
+      }
+
+      .bar a:hover::after,
+      .bar a:focus-visible::after {
+        scale: 1 1;
+        transform-origin: left;
+      }
+
+      /* ---- hero ---- */
+
+      .hero {
+        display: grid;
+        gap: var(--s5);
+        padding-block: var(--s7) var(--s6);
+        align-items: center;
+      }
+
+      @media (min-width: 58rem) {
+        .hero {
+          grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+        }
+      }
+
+      .badge {
+        display: inline-block;
+        margin: 0 0 var(--s4);
+        padding: var(--s1) var(--s3);
+        background: var(--magenta);
+        color: var(--void);
+        font-size: 0.7rem;
+        font-weight: 700;
+        letter-spacing: 0.22em;
+        text-transform: uppercase;
+        rotate: var(--skew);
+      }
+
+      h1 {
+        margin: 0;
+        font-family: var(--display);
+        font-weight: 400;
+        font-size: clamp(2.6rem, 8.5vw, 5.6rem);
+        line-height: 0.95;
+        text-transform: uppercase;
+        color: var(--text);
+      }
+
+      /* Chromatic split: the tube never did converge properly. */
+      h1 .glitch {
+        display: block;
+        position: relative;
+        color: var(--cyan);
+        text-shadow: calc(var(--s1) * -1) 0 var(--magenta), var(--glow-cyan);
+      }
+
+      /* Two mis-registered copies of the same line. They sit fully clipped for
+         most of the cycle and tear across it for a frame or two. */
+      h1 .glitch::before,
+      h1 .glitch::after {
+        content: attr(data-text);
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        text-shadow: none;
+        pointer-events: none;
+        clip-path: inset(100% 0 0 0);
+      }
+
+      h1 .glitch::before {
+        color: var(--magenta);
+        animation: glitch-a 2.4s steps(1, end) 3 both;
+      }
+
+      h1 .glitch::after {
+        color: var(--cyan);
+        animation: glitch-b 2.4s steps(1, end) 3 both;
+      }
+
+      /* Hold the pointer on the headline and the tear never settles. */
+      h1:hover .glitch::before,
+      h1:hover .glitch::after {
+        animation-iteration-count: infinite;
+      }
+
+      @keyframes glitch-a {
+        0%,
+        90%,
+        100% {
+          clip-path: inset(100% 0 0 0);
+          translate: 0 0;
+        }
+        91% {
+          clip-path: inset(10% 0 70% 0);
+          translate: calc(var(--s1) * -1) 0;
+        }
+        94% {
+          clip-path: inset(46% 0 34% 0);
+          translate: var(--s2) 0;
+        }
+        97% {
+          clip-path: inset(74% 0 6% 0);
+          translate: calc(var(--s2) * -1) 0;
+        }
+      }
+
+      @keyframes glitch-b {
+        0%,
+        88%,
+        100% {
+          clip-path: inset(100% 0 0 0);
+          translate: 0 0;
+        }
+        89% {
+          clip-path: inset(26% 0 54% 0);
+          translate: var(--s2) 0;
+        }
+        93% {
+          clip-path: inset(62% 0 20% 0);
+          translate: calc(var(--s1) * -1) 0;
+        }
+        96% {
+          clip-path: inset(4% 0 84% 0);
+          translate: var(--s1) 0;
+        }
+      }
+
+      .lede {
+        max-width: 34rem;
+        margin: var(--s4) 0 var(--s5);
+        font-size: 1.05rem;
+        color: var(--quiet);
+      }
+
+      .actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: var(--s3);
+      }
+
+      .btn {
+        position: relative;
+        display: inline-flex;
+        align-items: center;
+        gap: var(--s2);
+        min-height: 2.9rem;
+        padding: var(--s2) var(--s4);
+        border: var(--rule) solid var(--cyan);
+        background: transparent;
+        color: var(--cyan);
+        font-family: var(--body-font);
+        font-size: 0.78rem;
+        font-weight: 700;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        text-decoration: none;
+        cursor: pointer;
+        transform: skewX(var(--skew));
+        transition: background var(--fast) linear, color var(--fast) linear,
+          box-shadow var(--fast) linear, translate var(--fast) linear;
+      }
+
+      .btn > span {
+        display: block;
+        transform: skewX(calc(var(--skew) * -1));
+      }
+
+      /* Selection brackets: the cabinet marking the highlighted entry. They
+         start inside the button and snap outward to its corners. */
+      .btn::before,
+      .btn::after {
+        content: "";
+        position: absolute;
+        width: var(--s3);
+        height: var(--s3);
+        border: var(--rule) solid var(--cyan);
+        opacity: 0;
+        transition: opacity var(--fast) linear, translate var(--fast) var(--ease);
+      }
+
+      .btn::before {
+        top: calc(var(--s2) * -1);
+        left: calc(var(--s2) * -1);
+        border-right: 0;
+        border-bottom: 0;
+        translate: var(--s3) var(--s3);
+      }
+
+      .btn::after {
+        right: calc(var(--s2) * -1);
+        bottom: calc(var(--s2) * -1);
+        border-left: 0;
+        border-top: 0;
+        translate: calc(var(--s3) * -1) calc(var(--s3) * -1);
+      }
+
+      .btn:hover::before,
+      .btn:hover::after,
+      .btn:focus-visible::before,
+      .btn:focus-visible::after {
+        opacity: 1;
+        translate: 0 0;
+      }
+
+      .btn--magenta::before,
+      .btn--magenta::after {
+        border-color: var(--magenta);
+      }
+
+      /* Day/night switch — a .btn, so it inherits every state the others have.
+         Square and small enough to sit on the bar without raising it. */
+      .theme-toggle {
+        min-height: auto;
+        padding: var(--s2);
+      }
+
+      .theme-toggle svg {
+        display: block;
+        width: var(--s4);
+        height: var(--s4);
+        /* The button is skewed; the glyph inside must not be. */
+        transform: skewX(calc(var(--skew) * -1));
+      }
+
+      .btn:hover {
+        background: var(--cyan);
+        color: var(--void);
+        box-shadow: var(--glow-cyan);
+      }
+
+      .btn:active {
+        translate: 0 2px;
+        box-shadow: none;
+      }
+
+      .btn--magenta {
+        border-color: var(--magenta);
+        background: var(--magenta);
+        color: var(--void);
+      }
+
+      .btn--magenta:hover {
+        background: transparent;
+        color: var(--magenta);
+        box-shadow: var(--glow-magenta);
+      }
+
+      .btn:disabled,
+      .btn[aria-disabled="true"] {
+        border-color: var(--quiet);
+        background: transparent;
+        color: var(--quiet);
+        box-shadow: none;
+        cursor: not-allowed;
+      }
+
+      /* ---- the cabinet screen ---- */
+
+      .screen {
+        position: relative;
+        margin: 0;
+        padding: var(--s2);
+        border: var(--rule) solid color-mix(in srgb, var(--cyan) 45%, transparent);
+        background: var(--panel);
+        box-shadow: var(--glow-cyan);
+        rotate: calc(var(--skew) * -0.5);
+      }
+
+      .screen img {
+        display: block;
+        width: 100%;
+        height: auto;
+        filter: saturate(1.15) contrast(1.05);
+      }
+
+      .screen figcaption {
+        padding-top: var(--s2);
+        font-size: 0.72rem;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        color: var(--quiet);
+      }
+
+      /* ---- sections ---- */
+
+      section {
+        padding-block: var(--s6);
+      }
+
+      .sec-head {
+        margin-bottom: var(--s5);
+      }
+
+      .sec-head h2 {
+        margin: 0;
+        font-family: var(--display);
+        font-weight: 400;
+        font-size: clamp(1.9rem, 5.5vw, 3.2rem);
+        line-height: 1;
+        text-transform: uppercase;
+        color: var(--magenta);
+        text-shadow: var(--glow-magenta);
+      }
+
+      .sec-head p {
+        margin: var(--s2) 0 0;
+        max-width: 34rem;
+        color: var(--quiet);
+      }
+
+      /* ---- cabinets ---- */
+
+      .cabs {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
+        gap: var(--s4);
+        margin: 0;
+        padding: 0;
+        list-style: none;
+      }
+
+      .cab a {
+        display: block;
+        height: 100%;
+        padding: var(--s3);
+        border: var(--rule) solid
+          color-mix(in srgb, var(--quiet) 35%, transparent);
+        background: color-mix(in srgb, var(--panel) 75%, transparent);
+        color: inherit;
+        text-decoration: none;
+        transform: skewX(var(--skew));
+        transition: border-color var(--fast) linear,
+          box-shadow var(--fast) linear, transform var(--mid) var(--ease),
+          background var(--fast) linear;
+      }
+
+      /* Straighten on hover: the cabinet turns to face you. */
+      .cab a:hover {
+        border-color: var(--cyan);
+        background: var(--panel);
+        box-shadow: var(--glow-cyan);
+        transform: skewX(0deg);
+      }
+
+      .cab a:active {
+        border-color: var(--magenta);
+        box-shadow: var(--glow-magenta);
+      }
+
+      .cab__in {
+        display: block;
+        transform: skewX(calc(var(--skew) * -1));
+        transition: transform var(--mid) var(--ease);
+      }
+
+      .cab a:hover .cab__in {
+        transform: skewX(0deg);
+      }
+
+      .cab figure {
+        position: relative;
+        margin: 0 0 var(--s3);
+        overflow: hidden;
+        aspect-ratio: 16 / 10;
+        border: var(--rule) solid var(--void);
+      }
+
+      .cab img {
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: scale var(--slow) var(--ease);
+      }
+
+      .cab a:hover img {
+        scale: 1.06;
+      }
+
+      /* A refresh bar crosses the screenshot once, as the cabinet wakes. */
+      .cab figure::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        background: linear-gradient(
+          100deg,
+          transparent 36%,
+          color-mix(in srgb, var(--cyan) 38%, transparent) 50%,
+          transparent 64%
+        );
+        translate: -120% 0;
+      }
+
+      .cab a:hover figure::after,
+      .cab a:focus-visible figure::after {
+        animation: shine 760ms var(--ease) both;
+      }
+
+      @keyframes shine {
+        to {
+          translate: 120% 0;
+        }
+      }
+
+      .cab .num {
+        position: absolute;
+        right: 0;
+        top: 0;
+        transition: translate var(--fast) var(--ease),
+          box-shadow var(--fast) linear;
+        padding: var(--s1) var(--s2);
+        background: var(--magenta);
+        color: var(--void);
+        font-family: var(--display);
+        font-size: 0.85rem;
+      }
+
+      .cab a:hover .num,
+      .cab a:focus-visible .num {
+        translate: 0 calc(var(--s1) * -1);
+        box-shadow: var(--glow-magenta);
+      }
+
+      .cab h3 {
+        margin: 0 0 var(--s1);
+        font-family: var(--display);
+        font-weight: 400;
+        font-size: 1.1rem;
+        line-height: 1.15;
+        text-transform: uppercase;
+        color: var(--cyan);
+      }
+
+      .cab p {
+        margin: 0 0 var(--s3);
+        font-size: 0.88rem;
+        color: var(--quiet);
+      }
+
+      .cab__go {
+        font-size: 0.7rem;
+        font-weight: 700;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        color: var(--text);
+      }
+
+      /* ---- lesson ---- */
+
+      .lesson {
+        display: grid;
+        gap: var(--s5);
+      }
+
+      @media (min-width: 56rem) {
+        .lesson {
+          grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
+        }
+      }
+
+      .steps {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+        counter-reset: step;
+      }
+
+      .steps li {
+        position: relative;
+        margin-bottom: var(--s4);
+        padding: var(--s3) var(--s3) var(--s3) var(--s6);
+        border-left: var(--rule) solid var(--magenta);
+        background: color-mix(in srgb, var(--panel) 60%, transparent);
+        counter-increment: step;
+      }
+
+      .steps li::before {
+        content: counter(step, decimal-leading-zero);
+        position: absolute;
+        left: var(--s3);
+        top: var(--s3);
+        font-family: var(--display);
+        font-size: 1.3rem;
+        color: var(--magenta);
+      }
+
+      .steps strong {
+        display: block;
+        font-family: var(--display);
+        font-weight: 400;
+        font-size: 1rem;
+        text-transform: uppercase;
+        color: var(--cyan);
+      }
+
+      .facts {
+        align-self: start;
+        padding: var(--s4);
+        border: var(--rule) solid
+          color-mix(in srgb, var(--cyan) 35%, transparent);
+        background: color-mix(in srgb, var(--panel) 75%, transparent);
+      }
+
+      .facts h3 {
+        margin: 0 0 var(--s3);
+        font-family: var(--display);
+        font-weight: 400;
+        font-size: 0.9rem;
+        text-transform: uppercase;
+        color: var(--cyan);
+      }
+
+      .facts dl {
+        margin: 0;
+        display: grid;
+        grid-template-columns: auto 1fr;
+        gap: var(--s2) var(--s3);
+        font-size: 0.9rem;
+      }
+
+      .facts dt {
+        color: var(--quiet);
+        text-transform: uppercase;
+        font-size: 0.72rem;
+        letter-spacing: 0.12em;
+      }
+
+      .facts dd {
+        margin: 0;
+      }
+
+      .note {
+        margin: var(--s4) 0 0;
+        padding: var(--s3);
+        border: var(--rule) dashed
+          color-mix(in srgb, var(--magenta) 55%, transparent);
+        font-size: 0.9rem;
+      }
+
+      .note b {
+        display: block;
+        font-family: var(--display);
+        font-weight: 400;
+        font-size: 0.85rem;
+        text-transform: uppercase;
+        color: var(--magenta);
+      }
+
+      .shots {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+        gap: var(--s4);
+        margin: var(--s5) 0 0;
+        padding: 0;
+        list-style: none;
+      }
+
+      .shots img {
+        display: block;
+        width: 100%;
+        height: auto;
+        border: var(--rule) solid
+          color-mix(in srgb, var(--cyan) 35%, transparent);
+      }
+
+      .shots figcaption {
+        padding-top: var(--s2);
+        font-size: 0.85rem;
+        color: var(--quiet);
+      }
+
+      /* ---- table ---- */
+
+      .scroll {
+        overflow-x: auto;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 0.9rem;
+      }
+
+      caption {
+        padding-bottom: var(--s3);
+        font-size: 0.72rem;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        text-align: left;
+        color: var(--quiet);
+      }
+
+      th,
+      td {
+        padding: var(--s2) var(--s3);
+        text-align: left;
+        border-bottom: var(--rule) solid
+          color-mix(in srgb, var(--quiet) 25%, transparent);
+      }
+
+      thead th {
+        font-family: var(--display);
+        font-weight: 400;
+        font-size: 0.75rem;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: var(--magenta);
+      }
+
+      tbody th {
+        font-weight: 700;
+        color: var(--cyan);
+      }
+
+      tbody tr:hover td,
+      tbody tr:hover th {
+        background: color-mix(in srgb, var(--panel) 80%, transparent);
+      }
+
+      tbody th {
+        transition: text-shadow var(--fast) linear;
+      }
+
+      tbody tr:hover th {
+        text-shadow: var(--glow-cyan);
+      }
+
+      /* ---- insert coin ---- */
+
+      .coin {
+        padding: var(--s6) var(--s4);
+        border: var(--rule) solid var(--magenta);
+        background: color-mix(in srgb, var(--panel) 70%, transparent);
+        box-shadow: var(--glow-magenta);
+        text-align: center;
+      }
+
+      .coin h2 {
+        margin: 0 0 var(--s3);
+        font-family: var(--display);
+        font-weight: 400;
+        font-size: clamp(1.8rem, 6vw, 3.4rem);
+        line-height: 1;
+        text-transform: uppercase;
+        color: var(--cyan);
+        text-shadow: var(--glow-cyan);
+      }
+
+      .coin .actions {
+        justify-content: center;
+      }
+
+      /* The sign never sits still — neon hums. */
+      .coin h2 {
+        animation: hum 2.8s ease-in-out infinite alternate;
+      }
+
+      @keyframes hum {
+        to {
+          text-shadow: 0 0 var(--s4)
+            color-mix(in srgb, var(--cyan) 80%, transparent);
+        }
+      }
+
+      .blink {
+        font-size: 0.78rem;
+        font-weight: 700;
+        letter-spacing: 0.3em;
+        text-transform: uppercase;
+        color: var(--magenta);
+        animation: blink 1.6s steps(1, end) infinite;
+      }
+
+      @keyframes blink {
+        50% {
+          opacity: 0.15;
+        }
+      }
+
+      footer {
+        padding-block: var(--s5);
+        border-top: var(--rule) solid
+          color-mix(in srgb, var(--quiet) 25%, transparent);
+        font-size: 0.82rem;
+        color: var(--quiet);
+      }
+
+      footer ul {
+        display: flex;
+        flex-wrap: wrap;
+        gap: var(--s4);
+        margin: 0 0 var(--s3);
+        padding: 0;
+        list-style: none;
+      }
+
+      footer a {
+        color: var(--text);
+        text-decoration: none;
+      }
+
+      footer a:hover {
+        color: var(--cyan);
+      }
+
+      /* ======================================================================
+         Motion. Three tiers, in order of how much attention each one asks for:
+           1. the load sequence — flash, power-on, glitch, staggered arrival;
+           2. scroll-driven work — progress, entrances, parallax, flicker;
+           3. ambient loops — scanline roll, refresh band, neon hum, blink.
+         Every one of them is switched off by prefers-reduced-motion below.
+          =================================================================== */
+
+      @keyframes power {
+        0% {
+          opacity: 0;
+          scale: 1 0.02;
+          filter: brightness(3);
+        }
+        55% {
+          opacity: 1;
+          scale: 1 0.02;
+          filter: brightness(3);
+        }
+        100% {
+          opacity: 1;
+          scale: 1 1;
+          filter: none;
+        }
+      }
+
+      @keyframes slide-in {
+        from {
+          opacity: 0;
+          translate: 0 var(--s4);
+        }
+      }
+
+      /* Cabinets arrive from the side they sit on, and settle out of a tilt. */
+      @keyframes cab-in {
+        from {
+          opacity: 0;
+          translate: var(--from, 0) var(--s4);
+          rotate: 1.2deg;
+        }
+      }
+
+      /* Struck like a tube light: bright, dead, bright, and then it holds. */
+      @keyframes neon-on {
+        0% {
+          opacity: 0;
+        }
+        18% {
+          opacity: 1;
+        }
+        28% {
+          opacity: 0.12;
+        }
+        42% {
+          opacity: 1;
+        }
+        52% {
+          opacity: 0.3;
+        }
+        66%,
+        100% {
+          opacity: 1;
+        }
+      }
+
+      @keyframes charge {
+        from {
+          opacity: 0;
+          translate: calc(var(--s5) * -1) 0;
+        }
+      }
+
+      @keyframes drift {
+        to {
+          translate: 0 calc(var(--s6) * -1);
+        }
+      }
+
+      @keyframes progress {
+        to {
+          scale: 1 1;
+        }
+      }
+
+      /* ---- tier 1: the load sequence ---- */
+
+      .hero .badge,
+      .hero h1,
+      .hero .lede,
+      .hero .actions {
+        animation: slide-in 620ms var(--ease) both;
+      }
+
+      .hero h1 {
+        animation-delay: 80ms;
+      }
+      .hero .lede {
+        animation-delay: 200ms;
+      }
+      .hero .actions {
+        animation-delay: 300ms;
+      }
+
+      .hero .screen {
+        animation: power var(--slow) var(--ease) 120ms both;
+      }
+
+      /* ---- tier 2: scroll-driven ---- */
+
+      @supports (animation-timeline: view()) {
+        @media (prefers-reduced-motion: no-preference) {
+          /* Two animations on one element: the tube warms up on load, then
+             the same element drifts as it leaves. Both have to be listed
+             together — a second `animation` rule would drop the first. */
+          .hero .screen {
+            animation: power var(--slow) var(--ease) 120ms both,
+              drift linear both;
+            animation-timeline: auto, view();
+            animation-range: normal, exit -20% exit 100%;
+          }
+
+          .sec-head,
+          .facts,
+          .shots li,
+          .scroll,
+          .coin {
+            animation: slide-in 620ms var(--ease) both;
+            animation-timeline: view();
+            animation-range: entry 0% entry 58%;
+          }
+
+          /* The heading strikes on as it enters, scrubbed by the scroll. */
+          .sec-head h2 {
+            animation: neon-on 1s steps(1, end) both;
+            animation-timeline: view();
+            animation-range: entry 5% entry 45%;
+          }
+
+          .cabs > :nth-child(odd) {
+            --from: calc(var(--s6) * -1);
+          }
+
+          .cabs > :nth-child(even) {
+            --from: var(--s6);
+          }
+
+          .cab {
+            animation: cab-in 700ms var(--ease) both;
+            animation-timeline: view();
+            animation-range: entry 0% entry 62%;
+          }
+
+          .steps li {
+            animation: charge 600ms var(--ease) both;
+            animation-timeline: view();
+            animation-range: entry 0% entry 55%;
+          }
+        }
+      }
+
+      /* Scroll progress, hairline, under the sticky bar. */
+      @supports (animation-timeline: scroll()) {
+        @media (prefers-reduced-motion: no-preference) {
+          .bar::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: calc(var(--rule) * -1);
+            height: var(--rule);
+            background: linear-gradient(
+              to right,
+              var(--cyan),
+              var(--magenta)
+            );
+            transform-origin: left;
+            scale: 0 1;
+            animation: progress linear both;
+            animation-timeline: scroll(root block);
+          }
+        }
+      }
+
+      @media (prefers-reduced-motion: no-preference) {
+        html {
+          scroll-behavior: smooth;
+        }
+      }
+
+      /* ---- the switch ---- */
+
+      @media (prefers-reduced-motion: reduce) {
+        *,
+        *::before,
+        *::after {
+          animation-duration: 1ms !important;
+          animation-delay: 0ms !important;
+          animation-iteration-count: 1 !important;
+          transition-duration: 1ms !important;
+          scroll-behavior: auto !important;
+        }
+
+        /* The ambient layers are decoration only: drop them entirely rather
+           than leave a frozen band parked across the page. */
+        body::after,
+        html::before,
+        .cab figure::after {
+          display: none;
+        }
+      }
+
+    </style>
+  </head>
+  <body>
+    <a class="skip" href="#main">Skip to content</a>
+
+    <header class="bar">
+      <div class="wrap">
+        <img src="sample-data/logo-pokerbolt.png" alt="Pokerbolt" />
+        <nav aria-label="Primary">
+          <ul>
+            <li><a href="#library">Games</a></li>
+            <li><a href="#lesson">How to play</a></li>
+            <li><a href="#ranking">Ranking</a></li>
+            <li><a href="index.html">Full guide</a></li>
+          </ul>
+        </nav>
+        <button class="btn theme-toggle" type="button" data-theme-toggle hidden>
+          <svg
+            data-icon="sun"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.8"
+            stroke-linecap="round"
+            aria-hidden="true"
+            focusable="false"
+          >
+            <circle cx="12" cy="12" r="4.2" />
+            <path
+              d="M12 2.2v2.1M12 19.7v2.1M4.1 4.1l1.5 1.5M18.4 18.4l1.5 1.5M2.2 12h2.1M19.7 12h2.1M4.1 19.9l1.5-1.5M18.4 5.6l1.5-1.5"
+            />
+          </svg>
+          <svg
+            data-icon="moon"
+            viewBox="0 0 24 24"
+            fill="currentColor"
+            aria-hidden="true"
+            focusable="false"
+            hidden
+          >
+            <path
+              d="M20.3 14.9A8.6 8.6 0 0 1 9.1 3.7a8.6 8.6 0 1 0 11.2 11.2Z"
+            />
+          </svg>
+        </button>
+      </div>
+    </header>
+
+    <main id="main">
+      <div class="wrap">
+        <section class="hero">
+          <div>
+            <p class="badge">15 cabinets · 1 client</p>
+            <h1>
+              Fifteen tables
+              <span class="glitch" data-text="one night shift">one night shift</span>
+            </h1>
+            <p class="lede">
+              Poker, dominoes, baccarat and the rest — each one explained in
+              order, so you know what you are doing before the first hand is
+              dealt.
+            </p>
+            <div class="actions">
+              <a class="btn btn--magenta" href="#library"><span>Pick a game</span></a>
+              <a class="btn" href="#lesson"><span>Start with Hold'em</span></a>
+            </div>
+          </div>
+
+          <figure class="screen">
+            <img src="sample-data/01-poker.png" alt="A Texas Hold'em table in the Pokerbolt client, mid hand." />
+            <figcaption>Table 01 — Hold'em, live</figcaption>
+          </figure>
+        </section>
+
+        <section id="library">
+          <div class="sec-head">
+            <h2>Select your game</h2>
+            <p>Every title in the client. Numbered as the lobby lists them.</p>
+          </div>
+          <ul class="cabs">
+            <li class="cab">
+              <a href="#lesson">
+                <span class="cab__in">
+                  <figure>
+                    <img src="sample-data/01-poker.png" alt="" loading="lazy" />
+                    <span class="num">01</span>
+                  </figure>
+                  <h3>Texas Hold'em</h3>
+                  <p>Two hole cards, five on the board, four betting rounds.</p>
+                  <span class="cab__go">Rules &rarr;</span>
+                </span>
+              </a>
+            </li>
+            <li class="cab">
+              <a href="index.html#capsa-banting">
+                <span class="cab__in">
+                  <figure>
+                    <img src="sample-data/02-capsa-banting02.png" alt="" loading="lazy" />
+                    <span class="num">02</span>
+                  </figure>
+                  <h3>Capsa Banting</h3>
+                  <p>Shed all thirteen cards first. Big Two, four seats.</p>
+                  <span class="cab__go">Rules &rarr;</span>
+                </span>
+              </a>
+            </li>
+            <li class="cab">
+              <a href="index.html#capsa-susun">
+                <span class="cab__in">
+                  <figure>
+                    <img src="sample-data/03-capsa-susun02.png" alt="" loading="lazy" />
+                    <span class="num">03</span>
+                  </figure>
+                  <h3>Capsa Susun</h3>
+                  <p>Arrange thirteen cards into three legal hands.</p>
+                  <span class="cab__go">Rules &rarr;</span>
+                </span>
+              </a>
+            </li>
+            <li class="cab">
+              <a href="index.html#baccarat">
+                <span class="cab__in">
+                  <figure>
+                    <img src="sample-data/04-baccarat01.png" alt="" loading="lazy" />
+                    <span class="num">04</span>
+                  </figure>
+                  <h3>Baccarat</h3>
+                  <p>Back Player, Banker or Tie. Closest to nine wins.</p>
+                  <span class="cab__go">Rules &rarr;</span>
+                </span>
+              </a>
+            </li>
+            <li class="cab">
+              <a href="index.html#ceme">
+                <span class="cab__in">
+                  <figure>
+                    <img src="sample-data/05-ceme01.png" alt="" loading="lazy" />
+                    <span class="num">05</span>
+                  </figure>
+                  <h3>Ceme</h3>
+                  <p>Two dominoes against the dealer. Last digit is your score.</p>
+                  <span class="cab__go">Rules &rarr;</span>
+                </span>
+              </a>
+            </li>
+            <li class="cab">
+              <a href="index.html#ceme-keliling">
+                <span class="cab__in">
+                  <figure>
+                    <img src="sample-data/06-cemekeliling01.png" alt="" loading="lazy" />
+                    <span class="num">06</span>
+                  </figure>
+                  <h3>Ceme Keliling</h3>
+                  <p>Ceme with the dealer seat rotating around the table.</p>
+                  <span class="cab__go">Rules &rarr;</span>
+                </span>
+              </a>
+            </li>
+            <li class="cab">
+              <a href="index.html#super10">
+                <span class="cab__in">
+                  <figure>
+                    <img src="sample-data/07-superten01.png" alt="" loading="lazy" />
+                    <span class="num">07</span>
+                  </figure>
+                  <h3>Super10</h3>
+                  <p>Three cards, pictures are worth ten, ten is the top score.</p>
+                  <span class="cab__go">Rules &rarr;</span>
+                </span>
+              </a>
+            </li>
+            <li class="cab">
+              <a href="index.html#niu-niu">
+                <span class="cab__in">
+                  <figure>
+                    <img src="sample-data/08-niuniu02.png" alt="" loading="lazy" />
+                    <span class="num">08</span>
+                  </figure>
+                  <h3>Niu Niu</h3>
+                  <p>Split five cards into a bull of three and a score of two.</p>
+                  <span class="cab__go">Rules &rarr;</span>
+                </span>
+              </a>
+            </li>
+            <li class="cab">
+              <a href="index.html#omaha">
+                <span class="cab__in">
+                  <figure>
+                    <img src="sample-data/09-pokeromaha02.png" alt="" loading="lazy" />
+                    <span class="num">09</span>
+                  </figure>
+                  <h3>Omaha Poker</h3>
+                  <p>Four hole cards — use exactly two, plus three from the board.</p>
+                  <span class="cab__go">Rules &rarr;</span>
+                </span>
+              </a>
+            </li>
+            <li class="cab">
+              <a href="index.html#domino-classic">
+                <span class="cab__in">
+                  <figure>
+                    <img src="sample-data/10-domino-classic01.png" alt="" loading="lazy" />
+                    <span class="num">10</span>
+                  </figure>
+                  <h3>Domino Classic</h3>
+                  <p>Gaple. Match the open ends, empty your hand first.</p>
+                  <span class="cab__go">Rules &rarr;</span>
+                </span>
+              </a>
+            </li>
+            <li class="cab">
+              <a href="index.html#samgong">
+                <span class="cab__in">
+                  <figure>
+                    <img src="sample-data/11-samgong01.png" alt="" loading="lazy" />
+                    <span class="num">11</span>
+                  </figure>
+                  <h3>Samgong</h3>
+                  <p>Three cards against the dealer. Three pictures is the nuts.</p>
+                  <span class="cab__go">Rules &rarr;</span>
+                </span>
+              </a>
+            </li>
+            <li class="cab">
+              <a href="index.html#blackjack">
+                <span class="cab__in">
+                  <figure>
+                    <img src="sample-data/12-blackjack01.png" alt="" loading="lazy" />
+                    <span class="num">12</span>
+                  </figure>
+                  <h3>Blackjack</h3>
+                  <p>Beat the dealer to twenty-one without going bust.</p>
+                  <span class="cab__go">Rules &rarr;</span>
+                </span>
+              </a>
+            </li>
+            <li class="cab">
+              <a href="index.html#call-break">
+                <span class="cab__in">
+                  <figure>
+                    <img src="sample-data/13-callbreak01.png" alt="" loading="lazy" />
+                    <span class="num">13</span>
+                  </figure>
+                  <h3>Call Break</h3>
+                  <p>Bid your tricks, spades are trumps, five rounds.</p>
+                  <span class="cab__go">Rules &rarr;</span>
+                </span>
+              </a>
+            </li>
+            <li class="cab">
+              <a href="index.html#speed-baccarat">
+                <span class="cab__in">
+                  <figure>
+                    <img src="sample-data/14-speed-baccarat01.png" alt="" loading="lazy" />
+                    <span class="num">14</span>
+                  </figure>
+                  <h3>Speed Baccarat</h3>
+                  <p>Baccarat rules on a roughly half-minute round clock.</p>
+                  <span class="cab__go">Rules &rarr;</span>
+                </span>
+              </a>
+            </li>
+            <li class="cab">
+              <a href="index.html#tongits-go">
+                <span class="cab__in">
+                  <figure>
+                    <img src="sample-data/15-tongits-go01.png" alt="" loading="lazy" />
+                    <span class="num">15</span>
+                  </figure>
+                  <h3>Tongits Go</h3>
+                  <p>Meld, discard, and go out before the other two seats.</p>
+                  <span class="cab__go">Rules &rarr;</span>
+                </span>
+              </a>
+            </li></ul>
+        </section>
+
+        <section id="lesson">
+          <div class="sec-head">
+            <h2>01 — Texas Hold'em</h2>
+            <p>
+              Two private cards, five in the middle. Best five of your seven
+              takes the pot.
+            </p>
+          </div>
+
+          <div class="lesson">
+            <ol class="steps">
+              <li>
+                <strong>Post the blinds</strong>
+                Two seats left of the dealer button post the small and big
+                blind. The buy-in and blind level are printed in the table
+                header, for example <em>Buy in 200K–1M, blind 5K–10K</em>.
+              </li>
+              <li>
+                <strong>Pre-flop</strong>
+                Everyone gets two hole cards. Starting left of the big blind,
+                each seat folds, calls or raises.
+              </li>
+              <li>
+                <strong>Flop, turn, river</strong>
+                Three community cards, then one, then one more — with a betting
+                round after each. Check when nobody has bet; call, raise or fold
+                when they have.
+              </li>
+              <li>
+                <strong>Showdown</strong>
+                The last aggressor shows first. The client names the winning
+                hand on the table banner and pushes the pot.
+              </li>
+            </ol>
+
+            <aside class="facts">
+              <h3>Table facts</h3>
+              <dl>
+                <dt>Deck</dt>
+                <dd>52 cards, no joker</dd>
+                <dt>Your hand</dt>
+                <dd>Best 5 of your 7</dd>
+                <dt>Actions</dt>
+                <dd>Fold, check, call, raise, all in</dd>
+                <dt>Clock</dt>
+                <dd>Slow and fast tables</dd>
+                <dt>Jackpot</dt>
+                <dd>Optional, bought before the deal</dd>
+              </dl>
+              <p class="note">
+                <b>Beginner tip</b>
+                Fold most starting hands. Position matters more than pretty
+                cards — acting last on every street is worth more than a suited
+                connector.
+              </p>
+            </aside>
+          </div>
+
+          <ul class="shots">
+            <li>
+              <figure>
+                <img src="sample-data/01-poker04.png" alt="The betting controls during a Hold'em hand." loading="lazy" />
+                <figcaption>Fold, check and raise sit on the rail.</figcaption>
+              </figure>
+            </li>
+            <li>
+              <figure>
+                <img src="sample-data/01-poker05.png" alt="A completed Hold'em showdown with the winning hand named." loading="lazy" />
+                <figcaption>The banner names the winning hand.</figcaption>
+              </figure>
+            </li>
+          </ul>
+        </section>
+
+        <section id="ranking">
+          <div class="sec-head">
+            <h2>Hand ranking</h2>
+            <p>Strongest first. Shared by Hold'em, Omaha and Capsa Susun.</p>
+          </div>
+          <div class="scroll">
+            <table>
+              <caption>Five-card hands, high to low</caption>
+              <thead>
+                <tr>
+                  <th scope="col">Hand</th>
+                  <th scope="col">Rank</th>
+                  <th scope="col">Example</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><th scope="row">Royal flush</th><td>1</td><td>A K Q J 10, one suit</td></tr>
+                <tr><th scope="row">Straight flush</th><td>2</td><td>9 8 7 6 5, one suit</td></tr>
+                <tr><th scope="row">Four of a kind</th><td>3</td><td>Q Q Q Q 7</td></tr>
+                <tr><th scope="row">Full house</th><td>4</td><td>J J J 4 4</td></tr>
+                <tr><th scope="row">Flush</th><td>5</td><td>K 10 8 5 2, one suit</td></tr>
+                <tr><th scope="row">Straight</th><td>6</td><td>8 7 6 5 4, mixed suits</td></tr>
+                <tr><th scope="row">Three of a kind</th><td>7</td><td>6 6 6 K 3</td></tr>
+                <tr><th scope="row">Two pair</th><td>8</td><td>10 10 5 5 A</td></tr>
+                <tr><th scope="row">One pair</th><td>9</td><td>A A 9 6 2</td></tr>
+                <tr><th scope="row">High card</th><td>10</td><td>A J 8 4 3</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section>
+          <div class="coin">
+            <p class="blink">Ready player one</p>
+            <h2>Learn it, then play it</h2>
+            <div class="actions">
+              <a class="btn btn--magenta" href="index.html"><span>Open the full guide</span></a>
+              <a class="btn" href="#library"><span>Back to the lobby</span></a>
+            </div>
+          </div>
+        </section>
+      </div>
+    </main>
+
+    <footer>
+      <div class="wrap">
+        <ul>
+          <li><a href="#library">Games</a></li>
+          <li><a href="#lesson">How to play</a></li>
+          <li><a href="#ranking">Ranking</a></li>
+          <li><a href="index.html">Full guide</a></li>
+        </ul>
+        <p>Pokerbolt · Design study C, “Night Shift”. Rules, not odds.</p>
+      </div>
+    </footer>
+    <script>
+      // Theme: the system setting decides, until the reader picks a side —
+      // then that choice is remembered for this browser.
+      (function () {
+        var KEY = "pokerbolt-arcade-theme";
+        var root = document.documentElement;
+        var button = document.querySelector("[data-theme-toggle]");
+        var media = window.matchMedia("(prefers-color-scheme: light)");
+        var sun = button.querySelector('[data-icon="sun"]');
+        var moon = button.querySelector('[data-icon="moon"]');
+
+        function current() {
+          return root.dataset.theme || (media.matches ? "light" : "dark");
+        }
+
+        // `hidden` is an HTMLElement property and an <svg> is an SVGElement,
+        // so the attribute has to be set directly.
+        function show(icon, on) {
+          if (on) icon.removeAttribute("hidden");
+          else icon.setAttribute("hidden", "");
+        }
+
+        function label() {
+          var dark = current() === "dark";
+          // The icon shows what a press switches TO.
+          show(sun, dark);
+          show(moon, !dark);
+          button.setAttribute(
+            "aria-label",
+            "Switch to the " + (dark ? "day" : "night") + " theme"
+          );
+        }
+
+        try {
+          var stored = localStorage.getItem(KEY);
+          if (stored === "light" || stored === "dark") root.dataset.theme = stored;
+        } catch (e) {
+          // Private mode or blocked storage: the system setting still works.
+        }
+
+        label();
+        button.hidden = false;
+        media.addEventListener("change", label);
+
+        button.addEventListener("click", function () {
+          root.dataset.theme = current() === "dark" ? "light" : "dark";
+          try {
+            localStorage.setItem(KEY, root.dataset.theme);
+          } catch (e) {}
+          label();
+        });
+      })();
+    </script>
+  </body>
+</html>

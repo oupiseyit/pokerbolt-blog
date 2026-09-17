@@ -1,0 +1,1431 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Pokerbolt — The Press Room</title>
+    <meta
+      name="description"
+      content="Fifteen card and domino games, and how each one is played. Design study B: brutalist newsprint."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Anton&family=IBM+Plex+Mono:ital,wght@0,300;0,400;0,600;1,400&display=swap"
+    />
+    <style>
+      /* =====================================================================
+         Design study B — "The Press Room"
+         Newsprint brutalism: exposed grid, hard rules, one red, no curves.
+         Tokens only below the :root block.
+         ================================================================== */
+
+      :root {
+        color-scheme: light;
+
+        --paper: #f4f1ea;
+        --paper-2: #e8e3d7;
+        --ink: #111111;
+        --ink-soft: #57534a;
+        /* 4.98:1 on paper, both directions — the only accent on the page. */
+        --red: #c62a12;
+
+        --display: "Anton", Impact, sans-serif;
+        --text: "IBM Plex Mono", ui-monospace, monospace;
+
+        --s1: 0.25rem;
+        --s2: 0.5rem;
+        --s3: 0.9rem;
+        --s4: 1.5rem;
+        --s5: 2.5rem;
+        --s6: 4rem;
+        --s7: 6rem;
+
+        --rule: 1px;
+        --rule-fat: 3px;
+        --rule-focus: 2px;
+        --fast: 120ms;
+        --mid: 300ms;
+        --ease: steps(6, end);
+        --ease-smooth: cubic-bezier(0.2, 0.8, 0.2, 1);
+        --measure: 78rem;
+
+        /* Named separately because the night edition cannot derive them: the
+           wordmark is light-on-dark artwork that only needs inverting for
+           newsprint, and a halftone multiplies on paper but screens on black. */
+        --brand-filter: invert(1) grayscale(1) contrast(2);
+        --art-blend: multiply;
+      }
+
+      /* ---------------------------------------------------------------------
+         Night edition. The same press, run on black stock: the ink is now the
+         light and the paper is the dark, so every rule, fill and inversion in
+         the sheet below flips with the two tokens and needs no other change.
+         Checked against WCAG 2.2 AA; the weakest pairing is the red on the
+         raised stock at 5.33:1.
+         This sheet is a light design, so the query is the other way round from
+         the other studies: dark is the override, not the default.
+         ------------------------------------------------------------------ */
+
+      @media (prefers-color-scheme: dark) {
+        :root:not([data-theme="light"]) {
+          color-scheme: dark;
+
+          --paper: #14130f;
+          --paper-2: #21201a;
+          --ink: #f2efe6;
+          --ink-soft: #a8a396;
+          --red: #ff5c3d;
+
+          --brand-filter: grayscale(1) contrast(1.6);
+          --art-blend: screen;
+        }
+      }
+
+      :root[data-theme="dark"] {
+        color-scheme: dark;
+
+        --paper: #14130f;
+        --paper-2: #21201a;
+        --ink: #f2efe6;
+        --ink-soft: #a8a396;
+        --red: #ff5c3d;
+
+        --brand-filter: grayscale(1) contrast(1.6);
+        --art-blend: screen;
+      }
+
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+      }
+
+      /* A class that sets `display` would otherwise outrank the UA rule for
+         [hidden], and both theme icons would show at once. */
+      [hidden] {
+        display: none !important;
+      }
+
+      body {
+        margin: 0;
+        background: var(--paper);
+        color: var(--ink);
+        font-family: var(--text);
+        font-size: 0.95rem;
+        font-weight: 400;
+        line-height: 1.6;
+        /* Newsprint: a faint horizontal ruling, like a paste-up board. */
+        background-image: repeating-linear-gradient(
+          to bottom,
+          transparent 0 calc(var(--s5) - var(--rule)),
+          color-mix(in srgb, var(--ink) 5%, transparent) calc(var(--s5) - var(--rule)) var(--s5)
+        );
+      }
+
+      :focus-visible {
+        outline: var(--rule-fat) solid var(--red);
+        outline-offset: var(--rule-focus);
+      }
+
+      .skip {
+        position: absolute;
+        left: var(--s3);
+        top: -6rem;
+        z-index: 9;
+        padding: var(--s2) var(--s4);
+        background: var(--ink);
+        color: var(--paper);
+        text-decoration: none;
+        transition: top var(--mid) var(--ease-smooth);
+      }
+
+      .skip:focus-visible {
+        top: var(--s3);
+      }
+
+      .wrap {
+        width: min(100% - 2 * var(--s3), var(--measure));
+        margin-inline: auto;
+      }
+
+      /* ---- nameplate ---- */
+
+      .nameplate {
+        border-bottom: var(--rule-fat) solid var(--ink);
+      }
+
+      .nameplate .wrap {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        gap: var(--s3);
+        padding-block: var(--s3);
+      }
+
+      .nameplate img {
+        display: block;
+        width: auto;
+        height: 1.5rem;
+        filter: var(--brand-filter);
+      }
+
+      .nameplate nav ul {
+        display: flex;
+        flex-wrap: wrap;
+        gap: var(--s4);
+        margin: 0;
+        padding: 0;
+        list-style: none;
+      }
+
+      .nameplate a {
+        color: var(--ink);
+        font-size: 0.72rem;
+        font-weight: 600;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        text-decoration: none;
+        border-bottom: var(--rule-fat) solid transparent;
+        transition: border-color var(--fast) linear, color var(--fast) linear;
+      }
+
+      .nameplate a:hover,
+      .nameplate a[aria-current="page"] {
+        border-color: var(--red);
+        color: var(--red);
+      }
+
+      .dateline {
+        border-bottom: var(--rule) solid var(--ink);
+        font-size: 0.68rem;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+      }
+
+      .dateline .wrap {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        gap: var(--s3);
+        padding-block: var(--s2);
+      }
+
+      /* ---- hero: a front page ---- */
+
+      .hero {
+        display: grid;
+        gap: 0;
+        border-bottom: var(--rule-fat) solid var(--ink);
+      }
+
+      @media (min-width: 56rem) {
+        .hero {
+          grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+        }
+
+        .hero__art {
+          border-left: var(--rule) solid var(--ink);
+        }
+      }
+
+      .hero__copy {
+        padding: var(--s6) var(--s4) var(--s5) 0;
+      }
+
+      .kicker {
+        display: inline-block;
+        margin: 0 0 var(--s4);
+        padding: var(--s1) var(--s3);
+        background: var(--red);
+        color: var(--paper);
+        font-size: 0.68rem;
+        font-weight: 600;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+      }
+
+      h1 {
+        margin: 0;
+        font-family: var(--display);
+        font-weight: 400;
+        font-size: clamp(3.2rem, 12vw, 8.5rem);
+        line-height: 0.82;
+        letter-spacing: -0.02em;
+        text-transform: uppercase;
+      }
+
+      h1 {
+        transition: text-shadow var(--fast) linear;
+      }
+
+      /* Misregistration: the red plate slips when you lean on the page. */
+      h1:hover {
+        text-shadow: var(--s1) var(--s1) 0 var(--red);
+      }
+
+      h1 .red {
+        color: var(--red);
+      }
+
+      h1 .outline {
+        color: transparent;
+        -webkit-text-stroke: var(--rule-fat) var(--ink);
+      }
+
+      .lede {
+        max-width: 38rem;
+        margin: var(--s4) 0 var(--s5);
+        font-size: 1.05rem;
+      }
+
+      .actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: var(--s3);
+      }
+
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        min-height: 2.75rem;
+        padding: var(--s2) var(--s4);
+        border: var(--rule-fat) solid var(--ink);
+        background: var(--paper);
+        color: var(--ink);
+        font-family: var(--text);
+        font-size: 0.75rem;
+        font-weight: 600;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        text-decoration: none;
+        cursor: pointer;
+        box-shadow: var(--s2) var(--s2) 0 var(--ink);
+        transition: translate var(--fast) linear, box-shadow var(--fast) linear,
+          background var(--fast) linear, color var(--fast) linear;
+      }
+
+      .btn:hover {
+        translate: var(--s1) var(--s1);
+        box-shadow: var(--s1) var(--s1) 0 var(--ink);
+      }
+
+      .btn:active {
+        translate: var(--s2) var(--s2);
+        box-shadow: 0 0 0 var(--ink);
+      }
+
+      .btn--red {
+        background: var(--red);
+        border-color: var(--red);
+        color: var(--paper);
+      }
+
+      .btn:disabled,
+      .btn[aria-disabled="true"] {
+        border-color: var(--ink-soft);
+        background: var(--paper-2);
+        color: var(--ink-soft);
+        box-shadow: none;
+        translate: 0 0;
+        cursor: not-allowed;
+      }
+
+      /* Day/night switch — a .btn, so it presses like the others. Square, and
+         short enough to sit on the nameplate line. */
+      .theme-toggle {
+        min-height: auto;
+        padding: var(--s2);
+        box-shadow: var(--s1) var(--s1) 0 var(--ink);
+      }
+
+      .theme-toggle:hover {
+        box-shadow: 0 0 0 var(--ink);
+      }
+
+      .theme-toggle svg {
+        display: block;
+        width: 1.1rem;
+        height: 1.1rem;
+      }
+
+      .hero__art {
+        display: grid;
+        place-items: stretch;
+      }
+
+      .hero__art img {
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        /* Halftone: the press prints one colour, whichever way round it is. */
+        filter: grayscale(1) contrast(1.35);
+        mix-blend-mode: var(--art-blend);
+      }
+
+      /* ---- the ticker ---- */
+
+      .ticker {
+        display: flex;
+        overflow: hidden;
+        border-bottom: var(--rule-fat) solid var(--ink);
+        background: var(--ink);
+        color: var(--paper);
+        font-size: 0.72rem;
+        font-weight: 600;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+      }
+
+      .ticker ul {
+        display: flex;
+        flex: none;
+        gap: var(--s5);
+        margin: 0;
+        padding: var(--s2) var(--s5) var(--s2) 0;
+        list-style: none;
+        animation: slide 38s linear infinite;
+      }
+
+      .ticker:hover ul {
+        animation-play-state: paused;
+      }
+
+      @keyframes slide {
+        to {
+          translate: -100% 0;
+        }
+      }
+
+      /* ---- the grid of games ---- */
+
+      .sec-head {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: baseline;
+        justify-content: space-between;
+        gap: var(--s3);
+        padding: var(--s5) 0 var(--s4);
+        border-bottom: var(--rule-fat) solid var(--ink);
+      }
+
+      .sec-head h2 {
+        margin: 0;
+        font-family: var(--display);
+        font-weight: 400;
+        font-size: clamp(2rem, 6vw, 3.6rem);
+        line-height: 0.9;
+        text-transform: uppercase;
+      }
+
+      .sec-head p {
+        margin: 0;
+        max-width: 26rem;
+        font-size: 0.85rem;
+        color: var(--ink-soft);
+      }
+
+      .cells {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr));
+        gap: 0;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+        border-left: var(--rule) solid var(--ink);
+      }
+
+      .cell {
+        border-right: var(--rule) solid var(--ink);
+        border-bottom: var(--rule) solid var(--ink);
+      }
+
+      .cell a {
+        display: grid;
+        grid-template-rows: auto 1fr auto;
+        height: 100%;
+        padding: var(--s3);
+        color: inherit;
+        text-decoration: none;
+        transition: background var(--fast) linear, color var(--fast) linear;
+      }
+
+      .cell a:hover {
+        background: var(--ink);
+        color: var(--paper);
+      }
+
+      .cell a:active {
+        background: var(--red);
+        color: var(--paper);
+      }
+
+      .cell__top {
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+        gap: var(--s2);
+        padding-bottom: var(--s2);
+        border-bottom: var(--rule) solid currentColor;
+      }
+
+      .cell__num {
+        font-family: var(--display);
+        font-size: 2.6rem;
+        line-height: 0.8;
+      }
+
+      .cell__kind {
+        font-size: 0.62rem;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+      }
+
+      .cell figure {
+        margin: var(--s3) 0;
+        overflow: hidden;
+        aspect-ratio: 16 / 9;
+        border: var(--rule) solid currentColor;
+      }
+
+      .cell img {
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        filter: grayscale(1) contrast(1.2);
+        transition: filter var(--mid) var(--ease-smooth);
+      }
+
+      .cell a:hover img {
+        filter: none;
+      }
+
+      .cell h3 {
+        margin: 0 0 var(--s2);
+        font-family: var(--display);
+        font-weight: 400;
+        font-size: 1.6rem;
+        line-height: 1;
+        text-transform: uppercase;
+      }
+
+      .cell p {
+        margin: 0 0 var(--s3);
+        font-size: 0.82rem;
+      }
+
+      .cell__go {
+        font-size: 0.68rem;
+        font-weight: 600;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+        transition: translate var(--fast) linear;
+      }
+
+      .cell a:hover .cell__go,
+      .cell a:focus-visible .cell__go {
+        translate: var(--s2) 0;
+      }
+
+      /* The numeral is set in a heavier forme and shifts as the tile is struck. */
+      .cell__num {
+        transition: translate var(--fast) linear;
+      }
+
+      .cell a:hover .cell__num {
+        translate: 0 calc(var(--s1) * -1);
+      }
+
+      /* ---- lesson ---- */
+
+      .lesson {
+        display: grid;
+        gap: 0;
+        border-bottom: var(--rule-fat) solid var(--ink);
+      }
+
+      @media (min-width: 56rem) {
+        .lesson {
+          grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
+        }
+
+        .facts {
+          border-left: var(--rule) solid var(--ink);
+        }
+      }
+
+      .steps {
+        margin: 0;
+        padding: var(--s4) var(--s4) var(--s4) 0;
+        list-style: none;
+        counter-reset: step;
+      }
+
+      .steps li {
+        position: relative;
+        padding: var(--s4) 0 var(--s4) var(--s7);
+        counter-increment: step;
+        border-top: var(--rule) solid var(--ink);
+      }
+
+      .steps li:first-child {
+        border-top: 0;
+      }
+
+      .steps li::before {
+        content: counter(step, decimal-leading-zero);
+        position: absolute;
+        left: 0;
+        top: var(--s4);
+        font-family: var(--display);
+        font-size: 3.2rem;
+        line-height: 0.8;
+        color: var(--red);
+      }
+
+      .steps strong {
+        display: block;
+        font-family: var(--display);
+        font-weight: 400;
+        font-size: 1.4rem;
+        text-transform: uppercase;
+      }
+
+      .facts {
+        padding: var(--s4);
+        background: var(--paper-2);
+      }
+
+      .facts h3 {
+        margin: 0 0 var(--s3);
+        padding-bottom: var(--s2);
+        border-bottom: var(--rule-fat) solid var(--ink);
+        font-size: 0.7rem;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+      }
+
+      .facts dl {
+        margin: 0;
+        font-size: 0.85rem;
+      }
+
+      .facts dt {
+        font-weight: 600;
+        text-transform: uppercase;
+        font-size: 0.68rem;
+        letter-spacing: 0.14em;
+        color: var(--ink-soft);
+      }
+
+      .facts dd {
+        margin: 0 0 var(--s3);
+      }
+
+      .note {
+        margin: 0;
+        padding: var(--s3);
+        border: var(--rule-fat) solid var(--red);
+        font-size: 0.85rem;
+      }
+
+      .note b {
+        display: block;
+        color: var(--red);
+        text-transform: uppercase;
+        letter-spacing: 0.14em;
+        font-size: 0.7rem;
+      }
+
+      .shots {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(17rem, 1fr));
+        gap: var(--s4);
+        margin: var(--s5) 0;
+        padding: 0;
+        list-style: none;
+      }
+
+      .shots img {
+        display: block;
+        width: 100%;
+        height: auto;
+        border: var(--rule-fat) solid var(--ink);
+        transition: translate var(--fast) linear, box-shadow var(--fast) linear;
+      }
+
+      .shots li:hover img {
+        translate: calc(var(--s1) * -1) calc(var(--s1) * -1);
+        box-shadow: var(--s2) var(--s2) 0 var(--red);
+      }
+
+      .shots figcaption {
+        padding-top: var(--s2);
+        font-size: 0.78rem;
+        color: var(--ink-soft);
+      }
+
+      /* ---- table ---- */
+
+      .scroll {
+        overflow-x: auto;
+        margin-bottom: var(--s6);
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 0.85rem;
+      }
+
+      caption {
+        padding-block: var(--s3);
+        font-size: 0.7rem;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        text-align: left;
+        color: var(--ink-soft);
+      }
+
+      th,
+      td {
+        padding: var(--s2) var(--s3);
+        text-align: left;
+        border: var(--rule) solid var(--ink);
+      }
+
+      thead th {
+        background: var(--ink);
+        color: var(--paper);
+        font-size: 0.68rem;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+      }
+
+      tbody th {
+        font-family: var(--display);
+        font-weight: 400;
+        font-size: 1.1rem;
+        text-transform: uppercase;
+      }
+
+      tbody tr:nth-child(odd) td,
+      tbody tr:nth-child(odd) th {
+        background: var(--paper-2);
+      }
+
+      /* A struck row: the whole line inverts, the way a proof is marked. */
+      tbody tr:hover td,
+      tbody tr:hover th {
+        background: var(--ink);
+        color: var(--paper);
+      }
+
+      /* ---- closing ---- */
+
+      .close {
+        padding: var(--s6) 0;
+        text-align: center;
+      }
+
+      .close h2 {
+        margin: 0 0 var(--s4);
+        font-family: var(--display);
+        font-weight: 400;
+        font-size: clamp(2.6rem, 10vw, 7rem);
+        line-height: 0.85;
+        text-transform: uppercase;
+      }
+
+      .close .actions {
+        justify-content: center;
+      }
+
+      footer {
+        padding-block: var(--s4);
+        border-top: var(--rule-fat) solid var(--ink);
+        font-size: 0.72rem;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+
+      footer ul {
+        display: flex;
+        flex-wrap: wrap;
+        gap: var(--s4);
+        margin: 0 0 var(--s3);
+        padding: 0;
+        list-style: none;
+      }
+
+      footer a {
+        color: var(--ink);
+      }
+
+      /* ======================================================================
+         Motion. Mechanical throughout: things are printed, struck or wiped.
+         Nothing eases, floats or fades in the round — this is a press.
+           1. the run — rules draw, the headline prints line by line, the
+              photograph passes under the roller;
+           2. scroll work — a chunky progress bar, tiles wiped in from
+              alternating sides, headings struck as they enter;
+           3. no ambient loop but the ticker, which was always running.
+         prefers-reduced-motion stops the lot.
+          =================================================================== */
+
+      @keyframes wipe {
+        from {
+          clip-path: inset(0 100% 0 0);
+        }
+      }
+
+      /* A sheet passing under the roller, top to bottom. */
+      @keyframes press {
+        from {
+          clip-path: inset(0 0 100% 0);
+        }
+      }
+
+      @keyframes drop {
+        from {
+          opacity: 0;
+          translate: 0 var(--s3);
+        }
+      }
+
+      /* Struck from the left or the right, depending where the tile sits. */
+      @keyframes strike {
+        from {
+          clip-path: inset(0 var(--from-r, 100%) 0 var(--from-l, 0));
+        }
+      }
+
+      @keyframes progress {
+        to {
+          scale: 1 1;
+        }
+      }
+
+      /* ---- tier 1: the run ---- */
+
+      .nameplate,
+      .dateline {
+        animation: wipe 420ms var(--ease) both;
+      }
+
+      .dateline {
+        animation-delay: 120ms;
+      }
+
+      /* h1 is excluded: its lines print one at a time, just below. */
+      .hero__copy > :not(h1) {
+        animation: drop 420ms var(--ease-smooth) both;
+      }
+
+      .kicker {
+        animation: wipe 500ms var(--ease) both;
+      }
+
+      h1 .line {
+        display: block;
+        animation: wipe 560ms var(--ease) both;
+      }
+
+      h1 .line:nth-child(2) {
+        animation-delay: 220ms;
+      }
+
+      .hero .lede {
+        animation-delay: 300ms;
+      }
+      .hero .actions {
+        animation-delay: 380ms;
+      }
+
+      .hero__art img {
+        animation: press 700ms var(--ease) 180ms both;
+      }
+
+      /* ---- tier 2: scroll-driven ---- */
+
+      @supports (animation-timeline: view()) {
+        @media (prefers-reduced-motion: no-preference) {
+          .sec-head h2,
+          .close h2 {
+            animation: wipe 600ms var(--ease) both;
+            animation-timeline: view();
+            animation-range: entry 10% entry 70%;
+          }
+
+          .cells > :nth-child(odd) {
+            --from-l: 0;
+            --from-r: 100%;
+          }
+
+          .cells > :nth-child(even) {
+            --from-l: 100%;
+            --from-r: 0;
+          }
+
+          .cell {
+            animation: strike 500ms var(--ease) both;
+            animation-timeline: view();
+            animation-range: entry 0% entry 55%;
+          }
+
+          .steps li,
+          .facts,
+          .shots li,
+          .scroll {
+            animation: drop 500ms var(--ease-smooth) both;
+            animation-timeline: view();
+            animation-range: entry 0% entry 55%;
+          }
+
+          /* The big red numeral is inked after its step has landed. */
+          .steps li::before {
+            animation: wipe 400ms var(--ease) both;
+            animation-timeline: view();
+            animation-range: entry 10% entry 50%;
+          }
+        }
+      }
+
+      /* Reading progress. It advances in chunks, like a sheet counter. */
+      @supports (animation-timeline: scroll()) {
+        @media (prefers-reduced-motion: no-preference) {
+          .dateline {
+            position: relative;
+          }
+
+          .dateline::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: calc(var(--rule) * -1);
+            height: var(--rule-fat);
+            background: var(--red);
+            transform-origin: left;
+            scale: 0 1;
+            animation: progress steps(24, end) both;
+            animation-timeline: scroll(root block);
+          }
+        }
+      }
+
+      @media (prefers-reduced-motion: no-preference) {
+        html {
+          scroll-behavior: smooth;
+        }
+      }
+
+      /* ---- the switch ---- */
+
+      @media (prefers-reduced-motion: reduce) {
+        *,
+        *::before,
+        *::after {
+          animation-duration: 1ms !important;
+          animation-delay: 0ms !important;
+          animation-iteration-count: 1 !important;
+          transition-duration: 1ms !important;
+          scroll-behavior: auto !important;
+        }
+      }
+
+    </style>
+  </head>
+  <body>
+    <a class="skip" href="#main">Skip to content</a>
+
+    <header class="nameplate">
+      <div class="wrap">
+        <img src="sample-data/logo-pokerbolt.png" alt="Pokerbolt" />
+        <nav aria-label="Primary">
+          <ul>
+            <li><a href="#library" aria-current="page">Games</a></li>
+            <li><a href="#lesson">How to play</a></li>
+            <li><a href="#ranking">Ranking</a></li>
+            <li><a href="index.html">Full guide</a></li>
+          </ul>
+        </nav>
+        <button class="btn theme-toggle" type="button" data-theme-toggle hidden>
+          <svg
+            data-icon="sun"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="square"
+            aria-hidden="true"
+            focusable="false"
+          >
+            <circle cx="12" cy="12" r="4.2" />
+            <path
+              d="M12 2.2v2.1M12 19.7v2.1M4.1 4.1l1.5 1.5M18.4 18.4l1.5 1.5M2.2 12h2.1M19.7 12h2.1M4.1 19.9l1.5-1.5M18.4 5.6l1.5-1.5"
+            />
+          </svg>
+          <svg
+            data-icon="moon"
+            viewBox="0 0 24 24"
+            fill="currentColor"
+            aria-hidden="true"
+            focusable="false"
+            hidden
+          >
+            <path
+              d="M20.3 14.9A8.6 8.6 0 0 1 9.1 3.7a8.6 8.6 0 1 0 11.2 11.2Z"
+            />
+          </svg>
+        </button>
+      </div>
+    </header>
+
+    <div class="dateline">
+      <div class="wrap">
+        <span>Vol. 15 — No. 01</span>
+        <span>Fifteen tables · One client</span>
+        <span>Rules, not odds</span>
+      </div>
+    </div>
+
+    <main id="main">
+      <div class="wrap">
+        <section class="hero">
+          <div class="hero__copy">
+            <p class="kicker">Every game, explained</p>
+            <h1>
+              <span class="line">Read the <span class="red">rules</span></span>
+              <span class="line"
+                ><span class="outline">before</span> you sit</span
+              >
+            </h1>
+            <p class="lede">
+              Fifteen card and domino games in one client — Hold'em, Omaha,
+              Capsa, Ceme, Domino, Baccarat, Blackjack and the rest. Each one
+              written out step by step, in the order you will meet it.
+            </p>
+            <div class="actions">
+              <a class="btn btn--red" href="#library">All fifteen</a>
+              <a class="btn" href="#lesson">Start with Hold'em</a>
+            </div>
+          </div>
+          <div class="hero__art">
+            <img src="sample-data/01-poker.png" alt="A Texas Hold'em table in the Pokerbolt client, mid hand." />
+          </div>
+        </section>
+      </div>
+
+      <div class="ticker" aria-hidden="true">
+        <ul><li>01 Texas Hold'em</li><li>02 Capsa Banting</li><li>03 Capsa Susun</li><li>04 Baccarat</li><li>05 Ceme</li><li>06 Ceme Keliling</li><li>07 Super10</li><li>08 Niu Niu</li><li>09 Omaha Poker</li><li>10 Domino Classic</li><li>11 Samgong</li><li>12 Blackjack</li><li>13 Call Break</li><li>14 Speed Baccarat</li><li>15 Tongits Go</li></ul>
+        <ul><li>01 Texas Hold'em</li><li>02 Capsa Banting</li><li>03 Capsa Susun</li><li>04 Baccarat</li><li>05 Ceme</li><li>06 Ceme Keliling</li><li>07 Super10</li><li>08 Niu Niu</li><li>09 Omaha Poker</li><li>10 Domino Classic</li><li>11 Samgong</li><li>12 Blackjack</li><li>13 Call Break</li><li>14 Speed Baccarat</li><li>15 Tongits Go</li></ul>
+      </div>
+
+      <div class="wrap">
+        <section id="library">
+          <div class="sec-head">
+            <h2>The full card</h2>
+            <p>
+              Numbered as they appear in the lobby. Every tile opens the rules.
+            </p>
+          </div>
+          <ul class="cells">
+            <li class="cell">
+              <a href="#lesson">
+                <span class="cell__top">
+                  <span class="cell__num">01</span>
+                  <span class="cell__kind">Cards</span>
+                </span>
+                <span>
+                  <figure><img src="sample-data/01-poker.png" alt="" loading="lazy" /></figure>
+                  <h3>Texas Hold'em</h3>
+                  <p>Two hole cards, five on the board, four betting rounds.</p>
+                </span>
+                <span class="cell__go">Read the rules &rarr;</span>
+              </a>
+            </li>
+            <li class="cell">
+              <a href="index.html#capsa-banting">
+                <span class="cell__top">
+                  <span class="cell__num">02</span>
+                  <span class="cell__kind">Cards</span>
+                </span>
+                <span>
+                  <figure><img src="sample-data/02-capsa-banting02.png" alt="" loading="lazy" /></figure>
+                  <h3>Capsa Banting</h3>
+                  <p>Shed all thirteen cards first. Big Two, four seats.</p>
+                </span>
+                <span class="cell__go">Read the rules &rarr;</span>
+              </a>
+            </li>
+            <li class="cell">
+              <a href="index.html#capsa-susun">
+                <span class="cell__top">
+                  <span class="cell__num">03</span>
+                  <span class="cell__kind">Cards</span>
+                </span>
+                <span>
+                  <figure><img src="sample-data/03-capsa-susun02.png" alt="" loading="lazy" /></figure>
+                  <h3>Capsa Susun</h3>
+                  <p>Arrange thirteen cards into three legal hands.</p>
+                </span>
+                <span class="cell__go">Read the rules &rarr;</span>
+              </a>
+            </li>
+            <li class="cell">
+              <a href="index.html#baccarat">
+                <span class="cell__top">
+                  <span class="cell__num">04</span>
+                  <span class="cell__kind">Table</span>
+                </span>
+                <span>
+                  <figure><img src="sample-data/04-baccarat01.png" alt="" loading="lazy" /></figure>
+                  <h3>Baccarat</h3>
+                  <p>Back Player, Banker or Tie. Closest to nine wins.</p>
+                </span>
+                <span class="cell__go">Read the rules &rarr;</span>
+              </a>
+            </li>
+            <li class="cell">
+              <a href="index.html#ceme">
+                <span class="cell__top">
+                  <span class="cell__num">05</span>
+                  <span class="cell__kind">Dominoes</span>
+                </span>
+                <span>
+                  <figure><img src="sample-data/05-ceme01.png" alt="" loading="lazy" /></figure>
+                  <h3>Ceme</h3>
+                  <p>Two dominoes against the dealer. Last digit is your score.</p>
+                </span>
+                <span class="cell__go">Read the rules &rarr;</span>
+              </a>
+            </li>
+            <li class="cell">
+              <a href="index.html#ceme-keliling">
+                <span class="cell__top">
+                  <span class="cell__num">06</span>
+                  <span class="cell__kind">Dominoes</span>
+                </span>
+                <span>
+                  <figure><img src="sample-data/06-cemekeliling01.png" alt="" loading="lazy" /></figure>
+                  <h3>Ceme Keliling</h3>
+                  <p>Ceme with the dealer seat rotating around the table.</p>
+                </span>
+                <span class="cell__go">Read the rules &rarr;</span>
+              </a>
+            </li>
+            <li class="cell">
+              <a href="index.html#super10">
+                <span class="cell__top">
+                  <span class="cell__num">07</span>
+                  <span class="cell__kind">Cards</span>
+                </span>
+                <span>
+                  <figure><img src="sample-data/07-superten01.png" alt="" loading="lazy" /></figure>
+                  <h3>Super10</h3>
+                  <p>Three cards, pictures are worth ten, ten is the top score.</p>
+                </span>
+                <span class="cell__go">Read the rules &rarr;</span>
+              </a>
+            </li>
+            <li class="cell">
+              <a href="index.html#niu-niu">
+                <span class="cell__top">
+                  <span class="cell__num">08</span>
+                  <span class="cell__kind">Cards</span>
+                </span>
+                <span>
+                  <figure><img src="sample-data/08-niuniu02.png" alt="" loading="lazy" /></figure>
+                  <h3>Niu Niu</h3>
+                  <p>Split five cards into a bull of three and a score of two.</p>
+                </span>
+                <span class="cell__go">Read the rules &rarr;</span>
+              </a>
+            </li>
+            <li class="cell">
+              <a href="index.html#omaha">
+                <span class="cell__top">
+                  <span class="cell__num">09</span>
+                  <span class="cell__kind">Cards</span>
+                </span>
+                <span>
+                  <figure><img src="sample-data/09-pokeromaha02.png" alt="" loading="lazy" /></figure>
+                  <h3>Omaha Poker</h3>
+                  <p>Four hole cards — use exactly two, plus three from the board.</p>
+                </span>
+                <span class="cell__go">Read the rules &rarr;</span>
+              </a>
+            </li>
+            <li class="cell">
+              <a href="index.html#domino-classic">
+                <span class="cell__top">
+                  <span class="cell__num">10</span>
+                  <span class="cell__kind">Dominoes</span>
+                </span>
+                <span>
+                  <figure><img src="sample-data/10-domino-classic01.png" alt="" loading="lazy" /></figure>
+                  <h3>Domino Classic</h3>
+                  <p>Gaple. Match the open ends, empty your hand first.</p>
+                </span>
+                <span class="cell__go">Read the rules &rarr;</span>
+              </a>
+            </li>
+            <li class="cell">
+              <a href="index.html#samgong">
+                <span class="cell__top">
+                  <span class="cell__num">11</span>
+                  <span class="cell__kind">Cards</span>
+                </span>
+                <span>
+                  <figure><img src="sample-data/11-samgong01.png" alt="" loading="lazy" /></figure>
+                  <h3>Samgong</h3>
+                  <p>Three cards against the dealer. Three pictures is the nuts.</p>
+                </span>
+                <span class="cell__go">Read the rules &rarr;</span>
+              </a>
+            </li>
+            <li class="cell">
+              <a href="index.html#blackjack">
+                <span class="cell__top">
+                  <span class="cell__num">12</span>
+                  <span class="cell__kind">Table</span>
+                </span>
+                <span>
+                  <figure><img src="sample-data/12-blackjack01.png" alt="" loading="lazy" /></figure>
+                  <h3>Blackjack</h3>
+                  <p>Beat the dealer to twenty-one without going bust.</p>
+                </span>
+                <span class="cell__go">Read the rules &rarr;</span>
+              </a>
+            </li>
+            <li class="cell">
+              <a href="index.html#call-break">
+                <span class="cell__top">
+                  <span class="cell__num">13</span>
+                  <span class="cell__kind">Cards</span>
+                </span>
+                <span>
+                  <figure><img src="sample-data/13-callbreak01.png" alt="" loading="lazy" /></figure>
+                  <h3>Call Break</h3>
+                  <p>Bid your tricks, spades are trumps, five rounds.</p>
+                </span>
+                <span class="cell__go">Read the rules &rarr;</span>
+              </a>
+            </li>
+            <li class="cell">
+              <a href="index.html#speed-baccarat">
+                <span class="cell__top">
+                  <span class="cell__num">14</span>
+                  <span class="cell__kind">Table</span>
+                </span>
+                <span>
+                  <figure><img src="sample-data/14-speed-baccarat01.png" alt="" loading="lazy" /></figure>
+                  <h3>Speed Baccarat</h3>
+                  <p>Baccarat rules on a roughly half-minute round clock.</p>
+                </span>
+                <span class="cell__go">Read the rules &rarr;</span>
+              </a>
+            </li>
+            <li class="cell">
+              <a href="index.html#tongits-go">
+                <span class="cell__top">
+                  <span class="cell__num">15</span>
+                  <span class="cell__kind">Cards</span>
+                </span>
+                <span>
+                  <figure><img src="sample-data/15-tongits-go01.png" alt="" loading="lazy" /></figure>
+                  <h3>Tongits Go</h3>
+                  <p>Meld, discard, and go out before the other two seats.</p>
+                </span>
+                <span class="cell__go">Read the rules &rarr;</span>
+              </a>
+            </li></ul>
+        </section>
+
+        <section id="lesson">
+          <div class="sec-head">
+            <h2>01 — Texas Hold'em</h2>
+            <p>
+              Two private cards, five in the middle. Best five of your seven
+              takes the pot.
+            </p>
+          </div>
+
+          <div class="lesson">
+            <ol class="steps">
+              <li>
+                <strong>Post the blinds</strong>
+                Two seats left of the dealer button post the small and big
+                blind. The buy-in and blind level are printed in the table
+                header, for example <em>Buy in 200K–1M, blind 5K–10K</em>.
+              </li>
+              <li>
+                <strong>Pre-flop</strong>
+                Everyone gets two hole cards. Starting left of the big blind,
+                each seat folds, calls or raises.
+              </li>
+              <li>
+                <strong>Flop, turn, river</strong>
+                Three community cards, then one, then one more — with a betting
+                round after each. Check when nobody has bet; call, raise or fold
+                when they have.
+              </li>
+              <li>
+                <strong>Showdown</strong>
+                The last aggressor shows first. The client names the winning
+                hand on the table banner and pushes the pot.
+              </li>
+            </ol>
+
+            <aside class="facts">
+              <h3>Table facts</h3>
+              <dl>
+                <dt>Deck</dt>
+                <dd>52 cards, no joker</dd>
+                <dt>Your hand</dt>
+                <dd>Best 5 of your 7</dd>
+                <dt>Actions</dt>
+                <dd>Fold, check, call, raise, all in</dd>
+                <dt>Clock</dt>
+                <dd>Slow and fast tables</dd>
+                <dt>Jackpot</dt>
+                <dd>Optional, bought before the deal</dd>
+              </dl>
+              <p class="note">
+                <b>Beginner tip</b>
+                Fold most starting hands. Position matters more than pretty
+                cards — acting last on every street is worth more than a suited
+                connector.
+              </p>
+            </aside>
+          </div>
+
+          <ul class="shots">
+            <li>
+              <figure>
+                <img src="sample-data/01-poker04.png" alt="The betting controls during a Hold'em hand." loading="lazy" />
+                <figcaption>Fold, check and raise sit on the rail.</figcaption>
+              </figure>
+            </li>
+            <li>
+              <figure>
+                <img src="sample-data/01-poker05.png" alt="A completed Hold'em showdown with the winning hand named." loading="lazy" />
+                <figcaption>The banner names the winning hand.</figcaption>
+              </figure>
+            </li>
+          </ul>
+        </section>
+
+        <section id="ranking">
+          <div class="sec-head">
+            <h2>Hand ranking</h2>
+            <p>Strongest first. Shared by Hold'em, Omaha and Capsa Susun.</p>
+          </div>
+          <div class="scroll">
+            <table>
+              <caption>Five-card hands, high to low</caption>
+              <thead>
+                <tr>
+                  <th scope="col">Hand</th>
+                  <th scope="col">Rank</th>
+                  <th scope="col">Example</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><th scope="row">Royal flush</th><td>1</td><td>A K Q J 10, one suit</td></tr>
+                <tr><th scope="row">Straight flush</th><td>2</td><td>9 8 7 6 5, one suit</td></tr>
+                <tr><th scope="row">Four of a kind</th><td>3</td><td>Q Q Q Q 7</td></tr>
+                <tr><th scope="row">Full house</th><td>4</td><td>J J J 4 4</td></tr>
+                <tr><th scope="row">Flush</th><td>5</td><td>K 10 8 5 2, one suit</td></tr>
+                <tr><th scope="row">Straight</th><td>6</td><td>8 7 6 5 4, mixed suits</td></tr>
+                <tr><th scope="row">Three of a kind</th><td>7</td><td>6 6 6 K 3</td></tr>
+                <tr><th scope="row">Two pair</th><td>8</td><td>10 10 5 5 A</td></tr>
+                <tr><th scope="row">One pair</th><td>9</td><td>A A 9 6 2</td></tr>
+                <tr><th scope="row">High card</th><td>10</td><td>A J 8 4 3</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section class="close">
+          <h2>Know the game<br />before the money</h2>
+          <div class="actions">
+            <a class="btn btn--red" href="index.html">Open the full guide</a>
+            <a class="btn" href="#library">Back to the card</a>
+          </div>
+        </section>
+      </div>
+    </main>
+
+    <footer>
+      <div class="wrap">
+        <ul>
+          <li><a href="#library">Games</a></li>
+          <li><a href="#lesson">How to play</a></li>
+          <li><a href="#ranking">Ranking</a></li>
+          <li><a href="index.html">Full guide</a></li>
+        </ul>
+        <p>Pokerbolt · Design study B, “The Press Room”. Rules, not odds.</p>
+      </div>
+    </footer>
+    <script>
+      // Theme: the system setting decides, until the reader picks an edition —
+      // then that choice is remembered for this browser. This sheet is a light
+      // design, so "dark" is the override and light is where it starts.
+      (function () {
+        var KEY = "pokerbolt-press-theme";
+        var root = document.documentElement;
+        var button = document.querySelector("[data-theme-toggle]");
+        var media = window.matchMedia("(prefers-color-scheme: dark)");
+        var sun = button.querySelector('[data-icon="sun"]');
+        var moon = button.querySelector('[data-icon="moon"]');
+
+        function current() {
+          return root.dataset.theme || (media.matches ? "dark" : "light");
+        }
+
+        // `hidden` is an HTMLElement property and an <svg> is an SVGElement,
+        // so the attribute has to be set directly.
+        function show(icon, on) {
+          if (on) icon.removeAttribute("hidden");
+          else icon.setAttribute("hidden", "");
+        }
+
+        function label() {
+          var dark = current() === "dark";
+          // The icon shows which edition a press switches TO.
+          show(sun, dark);
+          show(moon, !dark);
+          button.setAttribute(
+            "aria-label",
+            "Switch to the " + (dark ? "day" : "night") + " edition"
+          );
+        }
+
+        try {
+          var stored = localStorage.getItem(KEY);
+          if (stored === "light" || stored === "dark") root.dataset.theme = stored;
+        } catch (e) {
+          // Private mode or blocked storage: the system setting still works.
+        }
+
+        label();
+        button.hidden = false;
+        media.addEventListener("change", label);
+
+        button.addEventListener("click", function () {
+          root.dataset.theme = current() === "dark" ? "light" : "dark";
+          try {
+            localStorage.setItem(KEY, root.dataset.theme);
+          } catch (e) {}
+          label();
+        });
+      })();
+    </script>
+  </body>
+</html>
