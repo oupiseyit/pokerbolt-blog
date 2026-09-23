@@ -6,14 +6,31 @@ skeletons. Same stylesheet, same markup classes, same copy.
 ```sh
 npm install
 npm run dev              # http://localhost:5173
-npm run build            # -> dist/, drop anywhere (base is "./")
-npm run preview          # serves dist on :4317
+npm run build            # -> ../app/, which is the live Pages folder
+npm run preview          # serves the build on :4317
 node smoke.mjs           # headless-Chrome check, needs preview running
 npm run images           # regenerate public/img/ after artwork changes
 ```
 
 `DESIGN-REVIEW.md` is the look-and-feel audit this app's fixes came out of, including
 what was deliberately left alone.
+
+## Deploying
+
+Pages serves this repo's `main` branch from `/` on the legacy build type, so a
+committed folder is a live URL. `npm run build` writes straight into `../app/`
+(`base: "./"`, so every asset path is relative and works from a subfolder):
+
+```sh
+npm run build
+git add -A app react && git commit -m "…" && git push
+```
+
+→ https://oupiseyit.github.io/pokerbolt-blog/app/
+
+The build output is committed. Pages has no build step on this repo, so there is
+nowhere else for it to come from. Give it a minute after the push, and hard-reload
+(Cmd+Shift+R) — Pages sends `cache-control: max-age=600`.
 
 ## Layout
 

@@ -94,7 +94,13 @@ try {
         rankRows: n("#hand-ranking tbody tr"),
         shots: n(".shots img"),
         busy: n('[aria-busy="true"]'),
-        broken: [...document.images].filter((i) => i.complete && !i.naturalWidth).map((i) => i.src),
+        // An image that actually failed, not one that is lazily deferred or
+        // still decoding -- complete-without-naturalWidth is true for both,
+        // which made this flaky on a slow server.
+        broken: performance
+          .getEntriesByType("resource")
+          .filter((r) => r.initiatorType === "img" && r.responseStatus >= 400)
+          .map((r) => r.name),
       });
     })()`)
   );

@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Game Library &amp; How to Play — Pokerbolt</title>
+    <meta
+      name="description"
+      content="Every game on the Pokerbolt poker client, with the rules, the turn order, the scoring and the table controls for each one: Texas Hold'em, Omaha, Capsa, Ceme, Baccarat, Niu Niu, Samgong, Domino, Call Break, Tongits Go and more."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Barlow:wght@400;700&family=Barlow+Condensed:wght@300;600&display=swap"
+    />
+    <script>
+      // Paint the stored theme before first paint, so there is no flash of the
+      // system palette on reload.
+      try {
+        var t = localStorage.getItem("pokerbolt-theme");
+        if (["dark", "light", "felt", "ember", "paper"].indexOf(t) > -1)
+          document.documentElement.dataset.theme = t;
+      } catch (e) {}
+    </script>
+    <script type="module" crossorigin src="./bundle/index-BNHcJwUF.js"></script>
+    <link rel="stylesheet" crossorigin href="./bundle/index-Clfpzk_l.css">
+  </head>
+  <body>
+    <div id="root"></div>
+  </body>
+</html>
