@@ -2001,6 +2001,16 @@
         var hero = document.querySelector(".hero");
         if (!button || !hero) return;
 
+        // #top sits on the sticky masthead, which is pinned to the viewport
+        // top whenever you have scrolled, so the browser reads the anchor as
+        // already in view and refuses to move. Scroll the page instead.
+        // behavior is left at its default so the html rule -- and the
+        // reduced-motion override -- decide whether it animates.
+        button.addEventListener("click", function (event) {
+          event.preventDefault();
+          window.scrollTo({ top: 0 });
+        });
+
         new IntersectionObserver(function (entries) {
           button.classList.toggle("is-visible", !entries[0].isIntersecting);
         }).observe(hero);
