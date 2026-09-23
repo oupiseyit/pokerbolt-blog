@@ -1,0 +1,916 @@
+/* ==========================================================================
+   PokerBolt lobby — shared sheet for index-noir / index-cabana / index-spectrum
+   Tokens measured from the game art; see new-plan.md for provenance.
+   Three rooms, one block order. Swap [data-room] on <html>.
+   ========================================================================== */
+
+/* ---- 1. Brand constants (never overridden) -------------------------------
+   Sampled from sample-data/logo-pokerbolt.png, top-to-bottom metallic ramp. */
+:root {
+  --brand-gold-100: #f2d194;
+  --brand-gold-200: #edc77d;
+  --brand-gold-400: #e0b96b;
+  --brand-gold-600: #d0a757;
+  --brand-gold-800: #bd923e;
+  --brand-gold-900: #ac802a;
+  --brand-silver-100: #eeeeee;
+  --brand-silver-700: #727272;
+
+  /* art gold — brighter than logo gold, for display headings only */
+  --art-gold-100: #fef78c;
+  --art-gold-300: #ffea75;
+  --art-gold-500: #ffcd36;
+  --art-gold-700: #feba33;
+  --art-gold-900: #94502b;
+
+  --red: #c4293b;
+  --red-hot: #c91d22;
+  --red-deep: #8e1b28;
+  --cream: #fdf5d2;
+
+  --shell: min(1320px, 100% - 2 * var(--gutter));
+  --gutter: clamp(1rem, 4vw, 3rem);
+  --ease: cubic-bezier(0.22, 0.68, 0.36, 1);
+  --bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* ---- 2. Rooms ---------------------------------------------------------- */
+
+/* Back room, 2am. Luxury/refined: one gold, one red, vast negative space. */
+[data-room="noir"] {
+  --ink: #130705;
+  --ink-2: #1b0d0a;
+  --ink-3: #2a150f;
+  --text: #e8d9c8;
+  --quiet: #9d8574;
+  --line: color-mix(in srgb, var(--brand-gold-800) 45%, transparent);
+  --accent: var(--red);
+  --scrim: rgb(19 7 5 / 0.9);
+  --bg-filter: blur(6px) saturate(0.45) brightness(0.55);
+  --display: "Archivo Black", "Arial Black", system-ui, sans-serif;
+  --label: "Barlow Condensed", "Barlow", sans-serif;
+  --body: "Barlow", "Helvetica Neue", sans-serif;
+  --display-track: -0.01em;
+  --radius: 2px;
+  --grain: 0.05;
+}
+
+/* Midday, no shoes. Playful maximalism: thick outlines, bounce, saturation. */
+[data-room="cabana"] {
+  --ink: #f6e2bc;
+  --ink-2: #fff6e2;
+  --ink-3: #e9c691;
+  --text: #4a2410;
+  --quiet: #6d3f22;
+  --line: color-mix(in srgb, #7b2e1a 35%, transparent);
+  --accent: var(--red);
+  --scrim: rgb(255 246 226 / 0.55);
+  --display: "Titan One", "Baloo 2", system-ui, sans-serif;
+  --label: "Baloo 2", system-ui, sans-serif;
+  --body: "Baloo 2", "Trebuchet MS", sans-serif;
+  --display-track: 0.005em;
+  --radius: 0.9rem;
+  --grain: 0;
+  --wood: #9b533d;
+  --wood-deep: #7b2e1a;
+  --wood-lit: #d4924f;
+  --sea: #3bb1b5;
+  --sand: #f2b571;
+}
+
+/* Fifteen lit doorways. Industrial: monochrome shell, --accent is the only colour. */
+[data-room="spectrum"] {
+  --ink: #0b0705;
+  --ink-2: #110c09;
+  --ink-3: #191210;
+  --text: #cfc6bd;
+  --quiet: #7c726b;
+  --line: rgb(255 255 255 / 0.1);
+  --accent: var(--brand-gold-600);
+  --scrim: rgb(11 7 5 / 0.94);
+  --bg-filter: blur(10px) saturate(0.15) brightness(0.4);
+  --display: "Saira", system-ui, sans-serif;
+  --label: "Saira Condensed", "Saira", sans-serif;
+  --body: "Barlow", "Helvetica Neue", sans-serif;
+  --display-track: -0.015em;
+  --radius: 0;
+  --grain: 0.035;
+}
+
+/* ---- 3. Base ----------------------------------------------------------- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--ink);
+  color: var(--text);
+  font: 400 clamp(0.95rem, 0.9rem + 0.2vw, 1.05rem) / 1.65 var(--body);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
+a {
+  color: inherit;
+  text-decoration: none;
+}
+h1,
+h2,
+h3 {
+  margin: 0;
+  font-family: var(--display);
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: var(--display-track);
+}
+[data-room="spectrum"] h1,
+[data-room="spectrum"] h2,
+[data-room="spectrum"] h3 {
+  font-weight: 800;
+}
+
+:focus-visible {
+  outline: 2px solid var(--brand-gold-400);
+  outline-offset: 3px;
+}
+
+.shell {
+  width: var(--shell);
+  margin-inline: auto;
+}
+
+.label {
+  font: 600 0.72rem/1 var(--label);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--quiet);
+}
+
+.tnum {
+  font-variant-numeric: tabular-nums;
+}
+
+.sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+}
+
+/* ---- 4. Backdrop + atmosphere ------------------------------------------
+   ① BG-desktop.jpeg fixed behind everything; BG-mobile.jpeg under 768px.
+   position:fixed rather than background-attachment:fixed, which janks on iOS. */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  background: url("../sample/BG-desktop.jpeg") center / cover no-repeat;
+  filter: var(--bg-filter, none);
+  scale: 1.04; /* hides the blur's soft edge */
+}
+
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background: var(--scrim);
+}
+
+@media (max-width: 767px) {
+  body::before {
+    background-image: url("../sample/BG-mobile.jpeg");
+  }
+}
+
+/* film grain + spotlight blooms — atmosphere, not a flat colour */
+.grain {
+  position: fixed;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  opacity: var(--grain);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+.floor {
+  position: relative;
+  z-index: 1;
+}
+
+[data-room="noir"] .floor::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(120% 60% at 50% -10%, rgb(255 205 54 / 0.1), transparent 60%),
+    radial-gradient(80% 50% at 85% 30%, rgb(196 41 59 / 0.08), transparent 65%);
+}
+
+[data-room="cabana"] .floor::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background: radial-gradient(60% 40% at 12% 8%, rgb(255 244 207 / 0.6), transparent 70%);
+}
+
+/* ---- 5. Engraved rule — no borders anywhere ----------------------------- */
+.rule {
+  position: relative;
+  height: 1px;
+  margin-block: clamp(2.5rem, 7vw, 5.5rem);
+  border: 0;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--brand-gold-800) 18%,
+    var(--brand-gold-400) 50%,
+    var(--brand-gold-800) 82%,
+    transparent
+  );
+}
+
+.rule::after {
+  content: "◆";
+  position: absolute;
+  inset: 50% auto auto 50%;
+  translate: -50% -50%;
+  padding-inline: 0.6rem;
+  font-size: 0.55rem;
+  line-height: 1;
+  color: var(--brand-gold-400);
+  background: var(--ink);
+}
+
+[data-room="cabana"] .rule {
+  height: 3px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, transparent, var(--wood-deep) 20%, var(--wood-lit) 50%, var(--wood-deep) 80%, transparent);
+}
+[data-room="cabana"] .rule::after {
+  color: var(--wood-deep);
+  background: var(--ink);
+}
+
+/* ---- 6. Header --------------------------------------------------------- */
+.head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+  padding-block: clamp(1.25rem, 3vw, 2rem);
+}
+
+.head__mark {
+  width: clamp(9rem, 16vw, 13rem);
+  height: auto;
+}
+
+[data-room="cabana"] .head__mark {
+  filter: drop-shadow(0 2px 0 var(--wood-deep));
+}
+
+.nav {
+  display: flex;
+  gap: clamp(1rem, 2.5vw, 2rem);
+  align-items: center;
+  font: 600 0.75rem/1 var(--label);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.nav a {
+  position: relative;
+  color: var(--quiet);
+  padding-block: 0.4rem;
+  transition: color 0.25s var(--ease);
+}
+.nav a:hover,
+.nav a[aria-current="page"] {
+  color: var(--brand-gold-200);
+}
+.nav a[aria-current="page"]::after {
+  content: "";
+  position: absolute;
+  inset: auto 0 0 0;
+  height: 1px;
+  background: var(--brand-gold-400);
+}
+[data-room="cabana"] .nav a:hover,
+[data-room="cabana"] .nav a[aria-current="page"] {
+  color: var(--wood-deep);
+}
+
+/* ---- 7. Hero — type flush left, duo bleeds off the right edge ----------- */
+.hero {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 0.85fr);
+  align-items: center;
+  gap: clamp(2rem, 5vw, 4rem);
+  padding-block: clamp(2rem, 6vw, 5rem) clamp(1rem, 3vw, 2rem);
+}
+
+.hero__title {
+  font-size: clamp(2.75rem, 9vw, 6.5rem);
+  text-transform: uppercase;
+}
+
+[data-room="cabana"] .hero__title {
+  text-transform: none;
+}
+
+.hero__title span {
+  display: block;
+}
+
+/* Family A: flat gold + hard shadow (noir, spectrum) */
+.gold-flat {
+  color: #f5d77e;
+  text-shadow: 0 3px 0 var(--art-gold-900), 0 6px 12px rgb(0 0 0 / 0.6);
+}
+
+/* Family B: gold gradient fill + red outline. paint-order puts the stroke
+   BEHIND the fill — without it the outline eats the letterform. */
+.gold-outline {
+  background: linear-gradient(180deg, var(--art-gold-100) 0%, var(--art-gold-300) 45%, var(--art-gold-500) 72%, var(--art-gold-700) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-stroke: 6px var(--red);
+  paint-order: stroke fill;
+  filter: drop-shadow(0 4px 0 var(--red-deep));
+}
+
+.hero__lede {
+  max-width: 42ch;
+  margin: 1.5rem 0 0;
+  color: var(--quiet);
+}
+
+.hero__stats {
+  display: flex;
+  gap: clamp(1.5rem, 4vw, 3rem);
+  margin-top: 2rem;
+  padding: 0;
+  list-style: none;
+}
+
+.hero__stats b {
+  display: block;
+  font: 400 clamp(1.6rem, 3vw, 2.4rem) / 1 var(--display);
+  color: var(--brand-gold-200);
+}
+[data-room="spectrum"] .hero__stats b {
+  font-weight: 800;
+}
+[data-room="cabana"] .hero__stats b {
+  color: var(--wood-deep);
+}
+
+/* ⑤ duo — in the hero, bleeding past the right gutter, crossing the rule */
+.hero__art {
+  position: relative;
+  margin-right: calc(var(--gutter) * -1);
+  margin-bottom: clamp(-5rem, -6vw, -2rem);
+  z-index: 2;
+}
+
+.device-duo {
+  display: flex;
+  justify-content: center;
+  gap: clamp(0.5rem, 2vw, 1.25rem);
+  margin: 0;
+}
+
+.device-duo .iphone {
+  max-width: 11rem;
+  transition: rotate 0.5s var(--ease), translate 0.5s var(--ease);
+}
+.device-duo .iphone:first-child {
+  rotate: -6deg;
+  translate: 0 1.5rem;
+  animation-delay: -3s;
+}
+.device-duo .iphone:last-child {
+  rotate: 4deg;
+}
+.device-duo:hover .iphone:first-child {
+  rotate: -3deg;
+  translate: 0 0.5rem;
+}
+.device-duo:hover .iphone:last-child {
+  rotate: 2deg;
+}
+
+/* ---- 8. ② Chip rail — the signature. CSS-drawn casino chips, sticky. ---- */
+.tray {
+  position: sticky;
+  top: 0;
+  z-index: 4;
+  display: flex;
+  justify-content: center;
+  padding-block: 0.9rem;
+  margin: 0;
+  list-style: none;
+  backdrop-filter: blur(10px);
+  background: color-mix(in srgb, var(--ink) 72%, transparent);
+}
+
+[data-room="cabana"] .tray {
+  background: linear-gradient(180deg, var(--wood) 0%, var(--wood-deep) 100%);
+  box-shadow: inset 0 2px 0 var(--wood-lit), 0 8px 18px -10px rgb(0 0 0 / 0.5);
+}
+
+.tray li + li {
+  margin-left: -0.75rem;
+}
+
+.chip {
+  --c: var(--red);
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: clamp(2.75rem, 6vw, 3.25rem);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  font: 600 0.9rem/1 var(--label);
+  font-variant-numeric: tabular-nums;
+  color: var(--brand-gold-200);
+  background:
+    radial-gradient(circle at 50% 50%, #120a07 0 46%, transparent 46%),
+    repeating-conic-gradient(from 9deg, var(--cream) 0 12deg, var(--c) 12deg 45deg);
+  box-shadow:
+    inset 0 0 0 2px color-mix(in srgb, var(--c) 70%, #000),
+    0 6px 14px -6px #000;
+  transition: translate 0.25s var(--bounce), box-shadow 0.25s var(--ease);
+}
+
+.chip:hover,
+.chip[aria-current="true"] {
+  translate: 0 -6px;
+  box-shadow: inset 0 0 0 2px var(--c), 0 12px 22px -8px #000;
+}
+
+.chip__name {
+  position: absolute;
+  inset: auto auto -1.35rem 50%;
+  translate: -50% 0;
+  white-space: nowrap;
+  font: 600 0.6rem/1 var(--label);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--quiet);
+  opacity: 0;
+  transition: opacity 0.25s var(--ease);
+}
+.chip:hover .chip__name,
+.chip[aria-current="true"] .chip__name {
+  opacity: 1;
+}
+
+/* spectrum strips the dash pattern — flat accent discs */
+[data-room="spectrum"] .chip {
+  background: radial-gradient(circle at 50% 50%, var(--ink-2) 0 46%, var(--c) 46%);
+  box-shadow: inset 0 0 0 1px var(--c);
+}
+
+/* ---- 9. ③ Icon grid — 4 columns, group name as a vertical sticky rail --- */
+.group {
+  display: grid;
+  grid-template-columns: 3.5rem 1fr;
+  gap: clamp(1rem, 3vw, 2.5rem);
+  scroll-margin-top: 6rem;
+}
+
+.group__label {
+  writing-mode: vertical-rl;
+  rotate: 180deg;
+  align-self: start;
+  position: sticky;
+  top: 6rem;
+  margin: 0;
+  font-size: clamp(1.1rem, 2.4vw, 1.75rem);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--brand-gold-600);
+  white-space: nowrap;
+}
+
+[data-room="cabana"] .group__label {
+  color: var(--wood-deep);
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+.group__label small {
+  display: block;
+  margin-top: 0.75rem;
+  font: 600 0.65rem/1 var(--label);
+  letter-spacing: 0.2em;
+  color: var(--quiet);
+}
+
+.icons {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: clamp(0.75rem, 2vw, 1.5rem);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* ---- 10. Tile ---------------------------------------------------------- */
+.tile {
+  position: relative;
+  display: block;
+  overflow: hidden;
+  aspect-ratio: 1;
+  isolation: isolate;
+  border-radius: var(--radius);
+  background: var(--ink-3);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--brand-gold-800) 55%, transparent);
+  transition: scale 0.35s var(--ease), box-shadow 0.35s var(--ease);
+}
+
+.tile img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.tile:hover {
+  scale: 1.03;
+  box-shadow:
+    inset 0 0 0 1px var(--brand-gold-400),
+    0 18px 40px -18px rgb(0 0 0 / 0.8);
+}
+
+/* the sheen — rakes across like a chip catching table light */
+.tile::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(105deg, transparent 38%, rgb(255 246 221 / 0.38) 46%, transparent 54%);
+  translate: -120% 0;
+  transition: translate 0.7s var(--ease);
+}
+.tile:hover::after {
+  translate: 120% 0;
+}
+
+.tile__plate {
+  position: absolute;
+  inset: auto 0 0 0;
+  z-index: 1;
+  padding: 0.6rem 0.75rem;
+  background: linear-gradient(180deg, transparent, rgb(10 5 3 / 0.92) 55%);
+  translate: 0 0.5rem;
+  opacity: 0;
+  transition: translate 0.35s var(--ease), opacity 0.35s var(--ease);
+}
+.tile:hover .tile__plate,
+.tile:focus-visible .tile__plate {
+  translate: 0;
+  opacity: 1;
+}
+
+.tile__name {
+  display: block;
+  font: 600 0.85rem/1.2 var(--label);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--brand-gold-100);
+}
+
+.tile__meta {
+  display: block;
+  margin-top: 0.15rem;
+  font-size: 0.68rem;
+  color: var(--quiet);
+}
+
+.tile__no {
+  position: absolute;
+  inset: 0.5rem auto auto 0.6rem;
+  z-index: 1;
+  font: 600 0.7rem/1 var(--label);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.1em;
+  color: var(--brand-gold-200);
+  text-shadow: 0 1px 3px #000;
+}
+
+/* cabana: carved wood plank frame, bounce instead of sheen */
+[data-room="cabana"] .tile {
+  background: var(--wood);
+  padding: 0.45rem;
+  box-shadow:
+    inset 0 0 0 3px var(--wood-deep),
+    inset 0 2px 0 4px var(--wood-lit),
+    0 10px 20px -12px rgb(0 0 0 / 0.55);
+  transition: scale 0.35s var(--bounce), rotate 0.35s var(--bounce);
+}
+[data-room="cabana"] .tile img {
+  border-radius: calc(var(--radius) - 0.4rem);
+}
+[data-room="cabana"] .tile::after {
+  content: none;
+}
+[data-room="cabana"] .tile:hover {
+  scale: 1.06;
+  rotate: -1.5deg;
+}
+[data-room="cabana"] .tile__name {
+  color: var(--art-gold-100);
+  font-family: var(--display);
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+/* spectrum: no sheen, the accent ring is the only colour on screen */
+[data-room="spectrum"] .tile {
+  box-shadow: inset 0 0 0 1px var(--line);
+  filter: saturate(0.12) brightness(0.5);
+  transition: filter 0.4s var(--ease), box-shadow 0.4s var(--ease), scale 0.4s var(--ease);
+}
+[data-room="spectrum"] .tile::after {
+  content: none;
+}
+[data-room="spectrum"] .tile:hover {
+  scale: 1;
+  filter: none;
+  box-shadow:
+    inset 0 0 0 2px var(--accent),
+    0 0 40px -6px color-mix(in srgb, var(--accent) 55%, transparent);
+}
+[data-room="spectrum"] .tile__no {
+  color: var(--accent);
+}
+
+/* ---- 11. ④⑤⑥ Devices — lifted from site.css, retokenised ---------------- */
+.device {
+  margin: 0;
+}
+
+.device figcaption,
+.device-caption {
+  margin-top: 1rem;
+  font: 600 0.68rem/1.4 var(--label);
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--quiet);
+  text-align: center;
+}
+
+.device__screen {
+  position: relative;
+  overflow: hidden;
+  background: #000;
+}
+
+.device__screen img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: saturate(0.9) brightness(0.9);
+  transition: filter 0.5s var(--ease), scale 0.5s var(--ease);
+}
+
+.device__screen::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(115deg, rgb(255 255 255 / 0.12) 0%, transparent 38%);
+}
+
+.device:hover .device__screen img,
+.device-duo:hover .device__screen img {
+  filter: none;
+  scale: 1.02;
+}
+
+.imac__body {
+  padding: 9px 9px 0;
+  background: var(--ink-3);
+  border: 1px solid var(--line);
+  border-radius: 30px 30px 9px 9px;
+}
+.imac__screen {
+  aspect-ratio: 16 / 10;
+  border-radius: 15px 15px 0 0;
+}
+.imac__chin {
+  display: grid;
+  place-items: center;
+  margin: 0;
+  padding-block: clamp(0.75rem, 2vw, 1.5rem);
+}
+.imac__chin img {
+  width: clamp(5rem, 9vw, 8rem);
+}
+.imac__stand {
+  position: relative;
+  width: 90px;
+  height: 39px;
+  margin-inline: auto;
+  background: linear-gradient(to bottom, var(--ink-3), var(--ink-2));
+  clip-path: polygon(22% 0, 78% 0, 100% 100%, 0 100%);
+}
+.imac__stand::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: -9px;
+  translate: -50% 0;
+  width: 150px;
+  height: 9px;
+  background: var(--ink-3);
+  border-radius: 999px;
+}
+
+.iphone {
+  position: relative;
+  width: 100%;
+  max-width: 14rem;
+  margin-inline: auto;
+  padding: 5px;
+  background: var(--ink-3);
+  border: 1px solid var(--line);
+  border-radius: 30px;
+}
+.iphone__screen {
+  aspect-ratio: 9 / 19.5;
+  border-radius: 25px;
+}
+.iphone__island {
+  position: absolute;
+  z-index: 1;
+  top: 13px;
+  left: 50%;
+  translate: -50% 0;
+  width: 54px;
+  height: 13px;
+  background: #000;
+  border-radius: 999px;
+}
+.iphone::before,
+.iphone::after {
+  content: "";
+  position: absolute;
+  width: 2px;
+  background: var(--ink-3);
+  border-radius: 999px;
+}
+.iphone::before {
+  left: -2px;
+  top: 60px;
+  height: 48px;
+}
+.iphone::after {
+  right: -2px;
+  top: 72px;
+  height: 66px;
+}
+
+/* ④ mobile — two-column split, phone bottom on the copy baseline */
+.pocket {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 0.55fr);
+  align-items: end;
+  gap: clamp(2rem, 6vw, 5rem);
+}
+
+/* ⑥ desktop — full-bleed, escapes the shell, stand cropped by the fold */
+.bleed {
+  width: 100vw;
+  margin-inline: calc(50% - 50vw);
+  padding-top: clamp(2rem, 6vw, 4rem);
+  overflow: hidden;
+}
+.bleed .imac {
+  width: min(1500px, 92vw);
+  margin-inline: auto;
+}
+.bleed figcaption {
+  padding-bottom: clamp(2rem, 5vw, 3.5rem);
+}
+
+/* idle drift — the page is never fully still */
+.iphone,
+.imac {
+  animation: drift 9s var(--ease) infinite;
+}
+.imac {
+  animation-duration: 13s;
+  animation-delay: -6s;
+}
+@keyframes drift {
+  50% {
+    translate: 0 -8px;
+  }
+}
+.device-duo .iphone {
+  animation-name: none;
+}
+
+/* ---- 12. Foot ---------------------------------------------------------- */
+.foot {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: space-between;
+  padding-block: clamp(2rem, 5vw, 3.5rem);
+  font: 600 0.68rem/1 var(--label);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--quiet);
+}
+
+/* ---- 13. Load choreography --------------------------------------------
+   One orchestrated reveal. `both` keeps the end state, so a reader with
+   reduced motion or a failed script sees the finished page, never a blank one. */
+.rise {
+  animation: rise 0.55s var(--ease) both;
+  animation-delay: calc(var(--i, 0) * 60ms);
+}
+
+.icons > li {
+  animation: rise 0.6s var(--ease) both;
+  animation-delay: calc(var(--i, 0) * 55ms);
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    translate: 0 14px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ---- 14. Responsive ---------------------------------------------------- */
+@media (max-width: 1100px) {
+  .hero {
+    grid-template-columns: 1fr;
+  }
+  .hero__art {
+    margin-right: 0;
+    margin-bottom: 0;
+  }
+  .pocket {
+    grid-template-columns: 1fr;
+    align-items: center;
+  }
+}
+
+@media (max-width: 900px) {
+  .group {
+    grid-template-columns: 1fr;
+  }
+  .group__label {
+    writing-mode: horizontal-tb;
+    rotate: none;
+    position: static;
+  }
+  .group__label small {
+    display: inline;
+    margin-left: 0.75rem;
+  }
+  .icons {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .icons {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .hero__title {
+    -webkit-text-stroke-width: 4px;
+  }
+}

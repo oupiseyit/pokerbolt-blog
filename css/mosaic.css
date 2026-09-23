@@ -1,4 +1,953 @@
 /* ============================================================
+   PokerBolt — casino night / casino day
+   One stylesheet, both pages.
+   ============================================================ */
+
+/* Themes follow the OS by default; the header toggle pins one by setting
+   data-theme on <html>. Every colour is declared once as light-dark(day, night).
+   The bare line above each is the fallback for browsers without light-dark() —
+   they simply get the night palette. */
+:root {
+  color-scheme: light dark;
+
+  --ink:      #08060a;
+  --ink:      light-dark(#f5f0e7, #08060a);   /* page ground */
+  --ink-2:    #120d14;
+  --ink-2:    light-dark(#fffdf8, #120d14);   /* raised surface */
+  --ink-3:    #1b1420;
+  --ink-3:    light-dark(#ece4d6, #1b1420);
+  --gold:     #e9b949;
+  --gold:     light-dark(#8a6210, #e9b949);   /* accent — brass by day */
+  --gold-hi:  #fff0c2;
+  --gold-hi:  light-dark(#241a26, #fff0c2);   /* heading emphasis */
+  --crimson:  #c0263b;
+  --crimson:  light-dark(#a81e32, #c0263b);
+  --felt:     #1d6b52;
+  --felt:     light-dark(#15604a, #1d6b52);
+  --bone:     #efe7dc;
+  --bone:     light-dark(#241d26, #efe7dc);   /* body text */
+  --muted:    #8e8290;
+  --muted:    light-dark(#6d6270, #8e8290);
+
+  /* text that sits on a gold / crimson / felt fill */
+  --on-gold:  #120e14;
+  --on-gold:  light-dark(#fff6e2, #120e14);
+  --on-color: #fff0c2;
+
+  /* translucent ground — sticky header, meta chips */
+  --veil:     rgba(8, 6, 10, 0.78);
+  --veil:     color-mix(in srgb, var(--ink) 80%, transparent);
+
+  /* atmosphere: colour blooms + grain */
+  --bloom-a:  rgba(192, 38, 59, 0.28);
+  --bloom-a:  light-dark(rgba(168, 30, 50, 0.10), rgba(192, 38, 59, 0.28));
+  --bloom-b:  rgba(233, 185, 73, 0.10);
+  --bloom-b:  light-dark(rgba(138, 98, 16, 0.08), rgba(233, 185, 73, 0.10));
+  --bloom-c:  rgba(29, 107, 82, 0.30);
+  --bloom-c:  light-dark(rgba(21, 96, 74, 0.11), rgba(29, 107, 82, 0.30));
+  --grain-c:  rgba(255, 255, 255, 0.022);
+  --grain-c:  light-dark(rgba(36, 26, 38, 0.03), rgba(255, 255, 255, 0.022));
+
+  --hairline: color-mix(in srgb, var(--gold) 25%, transparent);
+  --shell:    min(1320px, 100% - 3rem);
+
+  --display: "Bodoni Moda", "Didot", Georgia, serif;
+  --body:    "Barlow", "Helvetica Neue", sans-serif;
+  --cond:    "Barlow Condensed", "Barlow", sans-serif;
+
+  --ease: cubic-bezier(0.22, 0.68, 0.36, 1);
+}
+
+/* Picking a theme pins it; with none picked the OS decides between day/night.
+   The two palettes below are full overrides — they only restate the base
+   colours, because --hairline and --veil are color-mix()es of --gold / --ink
+   and so re-derive themselves for whichever theme is active. */
+:root[data-theme="day"]   { color-scheme: only light; }
+:root[data-theme="night"] { color-scheme: only dark; }
+
+/* FELT — the card room after hours. Deep table green, brass, warm cream. */
+:root[data-theme="felt"] {
+  color-scheme: only dark;
+  --ink:      #0c2b21;
+  --ink-2:    #123a2d;
+  --ink-3:    #17483a;
+  --gold:     #d9a84a;
+  --gold-hi:  #f6e9c8;
+  --crimson:  #c73a4a;
+  --felt:     #2c8566;
+  --bone:     #e6ece2;
+  --muted:    #87a496;
+  --on-gold:  #10241c;
+  --on-color: #f6e9c8;
+  --bloom-a:  rgba(199, 58, 74, 0.16);
+  --bloom-b:  rgba(217, 168, 74, 0.10);
+  --bloom-c:  rgba(44, 133, 102, 0.38);
+  --grain-c:  rgba(255, 255, 255, 0.025);
+}
+
+/* NEON — the strip at 2am. Blue-black, hot magenta, cyan. */
+:root[data-theme="neon"] {
+  color-scheme: only dark;
+  --ink:      #07060f;
+  --ink-2:    #100d20;
+  --ink-3:    #191436;
+  --gold:     #ff3ea5;
+  --gold-hi:  #d8f7ff;
+  --crimson:  #ff2e63;
+  --felt:     #17d4c0;
+  --bone:     #dae3f3;
+  --muted:    #8384b4;
+  --on-gold:  #14001b;
+  --on-color: #07060f;
+  --bloom-a:  rgba(255, 62, 165, 0.22);
+  --bloom-b:  rgba(23, 212, 192, 0.16);
+  --bloom-c:  rgba(96, 62, 255, 0.32);
+  --grain-c:  rgba(255, 255, 255, 0.03);
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  background: var(--ink);
+  color: var(--bone);
+  font: 400 1rem/1.65 var(--body);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+/* Atmosphere: two colour blooms + a grain/scanline veil. All CSS, no images. */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  background:
+    radial-gradient(60rem 40rem at 8% -5%,   var(--bloom-a), transparent 65%),
+    radial-gradient(55rem 45rem at 100% 18%, var(--bloom-b), transparent 60%),
+    radial-gradient(70rem 50rem at 50% 115%, var(--bloom-c), transparent 65%);
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  opacity: 0.5;
+  background: repeating-linear-gradient(
+    0deg,
+    var(--grain-c) 0 1px,
+    transparent 1px 3px
+  );
+}
+
+/* height:auto here so the <img height> attribute never beats an aspect-ratio.
+   Components that want a real height (.poster__art, .guide-hero__art) set it
+   on their own class, which outranks this. */
+img { max-width: 100%; height: auto; display: block; }
+
+::selection { background: var(--gold); color: var(--on-gold); }
+
+/* ---------- shared primitives ---------------------------------- */
+
+.shell { width: var(--shell); margin-inline: auto; }
+
+.eyebrow {
+  font: 600 0.78rem/1 var(--cond);
+  text-transform: uppercase;
+  letter-spacing: 0.26em;
+  color: var(--gold);
+}
+
+.rule {
+  border: 0;
+  height: 1px;
+  background: linear-gradient(90deg, var(--hairline), transparent 85%);
+  margin: 0;
+}
+
+.section-head {
+  display: flex;
+  align-items: baseline;
+  gap: 1.25rem;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+}
+
+.section-head h2 {
+  font: 700 clamp(1.9rem, 4vw, 2.9rem)/1.05 var(--display);
+  margin: 0;
+  color: var(--gold-hi);
+}
+
+.section-head h2 em { font-style: italic; color: var(--gold); }
+
+.section-head .num {
+  font: 600 0.8rem/1 var(--cond);
+  letter-spacing: 0.24em;
+  color: var(--muted);
+  text-transform: uppercase;
+}
+
+.lede {
+  font-size: 1.08rem;
+  color: color-mix(in srgb, var(--bone) 80%, transparent);
+  max-width: 62ch;
+}
+
+/* ---------- header / footer ------------------------------------ */
+
+.site-head {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: var(--veil);
+  backdrop-filter: blur(14px);
+  border-bottom: 1px solid var(--hairline);
+}
+
+.site-head .shell {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding-block: 1.1rem;
+}
+
+.wordmark {
+  font: 700 1.35rem/1 var(--display);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--gold-hi);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.wordmark span { color: var(--crimson); font-style: italic; }
+
+.site-nav {
+  display: flex;
+  margin-left: auto;   /* keep nav and the theme toggle grouped on the right */
+  gap: 1.6rem;
+  font: 600 0.82rem/1 var(--cond);
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+}
+
+.site-nav a {
+  color: var(--muted);
+  text-decoration: none;
+  padding-block: 0.35rem;
+  border-bottom: 1px solid transparent;
+  transition: color 0.25s var(--ease), border-color 0.25s var(--ease);
+}
+
+.site-nav a:hover,
+.site-nav a:focus-visible,
+.site-nav a[aria-current] { color: var(--gold); border-bottom-color: var(--gold); }
+
+/* Theme rack — four casino chips, each painted in the palette it selects.
+   Their colours are literals, not tokens: a chip must show its own theme,
+   not the one currently active. */
+.themes {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.chip {
+  --chip-bg: #08060a;
+  --chip-ink: #e9b949;
+  width: 1.7rem;
+  height: 1.7rem;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  cursor: pointer;
+  background: var(--chip-bg);
+  /* inner ring = the notched edge of a clay chip */
+  box-shadow:
+    inset 0 0 0 2px var(--chip-ink),
+    inset 0 0 0 4px var(--chip-bg),
+    inset 0 0 0 5px color-mix(in srgb, var(--chip-ink) 50%, transparent);
+  transition: transform 0.28s var(--ease), box-shadow 0.28s var(--ease);
+}
+
+.chip:hover { transform: translateY(-2px); }
+
+.chip:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 3px;
+}
+
+.chip[aria-pressed="true"] {
+  transform: translateY(-2px) scale(1.06);
+  box-shadow:
+    inset 0 0 0 2px var(--chip-ink),
+    inset 0 0 0 4px var(--chip-bg),
+    inset 0 0 0 7px var(--chip-ink),
+    0 0 0 2px var(--ink),
+    0 0 0 3px var(--gold);
+}
+
+.chip--night { --chip-bg: #08060a; --chip-ink: #e9b949; }
+.chip--day   { --chip-bg: #f5f0e7; --chip-ink: #8a6210; }
+.chip--felt  { --chip-bg: #0c2b21; --chip-ink: #d9a84a; }
+.chip--neon  { --chip-bg: #07060f; --chip-ink: #ff3ea5; }
+
+.site-foot {
+  border-top: 1px solid var(--hairline);
+  margin-top: 6rem;
+  padding-block: 2rem 3rem;
+}
+
+.site-foot .shell {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+  font: 500 0.8rem/1.6 var(--cond);
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: var(--muted);
+}
+
+/* ---------- lobby hero ----------------------------------------- */
+
+.hero {
+  padding-block: clamp(3.5rem, 9vw, 7rem) clamp(2.5rem, 5vw, 4rem);
+}
+
+.hero h1 {
+  font: 700 clamp(3rem, 11vw, 7.5rem)/0.92 var(--display);
+  margin: 1.2rem 0 0;
+  color: var(--gold-hi);
+  letter-spacing: -0.015em;
+  text-wrap: balance;
+}
+
+.hero h1 em {
+  font-style: italic;
+  color: var(--gold);
+  /* the one grid-breaking move on the page */
+  display: inline-block;
+  transform: translateX(-0.06em);
+}
+
+.hero .lede { margin: 1.6rem 0 0; }
+
+.stat-strip {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 2.6rem;
+  margin-top: 2.6rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--hairline);
+  list-style: none;
+  padding-inline: 0;
+}
+
+.stat-strip li {
+  font: 600 0.78rem/2 var(--cond);
+  text-transform: uppercase;
+  letter-spacing: 0.22em;
+  color: var(--muted);
+}
+
+.stat-strip b {
+  display: block;
+  font: 700 1.9rem/1 var(--display);
+  letter-spacing: 0.02em;
+  color: var(--gold);
+}
+
+/* ---------- game grid ------------------------------------------ */
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+  gap: 1.5rem;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.tile {
+  position: relative;
+  display: block;
+  text-decoration: none;
+  color: inherit;
+  background: var(--ink-2);
+  border: 1px solid color-mix(in srgb, var(--bone) 9%, transparent);
+  border-radius: 4px;
+  overflow: hidden;
+  transition: border-color 0.35s var(--ease), transform 0.35s var(--ease),
+              box-shadow 0.35s var(--ease);
+  animation: rise 0.6s var(--ease) both;
+  animation-delay: calc(var(--i, 0) * 45ms);
+}
+
+@keyframes rise {
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: none; }
+}
+
+.tile__art {
+  aspect-ratio: 1;
+  width: 100%;
+  object-fit: cover;
+  transition: transform 0.55s var(--ease), filter 0.35s var(--ease);
+  filter: saturate(0.92) brightness(0.92);
+}
+
+.tile__cap {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.85rem 1rem 0.95rem;
+  border-top: 1px solid color-mix(in srgb, var(--bone) 8%, transparent);
+}
+
+.tile__name {
+  font: 600 0.95rem/1.2 var(--cond);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--bone);
+}
+
+.tile__cta {
+  font: 600 0.7rem/1 var(--cond);
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  color: var(--muted);
+  white-space: nowrap;
+  transition: color 0.3s var(--ease);
+}
+
+/* live tile */
+a.tile:hover,
+a.tile:focus-visible {
+  border-color: var(--gold);
+  transform: translateY(-4px);
+  box-shadow: 0 18px 40px -20px color-mix(in srgb, var(--gold) 55%, transparent);
+  outline: none;
+}
+
+a.tile:hover .tile__art,
+a.tile:focus-visible .tile__art {
+  transform: scale(1.045);
+  filter: saturate(1.05) brightness(1);
+}
+
+a.tile:hover .tile__cta,
+a.tile:focus-visible .tile__cta { color: var(--gold); }
+
+/* "guide coming soon" tiles — present, legible, not clickable */
+.tile--soon { opacity: 0.62; }
+.tile--soon .tile__art { filter: saturate(0.35) brightness(0.72); }
+
+.badge {
+  position: absolute;
+  z-index: 2;
+  top: 0.75rem;
+  right: 0.75rem;
+  font: 600 0.62rem/1 var(--cond);
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  padding: 0.4rem 0.55rem;
+  border-radius: 2px;
+  /* always over artwork, so this pill stays dark in both themes */
+  background: rgba(8, 6, 10, 0.8);
+  border: 1px solid rgba(233, 185, 73, 0.3);
+  color: #f0d089;
+}
+
+.badge--live {
+  background: var(--gold);
+  border-color: var(--gold);
+  color: var(--on-gold);
+}
+
+/* ---------- buttons -------------------------------------------- */
+
+.btn {
+  display: inline-block;
+  font: 600 0.82rem/1 var(--cond);
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  text-decoration: none;
+  padding: 1rem 1.9rem;
+  border-radius: 2px;
+  background: var(--gold);
+  color: var(--on-gold);
+  border: 1px solid var(--gold);
+  transition: background 0.3s var(--ease), color 0.3s var(--ease);
+}
+
+.btn:hover, .btn:focus-visible { background: transparent; color: var(--gold); }
+
+.btn--ghost {
+  background: transparent;
+  color: var(--gold);
+  border-color: var(--hairline);
+}
+
+.btn--ghost:hover, .btn--ghost:focus-visible {
+  background: var(--gold);
+  color: var(--on-gold);
+  border-color: var(--gold);
+}
+
+/* ============================================================
+   Playing cards — one component, ~55 instances across the guide
+   ============================================================ */
+
+.hand {
+  display: flex;
+  gap: 0.35rem;
+  flex-wrap: wrap;
+}
+
+.card {
+  --card-w: 3rem;
+  position: relative;
+  flex: none;
+  width: var(--card-w);
+  aspect-ratio: 5 / 7;
+  border-radius: calc(var(--card-w) * 0.09);
+  background: linear-gradient(168deg, #fffdf8, #e8e1d4);
+  border: 1px solid color-mix(in srgb, var(--bone) 12%, transparent);
+  color: #16131a;
+  box-shadow: 0 4px 12px -6px rgba(0, 0, 0, 0.9);
+  font-family: var(--cond);
+  display: grid;
+  place-items: center;
+  user-select: none;
+}
+
+.card__r {
+  position: absolute;
+  top: 3%;
+  left: 7%;
+  font-size: calc(var(--card-w) * 0.32);
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+
+.card__s { font-size: calc(var(--card-w) * 0.46); line-height: 1; }
+
+.card--red { color: var(--crimson); }
+
+.card--back {
+  background:
+    repeating-linear-gradient(45deg, rgba(255,255,255,0.07) 0 3px, transparent 3px 6px),
+    linear-gradient(168deg, #7d1a2a, #4a0f1c);
+  border: 1px solid color-mix(in srgb, var(--gold) 45%, transparent);
+  color: color-mix(in srgb, var(--gold) 55%, transparent);
+}
+
+.card--back .card__s { font-size: calc(var(--card-w) * 0.5); }
+
+.card--ph {
+  background: transparent;
+  border: 1px dashed color-mix(in srgb, var(--bone) 20%, transparent);
+  box-shadow: none;
+  color: color-mix(in srgb, var(--bone) 25%, transparent);
+}
+
+/* ============================================================
+   Tutorial page
+   ============================================================ */
+
+.guide-hero {
+  position: relative;
+  overflow: hidden;
+  border-bottom: 1px solid var(--hairline);
+}
+
+.guide-hero__art {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 28%;
+  filter: saturate(0.9);
+}
+
+.guide-hero__scrim {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(90deg, var(--ink) 18%,
+      color-mix(in srgb, var(--ink) 74%, transparent) 55%,
+      color-mix(in srgb, var(--ink) 28%, transparent)),
+    linear-gradient(0deg, var(--ink), transparent 70%);
+}
+
+.guide-hero .shell {
+  position: relative;
+  padding-block: clamp(3rem, 8vw, 6rem);
+}
+
+.crumb {
+  font: 600 0.78rem/1 var(--cond);
+  text-transform: uppercase;
+  letter-spacing: 0.22em;
+  color: var(--muted);
+  text-decoration: none;
+  transition: color 0.25s var(--ease);
+}
+
+.crumb:hover, .crumb:focus-visible { color: var(--gold); }
+
+.guide-hero h1 {
+  font: 700 clamp(2.6rem, 8vw, 5.2rem)/0.95 var(--display);
+  margin: 1.2rem 0 0;
+  color: var(--gold-hi);
+  max-width: 14ch;
+}
+
+.guide-hero h1 em { font-style: italic; color: var(--gold); }
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin: 2rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.chips li {
+  font: 600 0.72rem/1 var(--cond);
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  padding: 0.55rem 0.9rem;
+  border: 1px solid var(--hairline);
+  border-radius: 999px;
+  color: var(--gold);
+  background: color-mix(in srgb, var(--ink) 60%, transparent);
+}
+
+section.band { padding-block: clamp(3rem, 7vw, 5rem); }
+
+/* the felt table diagram */
+.table-fig {
+  display: grid;
+  gap: 2.5rem;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+  align-items: center;
+}
+
+.felt {
+  position: relative;
+  aspect-ratio: 16 / 10;
+  border-radius: 50% / 50%;
+  background:
+    radial-gradient(ellipse at 50% 38%, #2c8566, #17513e 62%, #0f3a2c);
+  border: 0.6rem solid #2a1d12;
+  box-shadow:
+    inset 0 0 60px rgba(0, 0, 0, 0.55),
+    0 0 0 1px var(--gold),
+    0 30px 60px -30px rgba(0, 0, 0, 0.9);
+}
+
+.felt__label {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  font: 600 0.72rem/1.8 var(--cond);
+  text-transform: uppercase;
+  letter-spacing: 0.28em;
+  color: rgba(255, 240, 194, 0.55);
+}
+
+.seat {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  width: 2.6rem;
+  height: 2.6rem;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font: 700 0.72rem/1 var(--cond);
+  letter-spacing: 0.06em;
+  background: var(--ink-2);
+  border: 1px solid color-mix(in srgb, var(--bone) 25%, transparent);
+  color: var(--muted);
+}
+
+.seat--d  { background: var(--gold);    color: var(--on-gold); border-color: var(--gold); }
+.seat--sb { background: var(--ink-3);   color: var(--gold-hi); border-color: var(--gold); }
+.seat--bb { background: var(--crimson); color: var(--on-color); border-color: var(--crimson); }
+
+.seat-key {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 1.1rem;
+}
+
+.seat-key li {
+  display: grid;
+  grid-template-columns: 2.6rem 1fr;
+  gap: 1rem;
+  align-items: start;
+}
+
+.seat-key b {
+  display: block;
+  font: 600 0.9rem/1.4 var(--cond);
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--gold-hi);
+}
+
+.seat-key p { margin: 0.2rem 0 0; color: color-mix(in srgb, var(--bone) 72%, transparent); font-size: 0.95rem; }
+
+/* a real screenshot of the client, sat under the CSS table diagram */
+.shot {
+  margin: clamp(2rem, 5vw, 3rem) 0 0;
+}
+
+.shot img {
+  width: 100%;
+  height: auto;
+  border-radius: 4px;
+  border: 1px solid var(--hairline);
+  box-shadow: 0 24px 50px -28px rgba(0, 0, 0, 0.75);
+}
+
+.shot figcaption {
+  margin-top: 1.4rem;
+}
+
+.shot__lead {
+  margin: 0;
+  max-width: 62ch;
+  color: color-mix(in srgb, var(--bone) 78%, transparent);
+  font-size: 0.98rem;
+}
+
+.shot__lead b { color: var(--gold-hi); }
+
+/* what to look for, keyed to the parts of the screenshot */
+.shot__key {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(215px, 1fr));
+  gap: 1.25rem 2rem;
+  list-style: none;
+  margin: 1.8rem 0 0;
+  padding: 1.4rem 0 0;
+  border-top: 1px solid var(--hairline);
+}
+
+.shot__key b {
+  display: block;
+  font: 600 0.72rem/1.5 var(--cond);
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: var(--gold);
+  margin-bottom: 0.35rem;
+}
+
+.shot__key p {
+  margin: 0;
+  font-size: 0.92rem;
+  color: color-mix(in srgb, var(--bone) 70%, transparent);
+}
+
+/* betting rounds */
+.rounds {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.25rem;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  counter-reset: round;
+}
+
+.round {
+  position: relative;
+  padding: 1.6rem 1.4rem;
+  background: linear-gradient(180deg, var(--ink-2), color-mix(in srgb, var(--ink-2) 35%, transparent));
+  border: 1px solid color-mix(in srgb, var(--bone) 9%, transparent);
+  border-top: 2px solid var(--gold);
+  border-radius: 3px;
+}
+
+.round::before {
+  counter-increment: round;
+  content: "0" counter(round);
+  font: 700 0.78rem/1 var(--cond);
+  letter-spacing: 0.2em;
+  color: var(--gold);
+}
+
+.round h3 {
+  font: 700 1.5rem/1.1 var(--display);
+  margin: 0.7rem 0 0.6rem;
+  color: var(--gold-hi);
+}
+
+.round p { margin: 0 0 1.2rem; font-size: 0.95rem; color: color-mix(in srgb, var(--bone) 75%, transparent); }
+
+.round .hand { --card-w: 2.3rem; margin-top: auto; }
+.round .hand .card { --card-w: 2.3rem; }
+
+.round__note {
+  display: block;
+  margin-top: 0.9rem;
+  font: 600 0.68rem/1.5 var(--cond);
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  color: var(--muted);
+}
+
+/* actions glossary */
+.actions {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.action {
+  padding: 1.3rem 1.3rem 1.4rem;
+  border: 1px solid color-mix(in srgb, var(--bone) 10%, transparent);
+  border-left: 3px solid var(--muted);
+  border-radius: 3px;
+  background: color-mix(in srgb, var(--ink-2) 60%, transparent);
+}
+
+.action b {
+  display: block;
+  font: 600 1rem/1.2 var(--cond);
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: var(--gold-hi);
+  margin-bottom: 0.45rem;
+}
+
+.action p { margin: 0; font-size: 0.92rem; color: color-mix(in srgb, var(--bone) 72%, transparent); }
+
+.action--fold  { border-left-color: var(--crimson); }
+.action--check { border-left-color: var(--felt); }
+.action--bet   { border-left-color: var(--gold); }
+
+/* hand rankings */
+.ranks {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  counter-reset: rank;
+  border-top: 1px solid var(--hairline);
+}
+
+.rank {
+  counter-increment: rank;
+  display: grid;
+  grid-template-columns: 3.5rem minmax(0, 1fr) auto;
+  gap: 1.5rem;
+  align-items: center;
+  padding-block: 1.35rem;
+  border-bottom: 1px solid color-mix(in srgb, var(--bone) 8%, transparent);
+  transition: background 0.3s var(--ease);
+}
+
+.rank:hover { background: color-mix(in srgb, var(--gold) 4.5%, transparent); }
+
+.rank::before {
+  content: counter(rank, decimal-leading-zero);
+  font: 700 1.5rem/1 var(--display);
+  color: color-mix(in srgb, var(--gold) 45%, transparent);
+}
+
+.rank h3 {
+  font: 700 1.3rem/1.2 var(--display);
+  margin: 0 0 0.2rem;
+  color: var(--gold-hi);
+}
+
+.rank p { margin: 0; font-size: 0.92rem; color: color-mix(in srgb, var(--bone) 68%, transparent); }
+
+.rank .hand { justify-content: flex-end; }
+
+/* tips + closing CTA */
+.tips {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 2rem;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.tips li { border-top: 1px solid var(--hairline); padding-top: 1.1rem; }
+
+.tips b {
+  display: block;
+  font: 600 0.8rem/1.4 var(--cond);
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: var(--gold);
+  margin-bottom: 0.5rem;
+}
+
+.tips p { margin: 0; font-size: 0.95rem; color: color-mix(in srgb, var(--bone) 72%, transparent); }
+
+.closer {
+  text-align: center;
+  padding-block: clamp(3rem, 8vw, 5.5rem);
+}
+
+.closer h2 {
+  font: 700 clamp(2rem, 5vw, 3.2rem)/1.05 var(--display);
+  margin: 0 0 1.6rem;
+  color: var(--gold-hi);
+}
+
+.closer h2 em { font-style: italic; color: var(--gold); }
+
+/* ---------- responsive ----------------------------------------- */
+
+@media (max-width: 860px) {
+  .table-fig { grid-template-columns: 1fr; }
+  .rank { grid-template-columns: 2.5rem 1fr; gap: 0.9rem 1rem; }
+  .rank .hand { grid-column: 1 / -1; justify-content: flex-start; }
+}
+
+@media (max-width: 560px) {
+  :root { --shell: min(1320px, 100% - 2rem); }
+  .grid { grid-template-columns: 1fr; }
+  /* nav + toggle drop to their own row rather than overflow */
+  .site-head .shell { flex-wrap: wrap; row-gap: 0.6rem; }
+  .site-nav { gap: 1rem; letter-spacing: 0.1em; }
+  .themes { gap: 0.4rem; }
+  .stat-strip { gap: 0 1.6rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-delay: 0ms !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+/* ============================================================
    THE WALL — a dense poster wall, edge to edge.
    Layered on top of site.css, so all four themes work unchanged.
    ============================================================ */

@@ -1,7 +1,10 @@
 /* ============================================================================
    Pokerbolt — Game Library & How-To-Play
-   Layer 1: tokens (the ONLY block permitted raw hex / px literals — mirrors
-   DESIGN.md Style Foundations). Layer 2 onward: token references only.
+   Layer 1: tokens (the ONLY block permitted raw hex / px literals). Layer 2
+   onward: token references only; Layer 12 carries the display letterforms.
+
+   Every colour below is measured from the game art, not chosen — see
+   new-plan.md for the sampling method and the per-image provenance.
    ========================================================================= */
 
 :root,
@@ -9,10 +12,12 @@
   color-scheme: dark;
 
   /* Typography */
-  --font-family-stack: Lato, "Helvetica Neue", Helvetica, sans-serif;
-  --font-size-base: 14px;
+  --font-family-stack: Barlow, "Helvetica Neue", Helvetica, sans-serif;
+  --font-family-display: "Archivo Black", "Arial Black", Impact, sans-serif;
+  --font-family-cond: "Barlow Condensed", Barlow, sans-serif;
+  --font-size-base: 15px;
   --font-weight-base: 400;
-  --font-line-height-base: 20px;
+  --font-line-height-base: 23px;
 
   --font-size-xs: 13px;
   --font-size-sm: 14px;
@@ -23,15 +28,19 @@
   --font-size-3xl: 40px;
 
   /* Color — text */
-  --color-text-primary: #a1b1bc;
-  --color-text-secondary: #31c4d4;
-  --color-text-tertiary: #ffffff;
-  --color-text-inverse: #777777;
+  --color-text-primary: #c9b6a4;
+  --color-text-secondary: #d0a757;
+  --color-text-tertiary: #f5d77e;
+  --color-text-inverse: #9d8574;
 
   /* Color — surface */
-  --color-surface-base: #000000;
-  --color-surface-muted: #171d22;
-  --color-surface-raised: #222533;
+  --color-surface-base: #130705;
+  --color-surface-muted: #1b0d0a;
+  --color-surface-raised: #2a150f;
+
+  /* Display title shadow — family A's flat gold sits on a dark-brown offset.
+     Light themes null it out; nothing else references it. */
+  --title-shadow: 0 3px 0 #94502b, 0 6px 12px rgb(0 0 0 / 0.6);
 
   /* Spacing */
   --space-1: 5px;
@@ -52,7 +61,7 @@
 
   /* Sheen — screen glare and the card sweep read as light in BOTH themes,
      because the artwork underneath is always a dark game screenshot. */
-  --color-sheen: #ffffff;
+  --color-sheen: #fdf5d2;
 
   /* Brand mark backdrop — the wordmark's silver half needs a dark ground.
      None needed on the dark theme. */
@@ -75,9 +84,10 @@
 }
 
 /* ---------------------------------------------------------------------------
-   Light theme — the same semantic roles, re-mapped. Every pairing was checked
+   Light theme — the same semantic roles, re-mapped onto family B (the cartoon
+   titles: Blackjack, Speed Baccarat, Tongits Go). Every pairing was re-checked
    against WCAG 2.2 AA on all three surfaces; the weakest is the accent on
-   surface.raised at 4.83:1.
+   surface.raised at 4.55:1.
    Applied when the reader's system asks for light and they have not chosen
    dark, and whenever they pick light explicitly.
    ------------------------------------------------------------------------ */
@@ -86,16 +96,17 @@
   :root:not([data-theme="dark"]) {
     color-scheme: light;
 
-    --color-text-primary: #38474f;
-    --color-text-secondary: #0b6a78;
-    --color-text-tertiary: #0a1418;
-    --color-text-inverse: #56646b;
+    --color-text-primary: #6d3f22;
+    --color-text-secondary: #a32231;
+    --color-text-tertiary: #4a2410;
+    --color-text-inverse: #7a4a2d;
 
-    --color-surface-base: #ffffff;
-    --color-surface-muted: #eef2f4;
-    --color-surface-raised: #dbe3e7;
+    --color-surface-base: #fff6e2;
+    --color-surface-muted: #f6e2bc;
+    --color-surface-raised: #e9c691;
 
-    --color-brand-backdrop: #0a1418;
+    --color-brand-backdrop: #130705;
+    --title-shadow: none;
   }
 }
 
@@ -123,60 +134,64 @@
    `:root:not([data-theme="dark"])` above matches a root set to felt/ember/paper
    too, and carries the same specificity, so source order decides.
 
-   Each pairing was checked against WCAG 2.2 AA on all three surfaces and on the
-   primary button (surface.base on the accent). Weakest per theme:
-   felt 5.10:1, ember 4.58:1, paper 4.85:1.
+   Each pairing was re-checked against WCAG 2.2 AA on all three surfaces and on
+   the primary button (surface.base on the accent). Weakest per theme:
+   dark 4.98:1, light 4.55:1, felt 4.56:1, ember 4.56:1, paper 4.58:1.
    ------------------------------------------------------------------------ */
 
-/* Felt — the table itself: deep green cloth, brass chip accent. */
+/* Felt — the Tongits Go table: olive cloth under brass. Sampled from
+   sample-data/15-tongits-go01.png. */
 :root[data-theme="felt"],
 [data-theme="felt"] {
   color-scheme: dark;
 
-  --color-text-primary: #b9cdbd;
-  --color-text-secondary: #e8b33c;
-  --color-text-tertiary: #f4f7f0;
-  --color-text-inverse: #8aa38f;
+  --color-text-primary: #b0ba7a;
+  --color-text-secondary: #e0b96b;
+  --color-text-tertiary: #f6e4b4;
+  --color-text-inverse: #afb77a;
 
-  --color-surface-base: #08150f;
-  --color-surface-muted: #0f2418;
-  --color-surface-raised: #17321f;
+  --color-surface-base: #192314;
+  --color-surface-muted: #232f1b;
+  --color-surface-raised: #414819;
 
   --color-brand-backdrop: transparent;
 }
 
-/* Ember — late-night rail: warm charcoal under a copper lamp. */
+/* Ember — the Speed Baccarat room: plum-red felt under a gold lamp. Sampled
+   from sample/thumbnail_900 _900 /Speed Baccarat.jpg. */
 :root[data-theme="ember"],
 [data-theme="ember"] {
   color-scheme: dark;
 
-  --color-text-primary: #d2bdb2;
-  --color-text-secondary: #ff8d4d;
-  --color-text-tertiary: #fff6f0;
-  --color-text-inverse: #a08b80;
+  --color-text-primary: #e7bea6;
+  --color-text-secondary: #f9d160;
+  --color-text-tertiary: #fdf5bf;
+  --color-text-inverse: #df7c5f;
 
-  --color-surface-base: #140f0d;
-  --color-surface-muted: #221a16;
-  --color-surface-raised: #32251f;
+  --color-surface-base: #1a0a0c;
+  --color-surface-muted: #2a1014;
+  --color-surface-raised: #4d2037;
 
   --color-brand-backdrop: transparent;
 }
 
-/* Paper — the printed rulebook: warm stock, rust ink. */
+/* Paper — the Blackjack card stock: warm cream, rust ink. Sampled from
+   sample/thumbnail_900 _900 /blackjack.jpg. */
 :root[data-theme="paper"],
 [data-theme="paper"] {
   color-scheme: light;
 
-  --color-text-primary: #4a4336;
-  --color-text-secondary: #8a3a1f;
-  --color-text-tertiary: #201c15;
-  --color-text-inverse: #635a4a;
+  --color-text-primary: #5c2325;
+  --color-text-secondary: #aa372d;
+  --color-text-tertiary: #2a150f;
+  --color-text-inverse: #855335;
 
-  --color-surface-base: #f7f3ea;
-  --color-surface-muted: #efe8da;
-  --color-surface-raised: #e3d9c6;
+  --color-surface-base: #fbf4c7;
+  --color-surface-muted: #f3e9b8;
+  --color-surface-raised: #e8dba2;
 
-  --color-brand-backdrop: #201c15;
+  --color-brand-backdrop: #2a150f;
+  --title-shadow: none;
 }
 
 /* ============================================================================
@@ -722,7 +737,7 @@ a[aria-disabled="true"] {
 
 @media (min-width: 62rem) {
   .layout {
-    grid-template-columns: 15rem minmax(0, 1fr);
+    grid-template-columns: 22rem minmax(0, 1fr);
     gap: calc(var(--space-8) * 1.6);
   }
 }
@@ -1872,4 +1887,88 @@ tbody tr:hover th {
   .cta {
     display: none;
   }
+}
+
+/* ============================================================================
+   Layer 12 — display type
+
+   Layer 1 carries the palette; this block carries the letterforms. Every
+   display element in this sheet was `font-weight: 900` off the single body
+   stack, which is why the page read as a white paper rather than as the game
+   art. Archivo Black is the closest available match to the family-A wordmarks
+   ("TEXAS HOLDEM", "BANDAR CEME"): heavy, condensed, flat terminals.
+
+   Archivo Black ships one weight, so `font-weight: 400` here is deliberate —
+   leaving 900 makes the browser synthesise a fake bold on an already-black
+   face and the counters fill in.
+   ========================================================================= */
+
+.masthead__brand,
+.hero h1,
+.devices__intro h2,
+.game__head h2,
+.cta h2 {
+  font-family: var(--font-family-display);
+  font-weight: 400;
+}
+
+/* Family A: flat gold on a hard dark-brown offset. --title-shadow is `none`
+   on the light and paper themes, where the offset would read as grime. */
+.hero h1 {
+  text-shadow: var(--title-shadow, none);
+}
+
+/* Numerals are condensed and tabular, not display — seat counts, jackpots and
+   card indices jitter on a proportional face. */
+.hero__meta dd,
+.card__num,
+.game__num {
+  font-family: var(--font-family-cond);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+/* The hero's second line is the light counterweight to the heavy first line;
+   Archivo Black has no 300, so it stays on the condensed face. */
+.hero h1 em {
+  font-family: var(--font-family-cond);
+  font-weight: 300;
+}
+
+/* Game index is the art, four across. */
+.toc ul {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-2);
+  max-width: 22rem;
+}
+
+.toc li + li {
+  margin-top: 0;
+}
+
+.toc a {
+  padding: 0;
+  border-left: 0;
+}
+
+.toc a img {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: var(--space-2);
+}
+
+/* Scroll spy: the active game's art lifts out of the dimmed row. */
+.toc a img {
+  opacity: 0.45;
+  outline: var(--border-width-focus) solid transparent;
+  outline-offset: 2px;
+  transition: opacity var(--motion-fast), outline-color var(--motion-fast);
+}
+
+.toc a:hover img,
+.toc a[aria-current="true"] img {
+  opacity: 1;
+  outline-color: var(--color-text-inverse);
 }

@@ -1,0 +1,333 @@
+<!doctype html>
+<html lang="en" data-room="spectrum">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>PokerBolt · Spectrum</title>
+    <meta name="description" content="Fifteen lit doorways. Every PokerBolt title, indexed by its own colour." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Saira:wght@400;600;800&family=Saira+Condensed:wght@500;600&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="css/spectrum.css" />
+  </head>
+  <body>
+    <div class="grain" aria-hidden="true"></div>
+
+    <div class="floor">
+      <header class="head shell">
+        <a href="index-spectrum.html" aria-label="PokerBolt home">
+          <img class="head__mark" src="sample-data/logo-pokerbolt.png" alt="PokerBolt" width="3559" height="538" />
+        </a>
+        <nav class="nav" aria-label="Rooms">
+          <a href="index-noir.html">Noir</a>
+          <a href="index-cabana.html">Cabana</a>
+          <a href="index-spectrum.html" aria-current="page">Spectrum</a>
+          <a href="texas-holdem.html">Guides</a>
+        </nav>
+      </header>
+
+      <!-- ① backdrop is on <body>; ⑤ duo lives here, bleeding off the right edge -->
+      <section class="hero shell">
+        <div>
+          <p class="label rise" style="--i:0">Fifteen doors · one floor</p>
+          <h1 class="hero__title gold-flat rise" style="--i:1"><span>Fifteen</span><span>doorways.</span></h1>
+          <p class="hero__lede rise" style="--i:2">A dark corridor with fifteen lit doors. Nothing on this page carries colour except the title you are looking at — hover one and the floor lights up in its own palette.</p>
+          <ul class="hero__stats label rise" style="--i:3">
+            <li><b class="tnum">15</b> titles</li>
+            <li><b class="tnum">05</b> groups</li>
+            <li><b class="tnum">2–9</b> seats</li>
+          </ul>
+        </div>
+        <div class="hero__art rise" style="--i:4">
+          <div class="device-duo device">
+            <div class="iphone">
+              <span class="iphone__island" aria-hidden="true"></span>
+              <div class="device__screen iphone__screen">
+                <img src="sample-data/01-poker03.png" alt="PokerBolt Hold'em table on iPhone, portrait layout" loading="lazy" />
+              </div>
+            </div>
+            <div class="iphone">
+              <span class="iphone__island" aria-hidden="true"></span>
+              <div class="device__screen iphone__screen">
+                <img src="sample-data/01-poker05.png" alt="A second PokerBolt table showing the betting controls" loading="lazy" />
+              </div>
+            </div>
+          </div>
+          <p class="device-caption">iPhone duo · portrait client</p>
+        </div>
+      </section>
+
+      <hr class="rule" />
+
+      <!-- ② chip rail -->
+      <nav aria-label="Game groups">
+        <ul class="tray">
+        <li><a class="chip" href="#poker" style="--c:#c4293b">
+            <span class="tnum">2</span>
+            <span class="chip__name">Poker</span>
+          </a></li>
+        <li><a class="chip" href="#table" style="--c:#aec6c4">
+            <span class="tnum">3</span>
+            <span class="chip__name">Table &amp; Baccarat</span>
+          </a></li>
+        <li><a class="chip" href="#card" style="--c:#f59d41">
+            <span class="tnum">5</span>
+            <span class="chip__name">Card</span>
+          </a></li>
+        <li><a class="chip" href="#domino" style="--c:#a76d49">
+            <span class="tnum">3</span>
+            <span class="chip__name">Domino</span>
+          </a></li>
+        <li><a class="chip" href="#rummy" style="--c:#5d9886">
+            <span class="tnum">2</span>
+            <span class="chip__name">Rummy &amp; Trick</span>
+          </a></li>
+        </ul>
+      </nav>
+
+      <!-- ③ icon grid, 4 columns, grouped -->
+      <main class="shell" id="games">
+        <section class="group" id="poker">
+          <h2 class="group__label">Poker<small class="tnum">2 titles</small></h2>
+          <ul class="icons">
+            <li style="--i:0">
+              <a class="tile" href="texas-holdem.html" style="--accent:#c4293b">
+                <span class="tile__no tnum">01</span>
+                <img src="assets/games/texas-holdem.jpg" alt="Texas Hold'em" width="900" height="900" loading="lazy" decoding="async" />
+                <span class="tile__plate">
+                  <span class="tile__name">Texas Hold'em</span>
+                  <span class="tile__meta">Community cards · 2–9 seats</span>
+                </span>
+              </a>
+            </li>
+            <li style="--i:1">
+              <a class="tile" href="texas-holdem.html" style="--accent:#6e2f6a">
+                <span class="tile__no tnum">02</span>
+                <img src="assets/games/pot-limit-omaha.jpg" alt="Pot Limit Omaha" width="900" height="900" loading="lazy" decoding="async" />
+                <span class="tile__plate">
+                  <span class="tile__name">Pot Limit Omaha</span>
+                  <span class="tile__meta">Community cards · 2–9 seats</span>
+                </span>
+              </a>
+            </li>
+          </ul>
+        </section>
+        <hr class="rule" />
+        <section class="group" id="table">
+          <h2 class="group__label">Table &amp; Baccarat<small class="tnum">3 titles</small></h2>
+          <ul class="icons">
+            <li style="--i:0">
+              <a class="tile" href="texas-holdem.html" style="--accent:#aec6c4">
+                <span class="tile__no tnum">03</span>
+                <img src="assets/games/blackjack.jpg" alt="Blackjack" width="900" height="900" loading="lazy" decoding="async" />
+                <span class="tile__plate">
+                  <span class="tile__name">Blackjack</span>
+                  <span class="tile__meta">Dealer-banked · 1–7 seats</span>
+                </span>
+              </a>
+            </li>
+            <li style="--i:1">
+              <a class="tile" href="texas-holdem.html" style="--accent:#c91d22">
+                <span class="tile__no tnum">04</span>
+                <img src="assets/games/speed-baccarat.jpg" alt="Speed Baccarat" width="900" height="900" loading="lazy" decoding="async" />
+                <span class="tile__plate">
+                  <span class="tile__name">Speed Baccarat</span>
+                  <span class="tile__meta">Dealer-banked · 1–7 seats</span>
+                </span>
+              </a>
+            </li>
+            <li style="--i:2">
+              <a class="tile" href="texas-holdem.html" style="--accent:#9f4024">
+                <span class="tile__no tnum">05</span>
+                <img src="assets/games/bandar-baccarat.jpg" alt="Bandar Baccarat" width="900" height="900" loading="lazy" decoding="async" />
+                <span class="tile__plate">
+                  <span class="tile__name">Bandar Baccarat</span>
+                  <span class="tile__meta">Player-banked · 2–8 seats</span>
+                </span>
+              </a>
+            </li>
+          </ul>
+        </section>
+        <hr class="rule" />
+        <section class="group" id="card">
+          <h2 class="group__label">Card<small class="tnum">5 titles</small></h2>
+          <ul class="icons">
+            <li style="--i:0">
+              <a class="tile" href="texas-holdem.html" style="--accent:#f59d41">
+                <span class="tile__no tnum">06</span>
+                <img src="assets/games/samgong.jpg" alt="Samgong" width="900" height="900" loading="lazy" decoding="async" />
+                <span class="tile__plate">
+                  <span class="tile__name">Samgong</span>
+                  <span class="tile__meta">Player-banked · 2–8 seats</span>
+                </span>
+              </a>
+            </li>
+            <li style="--i:1">
+              <a class="tile" href="texas-holdem.html" style="--accent:#82503d">
+                <span class="tile__no tnum">07</span>
+                <img src="assets/games/niu-niu.jpg" alt="Niu Niu" width="900" height="900" loading="lazy" decoding="async" />
+                <span class="tile__plate">
+                  <span class="tile__name">Niu Niu</span>
+                  <span class="tile__meta">Player-banked · 2–9 seats</span>
+                </span>
+              </a>
+            </li>
+            <li style="--i:2">
+              <a class="tile" href="texas-holdem.html" style="--accent:#5a1974">
+                <span class="tile__no tnum">08</span>
+                <img src="assets/games/super-10.jpg" alt="Super 10" width="900" height="900" loading="lazy" decoding="async" />
+                <span class="tile__plate">
+                  <span class="tile__name">Super 10</span>
+                  <span class="tile__meta">Player-banked · 2–8 seats</span>
+                </span>
+              </a>
+            </li>
+            <li style="--i:3">
+              <a class="tile" href="texas-holdem.html" style="--accent:#c68d6b">
+                <span class="tile__no tnum">09</span>
+                <img src="assets/games/capsa-susun.jpg" alt="Capsa Susun" width="900" height="900" loading="lazy" decoding="async" />
+                <span class="tile__plate">
+                  <span class="tile__name">Capsa Susun</span>
+                  <span class="tile__meta">Hand setting · 2–4 seats</span>
+                </span>
+              </a>
+            </li>
+            <li style="--i:4">
+              <a class="tile" href="texas-holdem.html" style="--accent:#601367">
+                <span class="tile__no tnum">10</span>
+                <img src="assets/games/capsa-banding.jpg" alt="Capsa Banding" width="900" height="900" loading="lazy" decoding="async" />
+                <span class="tile__plate">
+                  <span class="tile__name">Capsa Banding</span>
+                  <span class="tile__meta">Hand comparison · 2–4 seats</span>
+                </span>
+              </a>
+            </li>
+          </ul>
+        </section>
+        <hr class="rule" />
+        <section class="group" id="domino">
+          <h2 class="group__label">Domino<small class="tnum">3 titles</small></h2>
+          <ul class="icons">
+            <li style="--i:0">
+              <a class="tile" href="texas-holdem.html" style="--accent:#bc8267">
+                <span class="tile__no tnum">11</span>
+                <img src="assets/games/bandar-ceme.jpg" alt="Bandar Ceme" width="900" height="900" loading="lazy" decoding="async" />
+                <span class="tile__plate">
+                  <span class="tile__name">Bandar Ceme</span>
+                  <span class="tile__meta">Player-banked · 2–8 seats</span>
+                </span>
+              </a>
+            </li>
+            <li style="--i:1">
+              <a class="tile" href="texas-holdem.html" style="--accent:#a76d49">
+                <span class="tile__no tnum">12</span>
+                <img src="assets/games/ceme-keliling.jpg" alt="Ceme Keliling" width="900" height="900" loading="lazy" decoding="async" />
+                <span class="tile__plate">
+                  <span class="tile__name">Ceme Keliling</span>
+                  <span class="tile__meta">Rotating bank · 2–8 seats</span>
+                </span>
+              </a>
+            </li>
+            <li style="--i:2">
+              <a class="tile" href="texas-holdem.html" style="--accent:#bb3c32">
+                <span class="tile__no tnum">13</span>
+                <img src="assets/games/domino-classic.jpg" alt="Domino Classic" width="900" height="900" loading="lazy" decoding="async" />
+                <span class="tile__plate">
+                  <span class="tile__name">Domino Classic</span>
+                  <span class="tile__meta">Tile matching · 2–4 seats</span>
+                </span>
+              </a>
+            </li>
+          </ul>
+        </section>
+        <hr class="rule" />
+        <section class="group" id="rummy">
+          <h2 class="group__label">Rummy &amp; Trick<small class="tnum">2 titles</small></h2>
+          <ul class="icons">
+            <li style="--i:0">
+              <a class="tile" href="texas-holdem.html" style="--accent:#df4f1d">
+                <span class="tile__no tnum">14</span>
+                <img src="assets/games/tongits-go.jpg" alt="Tongits Go" width="900" height="900" loading="lazy" decoding="async" />
+                <span class="tile__plate">
+                  <span class="tile__name">Tongits Go</span>
+                  <span class="tile__meta">Draw and discard · 2–4 seats</span>
+                </span>
+              </a>
+            </li>
+            <li style="--i:1">
+              <a class="tile" href="texas-holdem.html" style="--accent:#5d9886">
+                <span class="tile__no tnum">15</span>
+                <img src="assets/games/callbreak-quick.jpg" alt="Callbreak Quick" width="900" height="900" loading="lazy" decoding="async" />
+                <span class="tile__plate">
+                  <span class="tile__name">Callbreak Quick</span>
+                  <span class="tile__meta">Trick-taking · 4 seats</span>
+                </span>
+              </a>
+            </li>
+          </ul>
+        </section>
+        <hr class="rule" />
+        <!-- ④ mobile -->
+        <section class="pocket">
+          <div>
+            <p class="label">Play anywhere</p>
+            <h2 style="font-size:clamp(1.75rem,4vw,3rem);margin-top:.5rem">The same fifteen games, in your hand.</h2>
+            <p style="max-width:48ch;color:var(--quiet)">
+              The phone client stacks the seats into a portrait layout without hiding a single
+              control. Same balance, same tables, same build — the action buttons just move
+              under your thumb.
+            </p>
+          </div>
+          <figure class="device">
+            <div class="iphone">
+              <span class="iphone__island" aria-hidden="true"></span>
+              <div class="device__screen iphone__screen">
+                <img src="sample-data/01-poker04.png" alt="PokerBolt on iPhone 18 with the action buttons under the hand" loading="lazy" />
+              </div>
+            </div>
+            <figcaption>iPhone 18 · action buttons under your hand</figcaption>
+          </figure>
+        </section>
+      </main>
+
+      <hr class="rule" />
+
+      <!-- ⑥ desktop, full-bleed -->
+      <section class="bleed">
+        <figure class="device">
+          <div class="imac">
+            <div class="imac__body">
+              <div class="device__screen imac__screen">
+                <img src="sample-data/12-blackjack01.png" alt="PokerBolt Blackjack table on desktop, full felt view" width="1920" height="935" loading="lazy" />
+              </div>
+              <p class="imac__chin">
+                <img src="sample-data/logo-pokerbolt.png" alt="" width="3559" height="538" />
+              </p>
+            </div>
+            <div class="imac__stand" aria-hidden="true"></div>
+          </div>
+          <figcaption>iMac · full table view</figcaption>
+        </figure>
+      </section>
+
+      <footer class="foot shell">
+        <span>© 2026 PokerBolt</span>
+        <span>Play responsibly · 18+</span>
+      </footer>
+    </div>
+
+    <script>
+      // chip rail follows the group in view
+      const chips = [...document.querySelectorAll(".chip")];
+      const io = new IntersectionObserver(
+        (es) => es.forEach((e) => {
+          if (!e.isIntersecting) return;
+          chips.forEach((c) =>
+            c.setAttribute("aria-current", String(c.getAttribute("href") === "#" + e.target.id)));
+        }),
+        { rootMargin: "-30% 0px -60% 0px" }
+      );
+      document.querySelectorAll(".group").forEach((g) => io.observe(g));
+    </script>
+  </body>
+</html>
