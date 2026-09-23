@@ -1,0 +1,190 @@
+/* ============================================================================
+   React layer — skeletons, scroll reveal, image fade-in.
+   Tokens only; every rule here sits on top of index-main.css and none of it
+   restyles the original page.
+   ========================================================================= */
+
+/* ---------------------------------------------------------------------------
+   Skeletons — one shimmering block, sized by whatever it stands in for.
+   ------------------------------------------------------------------------ */
+
+.sk {
+  --sk-base: color-mix(in srgb, var(--color-text-primary) 9%, var(--color-surface-muted));
+  --sk-sheen: color-mix(in srgb, var(--color-text-primary) 18%, var(--color-surface-raised));
+  position: relative;
+  overflow: hidden;
+  background: var(--sk-base);
+  border-radius: var(--space-1);
+}
+
+.sk::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  translate: -100% 0;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--sk-sheen),
+    transparent
+  );
+}
+
+.sk--line {
+  height: var(--font-line-height-base);
+  margin-block: var(--space-1);
+}
+
+.sk--line:nth-child(3n) { width: 82%; }
+.sk--line:nth-child(3n + 2) { width: 94%; }
+.sk--line:last-child { width: 64%; }
+
+.sk--title {
+  height: var(--space-8);
+  width: 58%;
+  margin-block-end: var(--space-4);
+}
+
+.sk--pill {
+  height: var(--space-7);
+  width: var(--space-8);
+  border-radius: var(--radius-pill);
+}
+
+.sk--media {
+  aspect-ratio: 16 / 10;
+  width: 100%;
+  border-radius: var(--radius-screen);
+}
+
+.sk--thumb {
+  aspect-ratio: 1;
+  width: 100%;
+  border-radius: var(--space-2);
+}
+
+/* The skeleton card copies the real card's box so nothing jumps on swap. */
+.sk-card {
+  display: grid;
+  gap: var(--space-4);
+  padding: var(--space-4);
+  background: var(--color-surface-muted);
+  border: var(--border-width-thin) solid var(--color-border);
+}
+
+.sk-tags {
+  display: flex;
+  gap: var(--space-2);
+}
+
+.sk-article {
+  padding-block: var(--space-8);
+  border-block-start: var(--border-width-thin) solid var(--color-rule);
+}
+
+.sk-article__head {
+  display: flex;
+  gap: var(--space-6);
+  align-items: flex-start;
+}
+
+/* Matches the real .game__num box, so the swap does not shift. */
+.sk-article__num {
+  flex: 0 0 auto;
+  width: var(--space-8);
+  height: var(--font-size-3xl);
+}
+
+.sk-article__body {
+  display: grid;
+  gap: var(--space-6);
+  margin-block-start: var(--space-6);
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+}
+
+/* Announced once, not per block — 15 shimmering cards should not be 15
+   messages in a screen reader. */
+.sk-region {
+  display: grid;
+  gap: var(--space-6);
+}
+
+/* ---------------------------------------------------------------------------
+   Content swap + scroll reveal
+   ------------------------------------------------------------------------ */
+
+.reveal-on-scroll {
+  opacity: 1;
+}
+
+/* ---------------------------------------------------------------------------
+   Images: hold a shimmer in the box until the file decodes, then cross-fade.
+   ------------------------------------------------------------------------ */
+
+/* Fills its container so the original `img { height: 100% }` rules still
+   resolve against the same box they used to. */
+.img-shell {
+  position: relative;
+  display: block;
+  inline-size: 100%;
+  block-size: 100%;
+  overflow: hidden;
+}
+
+.img-shell > .sk {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+}
+
+.img-shell.is-loaded > .sk {
+  opacity: 0;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .sk::after {
+    animation: sk-shimmer calc(var(--motion-duration-instant) * 2.6) linear infinite;
+  }
+
+  .img-shell.is-loaded > .sk {
+    transition: opacity var(--motion-fast) ease-out;
+  }
+
+  .img-shell img {
+    animation: sk-fade var(--motion-fast) ease-out backwards;
+  }
+
+  /* Scroll reveal: the observer adds .is-in once the block crosses into
+     view, and the stagger index is passed as --i by the component. */
+  .reveal-on-scroll {
+    opacity: 0;
+    translate: 0 var(--space-6);
+  }
+
+  .reveal-on-scroll.is-in {
+    opacity: 1;
+    translate: 0 0;
+    transition:
+      opacity var(--motion-duration-instant) ease-out,
+      translate var(--motion-duration-instant) cubic-bezier(0.16, 1, 0.3, 1);
+    transition-delay: calc(var(--i, 0) * var(--motion-duration-instant) / 10);
+  }
+
+  /* Skeleton -> content swap. */
+  .swap-in {
+    animation: sk-fade var(--motion-duration-instant) ease-out backwards;
+  }
+}
+
+@keyframes sk-shimmer {
+  to {
+    translate: 100% 0;
+  }
+}
+
+@keyframes sk-fade {
+  from {
+    opacity: 0;
+  }
+}
