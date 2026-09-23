@@ -78,9 +78,23 @@ try {
     mobile: false,
   });
 
-  await wait(300);
-  const skeletons = await evalx(`document.querySelectorAll(".sk").length`);
-  assert.ok(skeletons > 10, `expected skeletons on first paint, saw ${skeletons}`);
+  // The skeletons live between first paint and the data chunk landing, which is
+  // milliseconds on localhost and unpredictable over the network. Sample until
+  // the content has swapped in and keep the high-water mark, rather than
+  // guessing a delay that is wrong on one of the two.
+  let skeletons = 0;
+  for (let i = 0; i < 200; i++) {
+    const [sk, busy] = JSON.parse(
+      await evalx(`JSON.stringify([
+        document.querySelectorAll(".sk").length,
+        document.querySelectorAll('[aria-busy="true"]').length,
+      ])`)
+    );
+    skeletons = Math.max(skeletons, sk);
+    if (skeletons > 0 && busy === 0) break;
+    await wait(100);
+  }
+  assert.ok(skeletons > 10, `expected skeletons before the data landed, saw ${skeletons}`);
 
   await wait(3500);
   const page = JSON.parse(
